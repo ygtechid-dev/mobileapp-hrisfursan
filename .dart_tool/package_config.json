@@ -488,6 +488,12 @@
       "languageVersion": "3.2"
     },
     {
+      "name": "percent_indicator",
+      "rootUri": "file:///Users/applemacbookproretina13/.pub-cache/hosted/pub.dev/percent_indicator-4.2.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "permission_handler",
       "rootUri": "file:///Users/applemacbookproretina13/.pub-cache/hosted/pub.dev/permission_handler-10.4.5",
       "packageUri": "lib/",
@@ -824,7 +830,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2024-12-27T00:53:22.475297Z",
+  "generated": "2024-12-27T15:50:53.511280Z",
   "generator": "pub",
   "generatorVersion": "3.4.3",
   "flutterRoot": "file:///Users/applemacbookproretina13/Downloads/flutter-2",

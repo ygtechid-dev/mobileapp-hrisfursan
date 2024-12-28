@@ -57,13 +57,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
-    return MultiBlocProvider(
-        providers: [
-
-        ],
-        child: GetMaterialApp(
-            debugShowCheckedModeBanner: false,
-            home: page)
-    );
+    return GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: page);
   }
 }

@@ -69,6 +69,7 @@ dependencies:
   #  pinput: ^2.2.16
   #  badges: ^1.2.0
   #  dotted_border: ^2.0.0+3
+  percent_indicator: ^4.2.2
   readmore: ^2.1.0
   fluttertoast: ^8.1.0
   photo_view: any
@@ -108,7 +109,6 @@ flutter:
     - assets/
     - assets/images/
     - assets/icons/
-    - assets/temporary/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -384,151 +384,158 @@ class _FormWithLabelCardState extends State<FormWithLabelCard> {
           padding: EdgeInsets.symmetric(vertical: 12, horizontal: 15),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
-              color: (widget.invert == true) ? "8D8D8D".toColor() : lightGreyColor,
               border: Border.all(
-                  color: "E9E9E9".toColor()
+                  color: greyColor
               )
           ),
-          child: TextFormField(
-            textDirection: widget.textDirection,
-            maxLines: widget.obscure ?? false ? 1 : widget.maxLines ?? 1,
-            minLines: widget.minLines ?? 1,
-            enabled: widget.enabled,
-            initialValue: widget.initialText,
-            controller: widget.controller,
-            textInputAction: widget.textInputAction,
-            obscureText: (widget.obscure ?? false) ? hidePassword : false,
-            onChanged: widget.onChanged,
-            cursorColor: widget.cursorColor ?? blackColor,
-            autovalidateMode: widget.autoValidateMode,
-            inputFormatters: widget.inputFormatters,
-            autofocus: widget.autoFocused ?? false,
-            focusNode: widget.focusNode,
-            textCapitalization:
-            widget.capitalization ?? TextCapitalization.sentences,
-            keyboardType: widget.inputType,
-            style: widget.textStyle ??
-                GoogleFonts.inter().copyWith(
-                    fontSize: 12, fontWeight: FontWeight.w400),
-            decoration: InputDecoration(
-              isDense: widget.isDense ?? true,
-              fillColor: widget.fillColor ?? Colors.transparent,
-              filled: widget.filled,
-              contentPadding: EdgeInsets.zero,
-              // focusedBorder: widget.disableBorder == true
-              //     ? null
-              //     : OutlineInputBorder(
-              //   borderSide: const BorderSide(
-              //     color: Colors.green,
-              //     width: 1,
-              //   ),
-              //   borderRadius:
-              //   BorderRadius.circular(widget.borderRadius ?? 10),
-              // ),
-              labelStyle: widget.hintStyle ??
-                  GoogleFonts.inter().copyWith(fontSize: 12, fontWeight: FontWeight.w400, color: (widget.invert == true) ? Colors.white : blackColor),
-              hintStyle: widget.hintStyle ??
-                  GoogleFonts.inter().copyWith(
-                      fontSize: 12, fontWeight: FontWeight.w400, color: (widget.invert == true) ? Colors.white : greyColor),
-              hintTextDirection: widget.hintDirection,
-              // contentPadding: widget.contentPadding ??
-              //     EdgeInsets.only(
-              //         top: 20, bottom: 20, left: 16, right: 16),
-              // enabledBorder: widget.disableBorder == true
-              //     ? null
-              //     : OutlineInputBorder(
-              //   borderSide: const BorderSide(
-              //     color: Colors.blue,
-              //     width: 1,
-              //   ),
-              //   borderRadius:
-              //   BorderRadius.circular(widget.borderRadius ?? 10),
-              // ),
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius:
-                BorderRadius.circular(widget.borderRadius ?? 2),
-              ),
-              alignLabelWithHint: true,
-              // labelText: widget.labelText,
-              hintText: widget.hintText,
-              prefixIcon: widget.prefixSvg != null
-                  ? Padding(
-                padding: widget.prefixPadding ??
-                    EdgeInsets.only(
-                      top: 0,
-                      bottom: 0,
-                      left: 0,
+          child: Row(
+            children: [
+              (widget.prefixSvg != null) ? InkWell(
+                onTap: widget.prefixOnTap,
+                child: SvgPicture.asset(
+                  widget.prefixSvg!,
+                  height: 20,
+                  width: 20,
+                ),
+              ) : SizedBox(),
+              (widget.prefixSvg != null) ? SizedBox(width: 10) : SizedBox(),
+              Flexible(
+                  child: TextFormField(
+                    textDirection: widget.textDirection,
+                    maxLines: widget.obscure ?? false ? 1 : widget.maxLines ?? 1,
+                    minLines: widget.minLines ?? 1,
+                    enabled: widget.enabled,
+                    initialValue: widget.initialText,
+                    controller: widget.controller,
+                    textInputAction: widget.textInputAction,
+                    obscureText: (widget.obscure ?? false) ? hidePassword : false,
+                    onChanged: widget.onChanged,
+                    cursorColor: widget.cursorColor ?? blackColor,
+                    autovalidateMode: widget.autoValidateMode,
+                    inputFormatters: widget.inputFormatters,
+                    autofocus: widget.autoFocused ?? false,
+                    focusNode: widget.focusNode,
+                    textCapitalization:
+                    widget.capitalization ?? TextCapitalization.sentences,
+                    keyboardType: widget.inputType,
+                    style: widget.textStyle ??
+                        GoogleFonts.inter().copyWith(
+                            fontSize: 12, fontWeight: FontWeight.w400),
+                    decoration: InputDecoration(
+                      isDense: widget.isDense ?? true,
+                      fillColor: widget.fillColor ?? Colors.transparent,
+                      filled: widget.filled,
+                      contentPadding: EdgeInsets.zero,
+                      // focusedBorder: widget.disableBorder == true
+                      //     ? null
+                      //     : OutlineInputBorder(
+                      //   borderSide: const BorderSide(
+                      //     color: Colors.green,
+                      //     width: 1,
+                      //   ),
+                      //   borderRadius:
+                      //   BorderRadius.circular(widget.borderRadius ?? 10),
+                      // ),
+                      labelStyle: widget.hintStyle ??
+                          GoogleFonts.inter().copyWith(fontSize: 12, fontWeight: FontWeight.w400, color: (widget.invert == true) ? Colors.white : blackColor),
+                      hintStyle: widget.hintStyle ??
+                          GoogleFonts.inter().copyWith(
+                              fontSize: 12, fontWeight: FontWeight.w400, color: (widget.invert == true) ? Colors.white : greyColor),
+                      hintTextDirection: widget.hintDirection,
+                      // contentPadding: widget.contentPadding ??
+                      //     EdgeInsets.only(
+                      //         top: 20, bottom: 20, left: 16, right: 16),
+                      // enabledBorder: widget.disableBorder == true
+                      //     ? null
+                      //     : OutlineInputBorder(
+                      //   borderSide: const BorderSide(
+                      //     color: Colors.blue,
+                      //     width: 1,
+                      //   ),
+                      //   borderRadius:
+                      //   BorderRadius.circular(widget.borderRadius ?? 10),
+                      // ),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius:
+                        BorderRadius.circular(widget.borderRadius ?? 2),
+                      ),
+                      alignLabelWithHint: true,
+                      // labelText: widget.labelText,
+                      hintText: widget.hintText,
+                      // prefixIcon: widget.prefixSvg != null
+                      //     ? Padding(
+                      //   padding: widget.prefixPadding ??
+                      //       EdgeInsets.only(
+                      //         top: 0,
+                      //         bottom: 0,
+                      //         left: 0,
+                      //       ),
+                      //   child: InkWell(
+                      //     onTap: widget.prefixOnTap,
+                      //     child: SvgPicture.asset(
+                      //       widget.prefixSvg!,
+                      //       height: 14,
+                      //       width: 14,
+                      //     ),
+                      //   ),
+                      // )
+                      //     : null,
+                      suffixIconConstraints:
+                      BoxConstraints(minHeight: 0, minWidth: 0),
+                      suffixIcon: widget.obscure ?? false
+                          ? Padding(
+                        padding: EdgeInsets.only(right: 4),
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              if (hidePassword) {
+                                hidePassword = false;
+                              } else {
+                                hidePassword = true;
+                              }
+                            });
+                          },
+                          child: Icon(
+                            hidePassword
+                                ? Icons.remove_red_eye_outlined
+                                : Icons.remove_red_eye,
+                            size: 20,
+                            color: greyColor,
+                          ),
+                        ),
+                      )
+                          : widget.suffixSvg != null
+                          ? Padding(
+                        padding:
+                        widget.suffixPadding ?? EdgeInsets.only(right: 4),
+                        child: InkWell(
+                          onTap: widget.suffixOnTap,
+                          // splashRadius: 12,
+                          child: SvgPicture.asset(
+                            widget.suffixSvg!,
+                            height: widget.suffixHeight != null
+                                ? widget.suffixHeight
+                                : 20,
+                            width: widget.suffixWidth != null
+                                ? widget.suffixWidth
+                                : 20,
+                            color:
+                            widget.suffixIconColor ?? Colors.white,
+                          ),
+                          // color: Colors.white,
+                        ),
+                      )
+                          : null,
                     ),
-                child: IconButton(
-                  onPressed: widget.prefixOnTap,
-                  splashRadius: 20,
-                  icon: SvgPicture.asset(
-                    widget.prefixSvg!,
-                    height: widget.prefixHeight != null
-                        ? widget.prefixHeight
-                        : 24,
-                    width: widget.prefixWidth != null
-                        ? widget.prefixWidth
-                        : 24,
-                    color:
-                    widget.prefixIconColor ?? Colors.grey,
-                  ),
-                ),
+                    readOnly: widget.readOnly ?? false,
+                    onSaved: widget.onSaved,
+                    validator: widget.validator,
+                    onTap: widget.onTap,
+                    onFieldSubmitted: widget.onFieldSubmit,
+                  )
               )
-                  : null,
-              suffixIconConstraints:
-              BoxConstraints(minHeight: 0, minWidth: 0),
-              suffixIcon: widget.obscure ?? false
-                  ? Padding(
-                padding: EdgeInsets.only(right: 4),
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      if (hidePassword) {
-                        hidePassword = false;
-                      } else {
-                        hidePassword = true;
-                      }
-                    });
-                  },
-                  child: Icon(
-                      hidePassword
-                          ? Icons.remove_red_eye_outlined
-                          : Icons.remove_red_eye,
-                      size: 20,
-                    color: greyColor,
-                  ),
-                ),
-              )
-                  : widget.suffixSvg != null
-                  ? Padding(
-                padding:
-                widget.suffixPadding ?? EdgeInsets.only(right: 4),
-                child: InkWell(
-                  onTap: widget.suffixOnTap,
-                  // splashRadius: 12,
-                  child: SvgPicture.asset(
-                    widget.suffixSvg!,
-                    height: widget.suffixHeight != null
-                        ? widget.suffixHeight
-                        : 20,
-                    width: widget.suffixWidth != null
-                        ? widget.suffixWidth
-                        : 20,
-                    color:
-                    widget.suffixIconColor ?? Colors.white,
-                  ),
-                  // color: Colors.white,
-                ),
-              )
-                  : null,
-            ),
-            readOnly: widget.readOnly ?? false,
-            onSaved: widget.onSaved,
-            validator: widget.validator,
-            onTap: widget.onTap,
-            onFieldSubmitted: widget.onFieldSubmit,
+            ],
           ),
         )
       ],
@@ -663,172 +670,185 @@ class _FormDropdownCardState extends State<FormDropdownCard> {
         ),
         SizedBox(height: 7.5),
         Container(
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
-              color: lightGreyColor,
               border: Border.all(
-                  color: "E9E9E9".toColor()
+                  color: greyColor
               )
           ),
-          child: FormField<String>(
-            onSaved: widget.onSaved,
-            validator: widget.validator,
-            builder: (FormFieldState<String> state2) {
-              return InputDecorator(
-                // isHovering: isFocus,
-                decoration: InputDecoration(
-                  isDense: widget.isDense ?? true,
-                  focusedBorder: widget.disableBorder == true
-                      ? null
-                      : OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius:
-                    BorderRadius.circular(widget.borderRadius ?? 10),
-                  ),
-                  hintStyle: widget.hintStyle ??
-                      GoogleFonts.inter().copyWith(
-                          fontSize: 12, fontWeight: FontWeight.w400),
-                  hintTextDirection: widget.hintDirection,
-                  fillColor: widget.fillColor ?? Colors.transparent,
-                  filled: widget.filled,
-                  contentPadding: EdgeInsets.zero,
-                  // enabledBorder: widget.disableBorder == true
-                  //     ? null
-                  //     : OutlineInputBorder(
-                  //   borderSide: const BorderSide(
-                  //     color: AppColors.kTextfieldFillColor,
-                  //     width: 1,
-                  //   ),
-                  //   borderRadius:
-                  //   BorderRadius.circular(widget.borderRadius ?? 10.r),
-                  // ),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius:
-                    BorderRadius.circular(widget.borderRadius ?? 2),
-                  ),
+          child: Row(
+            children: [
+              InkWell(
+                onTap: widget.prefixOnTap,
+                child: SvgPicture.asset(
+                  widget.prefixSvg!,
+                  height: 20,
+                  width: 20,
+                ),
+              ),
+              SizedBox(width: 10),
+              Flexible(
+                  child: FormField<String>(
+                    onSaved: widget.onSaved,
+                    validator: widget.validator,
+                    builder: (FormFieldState<String> state2) {
+                      return InputDecorator(
+                        // isHovering: isFocus,
+                        textAlignVertical: TextAlignVertical.top,
+                        decoration: InputDecoration(
+                          isDense: widget.isDense ?? true,
+                          focusedBorder: widget.disableBorder == true
+                              ? null
+                              : OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius:
+                            BorderRadius.circular(widget.borderRadius ?? 10),
+                          ),
+                          hintStyle: widget.hintStyle ??
+                              GoogleFonts.inter().copyWith(
+                                  fontSize: 12, fontWeight: FontWeight.w400),
+                          hintTextDirection: widget.hintDirection,
+                          fillColor: widget.fillColor ?? Colors.transparent,
+                          filled: widget.filled,
+                          contentPadding: EdgeInsets.zero,
+                          // enabledBorder: widget.disableBorder == true
+                          //     ? null
+                          //     : OutlineInputBorder(
+                          //   borderSide: const BorderSide(
+                          //     color: AppColors.kTextfieldFillColor,
+                          //     width: 1,
+                          //   ),
+                          //   borderRadius:
+                          //   BorderRadius.circular(widget.borderRadius ?? 10.r),
+                          // ),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius:
+                            BorderRadius.circular(widget.borderRadius ?? 2),
+                          ),
 
-                  // errorBorder: widget.disableBorder == true
-                  //     ? null
-                  //     : OutlineInputBorder(
-                  //   borderRadius:
-                  //   BorderRadius.circular(widget.borderRadius ?? 10.r),
-                  //   borderSide: const BorderSide(
-                  //     color: AppColors.kDanger50Color,
-                  //     width: 1,
-                  //   ),
-                  // ),
-                  // focusedErrorBorder: OutlineInputBorder(
-                  //   borderSide: const BorderSide(
-                  //     color: AppColors.kTextfieldFillColor,
-                  //     width: 1,
-                  //   ),
-                  //   borderRadius: BorderRadius.circular(widget.borderRadius ?? 10.r),
-                  // ),
-                  // errorStyle: AppTextStyle.fieldErrorTextStyle,
-                  alignLabelWithHint: true,
-                  labelText: widget.labelText,
-                  hintText: widget.hintText,
-                  prefixIcon: widget.prefixSvg != null
-                      ? Padding(
-                    padding: widget.prefixPadding ??
-                        EdgeInsets.only(
-                          top: 0,
-                          bottom: 0,
-                          left: 0,
+                          // errorBorder: widget.disableBorder == true
+                          //     ? null
+                          //     : OutlineInputBorder(
+                          //   borderRadius:
+                          //   BorderRadius.circular(widget.borderRadius ?? 10.r),
+                          //   borderSide: const BorderSide(
+                          //     color: AppColors.kDanger50Color,
+                          //     width: 1,
+                          //   ),
+                          // ),
+                          // focusedErrorBorder: OutlineInputBorder(
+                          //   borderSide: const BorderSide(
+                          //     color: AppColors.kTextfieldFillColor,
+                          //     width: 1,
+                          //   ),
+                          //   borderRadius: BorderRadius.circular(widget.borderRadius ?? 10.r),
+                          // ),
+                          // errorStyle: AppTextStyle.fieldErrorTextStyle,
+                          hintText: widget.hintText,
+                          // prefixIcon: widget.prefixSvg != null
+                          //     ? Padding(
+                          //   padding: widget.prefixPadding ??
+                          //       EdgeInsets.only(
+                          //         top: 0,
+                          //         bottom: 0,
+                          //         left: 0,
+                          //       ),
+                          //   child: IconButton(
+                          //     onPressed: widget.prefixOnTap,
+                          //     splashRadius: 20,
+                          //     icon: SvgPicture.asset(
+                          //       widget.prefixSvg!,
+                          //       height: widget.prefixHeight != null
+                          //           ? widget.prefixHeight
+                          //           : 24,
+                          //       width: widget.prefixWidth != null
+                          //           ? widget.prefixWidth
+                          //           : 24,
+                          //       color:
+                          //       widget.prefixIconColor ?? blackColor,
+                          //     ),
+                          //   ),
+                          // )
+                          //     : null,
+                          // suffixIconConstraints:
+                          // BoxConstraints(minHeight: 20, minWidth: 20),
+                          // suffixIcon: widget.obscure ?? false
+                          //     ? Padding(
+                          //   padding: EdgeInsets.only(right: 4),
+                          //   child: IconButton(
+                          //     onPressed: () {
+                          //       setState(() {
+                          //         if (hidePassword) {
+                          //           hidePassword = false;
+                          //         } else {
+                          //           hidePassword = true;
+                          //         }
+                          //       });
+                          //     },
+                          //     icon: SvgPicture.asset(
+                          //       hidePassword
+                          //           ? AppAssets.eyeSlashIcon
+                          //           : AppAssets.eyeIcon,
+                          //       height: 20,
+                          //       width: 20,
+                          //     ),
+                          //   ),
+                          // )
+                          //     : widget.suffixSvg != null
+                          //     ? Padding(
+                          //   padding:
+                          //   widget.suffixPadding ?? EdgeInsets.only(right: 4),
+                          //   child: IconButton(
+                          //     onPressed: widget.suffixOnTap,
+                          //     // splashRadius: 12,
+                          //     icon: SvgPicture.asset(
+                          //       widget.suffixSvg,
+                          //       height: widget.suffixHeight != null
+                          //           ? widget.suffixHeight
+                          //           : 20,
+                          //       width: widget.suffixWidth != null
+                          //           ? widget.suffixWidth
+                          //           : 20,
+                          //       color:
+                          //       widget.suffixIconColor ?? Colors.white,
+                          //     ),
+                          //     color: Colors.white,
+                          //   ),
+                          // )
+                          //     : null,
                         ),
-                    child: IconButton(
-                      onPressed: widget.prefixOnTap,
-                      splashRadius: 20,
-                      icon: SvgPicture.asset(
-                        widget.prefixSvg!,
-                        height: widget.prefixHeight != null
-                            ? widget.prefixHeight
-                            : 24,
-                        width: widget.prefixWidth != null
-                            ? widget.prefixWidth
-                            : 24,
-                        color:
-                        widget.prefixIconColor ?? blackColor,
-                      ),
-                    ),
-                  )
-                      : null,
-                  suffixIconConstraints:
-                  BoxConstraints(minHeight: 20, minWidth: 20),
-                  // suffixIcon: widget.obscure ?? false
-                  //     ? Padding(
-                  //   padding: EdgeInsets.only(right: 4),
-                  //   child: IconButton(
-                  //     onPressed: () {
-                  //       setState(() {
-                  //         if (hidePassword) {
-                  //           hidePassword = false;
-                  //         } else {
-                  //           hidePassword = true;
-                  //         }
-                  //       });
-                  //     },
-                  //     icon: SvgPicture.asset(
-                  //       hidePassword
-                  //           ? AppAssets.eyeSlashIcon
-                  //           : AppAssets.eyeIcon,
-                  //       height: 20,
-                  //       width: 20,
-                  //     ),
-                  //   ),
-                  // )
-                  //     : widget.suffixSvg != null
-                  //     ? Padding(
-                  //   padding:
-                  //   widget.suffixPadding ?? EdgeInsets.only(right: 4),
-                  //   child: IconButton(
-                  //     onPressed: widget.suffixOnTap,
-                  //     // splashRadius: 12,
-                  //     icon: SvgPicture.asset(
-                  //       widget.suffixSvg,
-                  //       height: widget.suffixHeight != null
-                  //           ? widget.suffixHeight
-                  //           : 20,
-                  //       width: widget.suffixWidth != null
-                  //           ? widget.suffixWidth
-                  //           : 20,
-                  //       color:
-                  //       widget.suffixIconColor ?? Colors.white,
-                  //     ),
-                  //     color: Colors.white,
-                  //   ),
-                  // )
-                  //     : null,
-                ),
-                isEmpty: selectedValue == null,
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<List<String>>(
-                    value: selectedValue,
-                    isDense: true,
-                    onChanged: (List<String>? newValue) async {
+                        isEmpty: selectedValue == null,
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<List<String>>(
+                            value: selectedValue,
+                            isDense: true,
+                            onChanged: (List<String>? newValue) async {
 
-                      print("${newValue}");
+                              print("${newValue}");
 
-                      setState(() {
-                        selectedValue = newValue;
-                        widget.onSaved!(selectedValue![0]);
-                      });
+                              setState(() {
+                                selectedValue = newValue;
+                                widget.onSaved!(selectedValue![0]);
+                              });
 
-                    },
-                    items:
-                    widget.listItem!.map((List<String> value) {
-                      return DropdownMenuItem<List<String>>(
-                        value: value ?? [],
-                        child: Text(value[1] ?? "", style: GoogleFonts.inter().copyWith(
-                            fontSize: 12, fontWeight: FontWeight.w400)),
+                            },
+                            items:
+                            widget.listItem!.map((List<String> value) {
+                              return DropdownMenuItem<List<String>>(
+                                value: value ?? [],
+                                child: Text(value[1] ?? "", style: GoogleFonts.inter().copyWith(
+                                    fontSize: 12, fontWeight: FontWeight.w400)),
+                              );
+                            }).toList(),
+                          ),
+                        ),
                       );
-                    }).toList(),
-                  ),
-                ),
-              );
-            },
+                    },
+                  )
+              )
+            ]
           )
         )
       ],

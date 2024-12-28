@@ -22,34 +22,40 @@ class _SignUpPageState extends State<SignUpPage> {
     double fullWidth = MediaQuery.of(context).size.width;
 
     return GeneralPage(
+      statusBarColor: mainColor,
       child: Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(vertical: 0, horizontal: defaultMargin),
           alignment: Alignment.center,
           child: Column(
             children: [
+              SizedBox(height: 40),
               Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
+                width: defaultWidth,
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
                     color: mainColor,
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(8),
                     border: Border.all(color: mainColor),
+                  ),
                 ),
               ),
-              SizedBox(height: 24),
+              SizedBox(height: 5),
               Text(
                 "Sign Up",
                 textAlign: TextAlign.center,
-                style: blackFontStyle.copyWith(fontSize: 24, fontWeight: FontWeight.w600),
+                style: blackFontStyle.copyWith(fontSize: 22, fontWeight: FontWeight.w600),
               ),
               SizedBox(height: 5),
               Text(
                 "Register Using Your Credentials",
                 textAlign: TextAlign.center,
-                style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 15),
               FormWithLabelCard(
                   outerLabelText: "Email",
                   hintText: "My Mail",
@@ -123,6 +129,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   InkWell(
+                    onTap: (){
+                      setState(() {
+                        isAgree = !isAgree;
+                      });
+                    },
                     child: Icon((isAgree) ? Icons.check_box : Icons.check_box_outline_blank, color: mainColor, size: 16),
                   ),
                   SizedBox(width: 6),
@@ -156,7 +167,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   )
                 ],
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 25),
               ButtonCard("Sign Up", defaultWidth, mainColor, colorGradient: buttonGradient, onPressed: () async {
                 Get.to(PersonalDataPage());
               }),

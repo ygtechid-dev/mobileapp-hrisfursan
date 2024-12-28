@@ -25,6 +25,10 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
     double fullWidth = MediaQuery.of(context).size.width;
 
     return GeneralPage(
+      statusBarColor: mainColor,
+      isBackInvert: false,
+      isFrontAppBar: true,
+      marginAppBar: 65,
       title: "Personal Data",
         onBackButtonPressed: (){
           Get.back();
@@ -155,7 +159,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                             outerLabelText: "Date of Birth",
                             hintText: "Input Date of Birth",
                             controller: dateC,
-                            prefixSvg: "${prefixIcons}ic_date.svg",
+                            prefixSvg: "${prefixIcons}ic_calendar.svg",
                             onSaved: (e) {
                               dateC.text = e ?? "";
                             },
@@ -262,6 +266,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                               return simpleValidator(e, null);
                             },
                             filled: true),
+                        SizedBox(height: 60,)
                       ],
                     )
                 ),
@@ -270,13 +275,15 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
         ),
       navBar: Container(
         width: fullWidth,
-        padding: EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: boxShadow
         ),
-        child: ButtonCard("Save", defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {}),
+        child: ButtonCard("Save", defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
+          Get.to(MainPage());
+        }),
       ),
     );
   }

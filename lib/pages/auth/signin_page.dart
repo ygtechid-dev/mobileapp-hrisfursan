@@ -23,23 +23,10 @@ class _SignInPageState extends State<SignInPage> {
       isAppBarCircular: true,
       appBarColorGradient: backgroundGradient,
       child: Container(
+        height: MediaQuery.of(context).size.height - 60,
         child: Stack(
+          alignment: Alignment.center,
           children: [
-            Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: mainColor),
-                      boxShadow: boxShadowBlue
-                  ),
-                ),
-            ),
             Positioned(
               top: 50,
               left: 0,
@@ -47,20 +34,24 @@ class _SignInPageState extends State<SignInPage> {
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: 0, horizontal: defaultMargin),
+                decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                  ),
                 alignment: Alignment.center,
                 child: Column(
                   children: [
-                    SizedBox(height: 55),
+                    SizedBox(height: 60),
                     Text(
                       "Sign In",
                       textAlign: TextAlign.center,
-                      style: blackFontStyle.copyWith(fontSize: 24, fontWeight: FontWeight.w600),
+                      style: blackFontStyle.copyWith(fontSize: 22, fontWeight: FontWeight.w600),
                     ),
                     SizedBox(height: 5),
                     Text(
                       "Sign in to my account",
                       textAlign: TextAlign.center,
-                      style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                      style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
                     ),
                     SizedBox(height: 20),
                     FormWithLabelCard(
@@ -127,7 +118,9 @@ class _SignInPageState extends State<SignInPage> {
                       ],
                     ),
                     SizedBox(height: 20),
-                    ButtonCard("Sign In", defaultWidth, mainColor, colorGradient: buttonGradient, onPressed: () async {}),
+                    ButtonCard("Sign In", defaultWidth, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                      Get.to(MainPage());
+                    }),
                     SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -181,6 +174,21 @@ class _SignInPageState extends State<SignInPage> {
                 )
               )
             ),
+            Positioned(
+              top: 0,
+              width: 100,
+              height: 100,
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: mainColor),
+                    boxShadow: boxShadowBlue
+                ),
+              ),
+            ),
           ]
         )
       ),
@@ -197,6 +205,7 @@ class _SignInPageState extends State<SignInPage> {
         context: contexts,
         enableDrag: true,
         isScrollControlled: true,
+        backgroundColor: Colors.transparent,
         builder: (bc){
           return ModalForgotPasswordCard(token, fullWidth, 16);
         });

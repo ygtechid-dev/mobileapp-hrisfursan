@@ -35,6 +35,12 @@ part "intro/splash_page.dart";
 part "auth/signin_page.dart";
 part "auth/signup_page.dart";
 part "auth/personal_data_page.dart";
+part "main/main_page.dart";
+part "main/activity_page.dart";
+part "main/analytics_page.dart";
+part "main/attendance_page.dart";
+part "main/home_page.dart";
+part "main/profile_page.dart";
 
 String prefixIcons = "assets/icons/";
 String prefixImages = "assets/images/";

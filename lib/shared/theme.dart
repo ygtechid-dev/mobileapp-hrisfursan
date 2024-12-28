@@ -8,7 +8,7 @@ Color tersierColor = "5882CA".toColor();
 Color greyColor = "A4A4A4".toColor();
 Color greyColor2 = "F1F1F1".toColor();
 Color blueFBColor = "3B5998".toColor();
-Color blackColor = "ECE2D0".toColor();
+Color blackColor = "101828".toColor();
 Color lightYellowColor = "F9D1D1".toColor();
 Color greyYellowColor = "F7F7F7".toColor();
 Color lightMainColor = "D8E4FD".toColor();
@@ -23,6 +23,8 @@ Gradient backgroundGradient = LinearGradient(
     Color(0xFF01CCAA),
     Color(0xFF0066EB),
   ],
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
   tileMode: TileMode.clamp,
 );
 
@@ -31,6 +33,8 @@ Gradient buttonGradient = LinearGradient(
     Color(0xFF5F9EF3),
     Color(0xFF0066EB),
   ],
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
   tileMode: TileMode.clamp,
 );
 

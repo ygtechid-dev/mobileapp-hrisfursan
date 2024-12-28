@@ -127,3 +127,72 @@ class _ButtonCardState extends State<ButtonCard> {
     );
   }
 }
+
+class ButtonHorizontalCard extends StatelessWidget {
+  final double width;
+  final String title;
+  final IconData icon;
+  final Color color;
+
+  ButtonHorizontalCard(this.width, this.title, this.icon, this.color);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "${title}",
+            textAlign: TextAlign.start,
+            style: blackFontStyle.copyWith(fontSize: 13, color: color, fontWeight: FontWeight.w600),
+          ),
+          Icon(icon, color: color, size: 16)
+        ],
+      ),
+    );
+  }
+}
+
+class ButtonHorizontalProfileCard extends StatelessWidget {
+  final double width;
+  final String title;
+  final String icon;
+  final Color color;
+
+  ButtonHorizontalProfileCard(this.width, this.title, this.icon, this.color);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: (){},
+      child: Container(
+        width: width,
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                SvgPicture.asset("${prefixIcons}${icon}", width: 16, height: 16,),
+                SizedBox(width: 8),
+                Text(
+                  "${title}",
+                  textAlign: TextAlign.start,
+                  style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                ),
+              ],
+            ),
+            Icon(Icons.arrow_forward_ios_rounded, color: color, size: 16)
+          ],
+        ),
+      )
+    );
+  }
+}

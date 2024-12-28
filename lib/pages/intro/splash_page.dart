@@ -25,8 +25,8 @@ class _SplashPageState extends State<SplashPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    width: MediaQuery.of(context).size.width - 2*50,
-                    height: MediaQuery.of(context).size.width - 2*50,
+                    width: MediaQuery.of(context).size.width - 2*100,
+                    height: MediaQuery.of(context).size.width - 2*100,
                     margin: EdgeInsets.only(top: 0),
                     decoration: BoxDecoration(image: DecorationImage(
                       fit: BoxFit.fitWidth,

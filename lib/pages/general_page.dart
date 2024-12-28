@@ -8,6 +8,7 @@ class GeneralPage extends StatefulWidget {
   final Widget? navBar;
   final double? marginNavBar;
   final double? marginAppBar;
+  final double? heightAppBar;
   final String? bcgImage;
   final bool? isCoverBcgImage;
   final bool? isReverse;
@@ -28,6 +29,7 @@ class GeneralPage extends StatefulWidget {
   final bool? isCenterTitle;
   final bool? isBackgroundDefault;
   final bool? isAppBarCircular;
+  final bool? isFrontAppBar;
   final Widget? drawer;
   final GlobalKey<ScaffoldState>? key;
 
@@ -40,12 +42,14 @@ class GeneralPage extends StatefulWidget {
       this.onBackButtonPressed,
         this.bcgImage,
       this.isBackInvert = true,
+        this.isFrontAppBar = false,
         this.isCoverBcgImage = true,
         this.isBackgroundDefault = false,
       this.child,
       this.backColor,
       this.shadow = false,
         this.isBordered,
+        this.heightAppBar = 170,
       this.image,
       this.imageSize,
       this.navBar,
@@ -55,7 +59,7 @@ class GeneralPage extends StatefulWidget {
       this.marginNavBar = 0,
         this.isCenterTitle = true,
         this.isAppBarCircular = false,
-        this.marginAppBar = 75,
+        this.marginAppBar = 40,
       this.appBarColor,
         this.refreshFooter,
         this.drawer,
@@ -284,8 +288,282 @@ class _GeneralPageState extends State<GeneralPage>  {
                   bottom: false,
                   child: Stack(
                     children: [
+                      (widget.isFrontAppBar == false) ? Positioned(
+                        top: MediaQuery.of(context).viewInsets.top,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          child: (widget.title != null) ? (widget.widgetAppBar != null) ? Container(
+                            margin: EdgeInsets.only(bottom: 0),
+                            padding: EdgeInsets.only(left: defaultMargin, right: defaultMargin, top: 40, bottom: (widget.isAppBarCircular == true) ? 80 : 0),
+                            width: double.infinity,
+                            height: (Platform.isIOS) ? ((widget.isAppBarCircular == true) ? 90 : 170) : ((widget.isAppBarCircular == true) ? 170 : 90),
+                            decoration: BoxDecoration(
+                                color: (widget.isAppBarCircular == true) ? widget.appBarColor : Colors.white,
+                                gradient: widget.appBarColorGradient,
+                                borderRadius: BorderRadius.vertical(bottom: Radius.circular((widget.isAppBarCircular == true) ? 24 : 0))
+                            ),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      widget.onBackButtonPressed != null
+                                          ? Container(
+                                          margin: EdgeInsets.only(right: 4),
+                                          width: 30,
+                                          height: 30,
+                                          child: Material(
+                                              type: MaterialType.transparency,
+                                              elevation: 6.0,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20)
+                                              ),
+                                              color: Colors.transparent,
+                                              shadowColor: Colors.grey[80],
+                                              child: InkWell(
+                                                  onTap: () {
+                                                    if (widget.onBackButtonPressed != null) {
+                                                      widget.onBackButtonPressed!();
+                                                    }
+                                                  },
+                                                  child: Container(
+                                                      width: 24,
+                                                      height: 24,
+                                                      decoration: BoxDecoration(
+                                                          color: widget.isBackInvert != null &&
+                                                              widget.isBackInvert == true ? Colors.white : Colors.blue.shade100,
+                                                          shape: BoxShape.circle
+                                                      ),
+                                                      child: widget.invert != null &&
+                                                          widget.invert == true
+                                                          ? Icon(Icons.arrow_back_ios_new, size: 16, color: Colors.white)
+                                                          : Icon(Icons.arrow_back_ios_new, size: 16, color: mainColor)
+                                                  )
+                                              )
+                                          )
+                                      )
+                                          : SizedBox(),
+                                      Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          widget.widgetAppBar != null
+                                              ? widget.widgetAppBar!
+                                              : SizedBox(),
+                                          SizedBox(height: (subtitle_refresh != null) ? 5 : 0),
+                                          subtitle_refresh != null
+                                              ? Text(
+                                            subtitle_refresh ?? widget.subtitle!,
+                                            style: GoogleFonts.inter(
+                                                color: widget.invert != null &&
+                                                    widget.invert == true
+                                                    ? Colors.white
+                                                    : greyColor,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400),
+                                          )
+                                              : SizedBox(),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  widget.image != null
+                                      ? Container(
+                                    width: widget.imageSize,
+                                    height: widget.imageSize,
+                                    alignment: Alignment.centerRight,
+                                    child: widget.image,
+                                  )
+                                      : SizedBox(),
+                                ]),
+                          ) : Container(
+                            margin: EdgeInsets.only(bottom: 0),
+                            padding: EdgeInsets.only(left: defaultMargin, right: defaultMargin, top: 40, bottom: (widget.isAppBarCircular == true) ? 80 : 0),
+                            width: double.infinity,
+                            height: (Platform.isIOS) ? ((widget.isAppBarCircular == true) ? widget.heightAppBar! : 90) : ((widget.isAppBarCircular == true) ? widget.heightAppBar! : 90),
+                            decoration: BoxDecoration(
+                                color: (widget.isAppBarCircular == true) ? widget.appBarColor : Colors.white,
+                                gradient: widget.appBarColorGradient,
+                                borderRadius: BorderRadius.vertical(bottom: Radius.circular((widget.isAppBarCircular == true) ? 24 : 0))
+                            ),
+                            child: (widget.isCenterTitle == false) ? Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      widget.onBackButtonPressed != null
+                                          ? Container(
+                                          margin: EdgeInsets.only(right: 15),
+                                          width: 30,
+                                          height: 30,
+                                          child: Material(
+                                              type: MaterialType.transparency,
+                                              elevation: 6.0,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20)
+                                              ),
+                                              color: Colors.transparent,
+                                              shadowColor: Colors.grey[80],
+                                              child: InkWell(
+                                                onTap: () {
+                                                  if (widget.onBackButtonPressed != null) {
+                                                    widget.onBackButtonPressed!();
+                                                  }
+                                                },
+                                                child: Container(
+                                                    width: 24,
+                                                    height: 24,
+                                                    decoration: BoxDecoration(
+                                                        color: widget.isBackInvert != null &&
+                                                            widget.isBackInvert == true ? Colors.white : Colors.blue.shade100,
+                                                        shape: BoxShape.circle
+                                                    ),
+                                                    child: widget.invert != null &&
+                                                        widget.invert == true
+                                                        ? Icon(Icons.arrow_back_ios_new, size: 16, color: mainColor)
+                                                        : Icon(Icons.arrow_back_ios_new, size: 16, color: mainColor)
+                                                ),
+                                              )
+                                          )
+                                      )
+                                          : SizedBox(),
+                                      Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          widget.widgetAppBar != null
+                                              ? widget.widgetAppBar!
+                                              : SizedBox(),
+                                          title_refresh != null
+                                              ? Text(
+                                            title_refresh ?? widget.title!,
+                                            style: GoogleFonts.inter(
+                                                color: widget.invert != null &&
+                                                    widget.invert == true
+                                                    ? Colors.white
+                                                    : blackColor,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500),
+                                          )
+                                              : SizedBox(),
+                                          SizedBox(height: (subtitle_refresh != null) ? 5 : 0),
+                                          subtitle_refresh != null
+                                              ? Text(
+                                            subtitle_refresh ?? widget.subtitle!,
+                                            style: GoogleFonts.inter(
+                                                color: widget.invert != null &&
+                                                    widget.invert == true
+                                                    ? Colors.white
+                                                    : greyColor,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400),
+                                          )
+                                              : SizedBox(),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  widget.image != null
+                                      ? Container(
+                                    width: widget.imageSize,
+                                    height: widget.imageSize,
+                                    alignment: Alignment.centerRight,
+                                    child: widget.image,
+                                  )
+                                      : SizedBox(),
+                                ]) : Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  widget.onBackButtonPressed != null
+                                      ? Container(
+                                      margin: EdgeInsets.only(right: 15),
+                                      width: 30,
+                                      height: 30,
+                                      child: Material(
+                                          type: MaterialType.transparency,
+                                          elevation: 6.0,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)
+                                          ),
+                                          color: Colors.transparent,
+                                          shadowColor: Colors.grey[80],
+                                          child: InkWell(
+                                              onTap: () {
+                                                if (widget.onBackButtonPressed != null) {
+                                                  widget.onBackButtonPressed!();
+                                                }
+                                              },
+                                              child: Container(
+                                                  width: 24,
+                                                  height: 24,
+                                                  decoration: BoxDecoration(
+                                                      color: widget.isBackInvert != null &&
+                                                          widget.isBackInvert == true ? Colors.white : Colors.blue.shade100,
+                                                      shape: BoxShape.circle
+                                                  ),
+                                                  child: widget.invert != null &&
+                                                      widget.invert == true
+                                                      ? Icon(Icons.arrow_back_ios_new, size: 16, color: Colors.white)
+                                                      : Icon(Icons.arrow_back_ios_new, size: 16, color: mainColor)
+                                              )
+                                          )
+                                      )
+                                  )
+                                      : SizedBox(width: 30,),
+                                  Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      widget.widgetAppBar != null
+                                          ? widget.widgetAppBar!
+                                          : SizedBox(),
+                                      title_refresh != null
+                                          ? Text(
+                                        title_refresh ?? widget.title!,
+                                        style: GoogleFonts.inter(
+                                            color: widget.invert != null &&
+                                                widget.invert == true
+                                                ? Colors.white
+                                                : blackColor,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500),
+                                      )
+                                          : SizedBox(),
+                                      SizedBox(height: (subtitle_refresh != null) ? 5 : 0),
+                                      subtitle_refresh != null
+                                          ? Text(
+                                        subtitle_refresh ?? widget.subtitle!,
+                                        style: GoogleFonts.inter(
+                                            color: widget.invert != null &&
+                                                widget.invert == true
+                                                ? Colors.white
+                                                : greyColor,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400),
+                                      )
+                                          : SizedBox(),
+                                    ],
+                                  ),
+                                  widget.image != null
+                                      ? Container(
+                                    width: widget.imageSize,
+                                    height: widget.imageSize,
+                                    alignment: Alignment.centerRight,
+                                    child: widget.image,
+                                  )
+                                      : SizedBox(width: 30,),
+                                ]),
+                          ) : SizedBox(),
+                        ),
+                      ) : SizedBox(),
                       (widget.scrollable == true) ? SmartRefresher(
-                        enablePullUp: true,
+                        enablePullUp: false,
                         header: WaterDropHeader(),
                         footer: CustomFooter(
                           builder: (BuildContext? context, LoadStatus? mode){
@@ -361,7 +639,7 @@ class _GeneralPageState extends State<GeneralPage>  {
                           ),
                         ],
                       ),
-                      Positioned(
+                      (widget.isFrontAppBar == true) ? Positioned(
                         top: MediaQuery.of(context).viewInsets.top,
                         left: 0,
                         right: 0,
@@ -370,11 +648,11 @@ class _GeneralPageState extends State<GeneralPage>  {
                             margin: EdgeInsets.only(bottom: 0),
                             padding: EdgeInsets.only(left: defaultMargin, right: defaultMargin, top: 40, bottom: (widget.isAppBarCircular == true) ? 80 : 0),
                             width: double.infinity,
-                            height: (Platform.isIOS) ? ((widget.isAppBarCircular == true) ? 90 : 170) : ((widget.isAppBarCircular == true) ? 90 : 170),
+                            height: (Platform.isIOS) ? ((widget.isAppBarCircular == true) ? 90 : 170) : ((widget.isAppBarCircular == true) ? 170 : 90),
                             decoration: BoxDecoration(
-                              color: (widget.isAppBarCircular == true) ? widget.appBarColor : Colors.white,
-                              gradient: widget.appBarColorGradient,
-                              borderRadius: BorderRadius.vertical(bottom: Radius.circular((widget.isAppBarCircular == true) ? 24 : 0))
+                                color: (widget.isAppBarCircular == true) ? widget.appBarColor : Colors.white,
+                                gradient: widget.appBarColorGradient,
+                                borderRadius: BorderRadius.vertical(bottom: Radius.circular((widget.isAppBarCircular == true) ? 24 : 0))
                             ),
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -396,24 +674,24 @@ class _GeneralPageState extends State<GeneralPage>  {
                                               color: Colors.transparent,
                                               shadowColor: Colors.grey[80],
                                               child: InkWell(
-                                                onTap: () {
-                                                  if (widget.onBackButtonPressed != null) {
-                                                    widget.onBackButtonPressed!();
-                                                  }
-                                                },
-                                                child: Container(
-                                                    width: 24,
-                                                    height: 24,
-                                                    decoration: BoxDecoration(
-                                                        color: widget.isBackInvert != null &&
-                                                            widget.isBackInvert == true ? Colors.white : Colors.blue.shade100,
-                                                        shape: BoxShape.circle
-                                                    ),
-                                                    child: widget.invert != null &&
-                                                        widget.invert == true
-                                                        ? Icon(Icons.arrow_back_ios_new, size: 16, color: Colors.white)
-                                                        : Icon(Icons.arrow_back_ios_new, size: 16, color: mainColor)
-                                                )
+                                                  onTap: () {
+                                                    if (widget.onBackButtonPressed != null) {
+                                                      widget.onBackButtonPressed!();
+                                                    }
+                                                  },
+                                                  child: Container(
+                                                      width: 24,
+                                                      height: 24,
+                                                      decoration: BoxDecoration(
+                                                          color: widget.isBackInvert != null &&
+                                                              widget.isBackInvert == true ? Colors.white : Colors.blue.shade100,
+                                                          shape: BoxShape.circle
+                                                      ),
+                                                      child: widget.invert != null &&
+                                                          widget.invert == true
+                                                          ? Icon(Icons.arrow_back_ios_new, size: 16, color: Colors.white)
+                                                          : Icon(Icons.arrow_back_ios_new, size: 16, color: mainColor)
+                                                  )
                                               )
                                           )
                                       )
@@ -456,9 +734,10 @@ class _GeneralPageState extends State<GeneralPage>  {
                             margin: EdgeInsets.only(bottom: 0),
                             padding: EdgeInsets.only(left: defaultMargin, right: defaultMargin, top: 40, bottom: (widget.isAppBarCircular == true) ? 80 : 0),
                             width: double.infinity,
-                            height: (Platform.isIOS) ? ((widget.isAppBarCircular == true) ? 90 : 170) : ((widget.isAppBarCircular == true) ? 90 : 170),
+                            height: (Platform.isIOS) ? ((widget.isAppBarCircular == true) ? 170 : 90) : ((widget.isAppBarCircular == true) ? 170 : 90),
                             decoration: BoxDecoration(
                                 color: (widget.isAppBarCircular == true) ? widget.appBarColor : Colors.white,
+                                gradient: widget.appBarColorGradient,
                                 borderRadius: BorderRadius.vertical(bottom: Radius.circular((widget.isAppBarCircular == true) ? 24 : 0))
                             ),
                             child: (widget.isCenterTitle == false) ? Row(
@@ -487,17 +766,17 @@ class _GeneralPageState extends State<GeneralPage>  {
                                                   }
                                                 },
                                                 child: Container(
-                                                  width: 24,
-                                                  height: 24,
-                                                  decoration: BoxDecoration(
-                                                    color: widget.isBackInvert != null &&
-                                                        widget.isBackInvert == true ? Colors.white : Colors.blue.shade100,
-                                                    shape: BoxShape.circle
-                                                  ),
-                                                  child: widget.invert != null &&
-                                                      widget.invert == true
-                                                      ? Icon(Icons.arrow_back_ios_new, size: 16, color: mainColor)
-                                                      : Icon(Icons.arrow_back_ios_new, size: 16, color: mainColor)
+                                                    width: 24,
+                                                    height: 24,
+                                                    decoration: BoxDecoration(
+                                                        color: widget.isBackInvert != null &&
+                                                            widget.isBackInvert == true ? Colors.white : Colors.blue.shade100,
+                                                        shape: BoxShape.circle
+                                                    ),
+                                                    child: widget.invert != null &&
+                                                        widget.invert == true
+                                                        ? Icon(Icons.arrow_back_ios_new, size: 16, color: mainColor)
+                                                        : Icon(Icons.arrow_back_ios_new, size: 16, color: mainColor)
                                                 ),
                                               )
                                           )
@@ -565,24 +844,24 @@ class _GeneralPageState extends State<GeneralPage>  {
                                           color: Colors.transparent,
                                           shadowColor: Colors.grey[80],
                                           child: InkWell(
-                                            onTap: () {
-                                              if (widget.onBackButtonPressed != null) {
-                                                widget.onBackButtonPressed!();
-                                              }
-                                            },
-                                            child: Container(
-                                                width: 24,
-                                                height: 24,
-                                                decoration: BoxDecoration(
-                                                    color: widget.isBackInvert != null &&
-                                                        widget.isBackInvert == true ? Colors.white : Colors.blue.shade100,
-                                                    shape: BoxShape.circle
-                                                ),
-                                                child: widget.invert != null &&
-                                                    widget.invert == true
-                                                    ? Icon(Icons.arrow_back_ios_new, size: 16, color: Colors.white)
-                                                    : Icon(Icons.arrow_back_ios_new, size: 16, color: mainColor)
-                                            )
+                                              onTap: () {
+                                                if (widget.onBackButtonPressed != null) {
+                                                  widget.onBackButtonPressed!();
+                                                }
+                                              },
+                                              child: Container(
+                                                  width: 24,
+                                                  height: 24,
+                                                  decoration: BoxDecoration(
+                                                      color: widget.isBackInvert != null &&
+                                                          widget.isBackInvert == true ? Colors.white : Colors.blue.shade100,
+                                                      shape: BoxShape.circle
+                                                  ),
+                                                  child: widget.invert != null &&
+                                                      widget.invert == true
+                                                      ? Icon(Icons.arrow_back_ios_new, size: 16, color: Colors.white)
+                                                      : Icon(Icons.arrow_back_ios_new, size: 16, color: mainColor)
+                                              )
                                           )
                                       )
                                   )
@@ -633,7 +912,7 @@ class _GeneralPageState extends State<GeneralPage>  {
                                 ]),
                           ) : SizedBox(),
                         ),
-                      ),
+                      ) : SizedBox(),
                       Positioned(
                         bottom: MediaQuery.of(context).viewInsets.top,
                         left: 0,

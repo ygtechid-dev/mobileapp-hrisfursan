@@ -230,6 +230,7 @@ class GraphCard extends StatelessWidget {
               style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
             ),
             SizedBox(height: 12),
+            GraphItemCard()
           ],
         )
     );

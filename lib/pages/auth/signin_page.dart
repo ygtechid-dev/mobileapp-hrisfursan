@@ -187,6 +187,7 @@ class _SignInPageState extends State<SignInPage> {
                     border: Border.all(color: mainColor),
                     boxShadow: boxShadowBlue
                 ),
+                child: Image.asset("${prefixImages}img_logo.png", width: 88, height: 88,),
               ),
             ),
           ]

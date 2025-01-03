@@ -1,13 +1,13 @@
 part of '../pages.dart';
 
-class ActivityPage extends StatefulWidget {
-  const ActivityPage({super.key});
+class TaskPage extends StatefulWidget {
+  const TaskPage({super.key});
 
   @override
-  State<ActivityPage> createState() => _ActivityPageState();
+  State<TaskPage> createState() => _TaskPageState();
 }
 
-class _ActivityPageState extends State<ActivityPage> {
+class _TaskPageState extends State<TaskPage> {
   @override
   Widget build(BuildContext context) {
     double defaultWidth = MediaQuery.of(context).size.width - 2*defaultMargin2;
@@ -31,13 +31,13 @@ class _ActivityPageState extends State<ActivityPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Activity",
+                      "To Do!",
                       textAlign: TextAlign.start,
                       style: blackFontStyle.copyWith(fontSize: 24, color: Colors.white, fontWeight: FontWeight.w600),
                     ),
                     SizedBox(height: 5),
                     Text(
-                      "Choose your Requestment",
+                      "Let’s tackle your to do list",
                       textAlign: TextAlign.start,
                       style: blackFontStyle.copyWith(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w400),
                     ),
@@ -47,24 +47,28 @@ class _ActivityPageState extends State<ActivityPage> {
                   height: 80,
                   width: 80,
                   decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("${prefixImages}img_header_activity.png")
-                    )
+                      image: DecorationImage(
+                          image: AssetImage("${prefixImages}img_header_activity.png")
+                      )
                   ),
                 )
               ],
             ),
           ),
           SizedBox(height: 15),
-          Column(
-            children: [
-              ActivityCard(defaultWidth, "Workspace", "Summary of your work"),
-              ActivityCard(defaultWidth, "Leave Request", "Request your off day"),
-              ActivityCard(defaultWidth, "Overtime Request", "Request to overtime work"),
-              ActivityCard(defaultWidth, "Reimbursement Request", "Claim your expenses here"),
-              ActivityCard(defaultWidth, "Calendar", "All Event are Here"),
-              ActivityCard(defaultWidth, "Payslip", "Download and check your payslip"),
-            ]
+          TaskSummaryCard('', defaultWidth),
+          SizedBox(height: 15),
+          Container(
+            height: 300,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                SizedBox(height: 20),
+                TaskGroupCard(defaultWidth, "To Do", "The tasks assigned to you for today"),
+                TaskGroupCard(defaultWidth, "In Progress", "The tasks assigned to you for today"),
+                TaskGroupCard(defaultWidth, "Done", "The tasks assigned to you for today"),
+              ],
+            ),
           ),
           SizedBox(height: 50),
         ],

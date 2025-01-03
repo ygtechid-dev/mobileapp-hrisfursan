@@ -76,6 +76,9 @@ dependencies:
   permission_handler: ^10.2.0
   quiver: ^3.0.1
   pinput: ^2.2.16
+  fl_chart: ^0.69.2
+  dotted_border: ^2.1.0
+  file_picker: ^5.2.10
 #  qr_flutter: ^4.1.0
   #  qr_code_dart_scan: ^0.9.1
   #  geocoding: ^2.1.0

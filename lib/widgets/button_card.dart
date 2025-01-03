@@ -196,3 +196,95 @@ class ButtonHorizontalProfileCard extends StatelessWidget {
     );
   }
 }
+
+class CommonDottedButtonWithImage extends StatefulWidget {
+  final ValueChanged<File> onPicked;
+  final String icon;
+  final bool isCamera;
+
+  CommonDottedButtonWithImage(
+      {required this.onPicked, required this.icon, this.isCamera = false});
+
+  @override
+  State<CommonDottedButtonWithImage> createState() => _CommonDottedButtonWithImageState();
+}
+
+class _CommonDottedButtonWithImageState extends State<CommonDottedButtonWithImage> {
+
+  File? selectedFile;
+
+  @override
+  Widget build(BuildContext context) {
+
+    double defaultWidth = MediaQuery.of(context).size.width - 2*20;
+
+    return InkWell(
+      onTap: () async {
+        if(widget.isCamera == true){
+          PickedFile? pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+          if (pickedFile != null) {
+            setState(() {
+              selectedFile = File(pickedFile.path);
+            });
+
+            widget.onPicked(selectedFile!);
+          }
+        } else {
+          FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image, );
+
+          if (result != null) {
+
+            setState(() {
+              selectedFile = File(result.files.single.path!);
+            });
+
+            widget.onPicked(selectedFile!);
+          } else {
+            // User canceled the picker
+          }
+        }
+
+      },
+      child: DottedBorder(
+        strokeWidth: 1,
+        dashPattern: [8,4],
+        radius: const Radius.circular(8),
+        color: mainColor,
+        child: Container(
+            alignment: Alignment.center,
+            width: defaultWidth,
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                color: mainColor.withOpacity(0.25),
+                borderRadius: BorderRadius.circular(8),
+              image: (selectedFile != null) ? DecorationImage(
+                image: FileImage(selectedFile!)
+              ) : null
+            ),
+            child: (selectedFile != null) ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(widget.icon, width: 45, height: 45),
+                // SizedBox(height: 12),
+                // Text(
+                //   (selectedFile == null) ? "${widget.title}" : "${path.basename(selectedFile.path)}",
+                //   textAlign: TextAlign.center,
+                //   style: blackFontStyle.copyWith(
+                //       fontWeight: FontWeight.w600,
+                //       color: (selectedFile == null) ? blackColor : mainColor),
+                // ),
+                // SizedBox(height: 12),
+                // Text(
+                //   "${widget.subtitle}",
+                //   textAlign: TextAlign.center,
+                //   style: blackFontStyle.copyWith(
+                //       fontWeight: FontWeight.w400,
+                //       color: greyColor),
+                // ),
+              ],
+            ) : SizedBox()
+        ),
+      ),
+    );
+  }
+}

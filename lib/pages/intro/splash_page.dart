@@ -30,7 +30,7 @@ class _SplashPageState extends State<SplashPage> {
                     margin: EdgeInsets.only(top: 0),
                     decoration: BoxDecoration(image: DecorationImage(
                       fit: BoxFit.fitWidth,
-                      image: AssetImage('assets/images/img_security.png'),
+                      image: AssetImage('assets/images/img_logo_white.png'),
                     )),
                   ),
                 ],

@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           SizedBox(height: 16),
-          SalaryCard(defaultWidth, 5000000, "25 Nov", "25 Des"),
+          GraphCard(defaultWidth),
           SizedBox(height: 50),
         ],
       ),

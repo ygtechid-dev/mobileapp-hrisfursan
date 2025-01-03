@@ -41,6 +41,8 @@ part "main/analytics_page.dart";
 part "main/attendance_page.dart";
 part "main/home_page.dart";
 part "main/profile_page.dart";
+part "main/task_page.dart";
+part "intro/language_page.dart";
 
 String prefixIcons = "assets/icons/";
 String prefixImages = "assets/images/";

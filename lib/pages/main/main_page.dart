@@ -17,6 +17,8 @@ class _MainPageState extends State<MainPage> {
   String? token;
   String? id_chat, token_admin, myId;
 
+  bool isTask = true;
+
   Future<bool> _onWillPop() async {
     return (kIsWeb) ? true : (await showDialog(
       context: context,
@@ -89,7 +91,7 @@ class _MainPageState extends State<MainPage> {
                       HomePage(),
                       ActivityPage(),
                       AttendancePage(),
-                      AnalyticsPage(),
+                      (isTask) ? TaskPage() : AnalyticsPage(),
                       ProfilePage(),
                     ],
                   ),
@@ -225,7 +227,38 @@ class _MainPageState extends State<MainPage> {
                                         child: SvgPicture.asset("assets/icons/ic_eye_active.svg", color: Colors.white),
                                       ),
                                     ),
-                                    BottomNavigationBarItem(
+                                    (isTask) ? BottomNavigationBarItem(
+                                      label: "Task",
+                                      icon: (kIsWeb) ? Container(
+                                          width: 25,
+                                          height: 25,
+                                          decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: AssetImage("assets/icons/ic_task_unactive.png"),
+                                                fit: BoxFit.fill,
+                                              )
+                                          )
+                                      ) : Container(
+                                        width: 25,
+                                        height: 25,
+                                        child:
+                                        SvgPicture.asset("assets/icons/ic_task_unactive.svg"),
+                                      ),
+                                      activeIcon: (kIsWeb) ? Container(
+                                          width: 25,
+                                          height: 25,
+                                          decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: AssetImage("assets/icons/ic_task_active.png"),
+                                                fit: BoxFit.fill,
+                                              )
+                                          )
+                                      ) : Container(
+                                        width: 25,
+                                        height: 25,
+                                        child: SvgPicture.asset("assets/icons/ic_task_active.svg"),
+                                      ),
+                                    ) : BottomNavigationBarItem(
                                       label: "Analytics",
                                       icon: (kIsWeb) ? Container(
                                           width: 25,

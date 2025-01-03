@@ -41,6 +41,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(color: mainColor),
                   ),
+                  child: Image.asset("${prefixImages}img_logo.png", width: 60, height: 60,),
                 ),
               ),
               SizedBox(height: 5),

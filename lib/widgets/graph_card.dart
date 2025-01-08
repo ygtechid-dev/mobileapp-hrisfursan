@@ -58,23 +58,30 @@ class _GraphItemCardState extends State<GraphItemCard> {
   }
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 16,
+    var style = TextStyle(
+      color: greyColor,
+      fontWeight: FontWeight.normal,
+      fontSize: 12,
     );
     Widget text;
     switch (value.toInt()) {
       case 2:
-        text = const Text('MAR', style: style);
+        text =  Text('May', style: style);
         break;
-      case 5:
-        text = const Text('JUN', style: style);
+      case 4:
+        text =  Text('Jun', style: style);
+        break;
+      case 6:
+        text =  Text('Jul', style: style);
         break;
       case 8:
-        text = const Text('SEP', style: style);
+        text =  Text('Aug', style: style);
+        break;
+      case 10:
+        text =  Text('Sep', style: style);
         break;
       default:
-        text = const Text('', style: style);
+        text =  Text('', style: style);
         break;
     }
 
@@ -85,20 +92,27 @@ class _GraphItemCardState extends State<GraphItemCard> {
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 15,
+    var style = TextStyle(
+      color: greyColor,
+      fontWeight: FontWeight.normal,
+      fontSize: 12,
     );
     String text;
     switch (value.toInt()) {
       case 1:
-        text = '10K';
+        text = '20K';
         break;
-      case 3:
+      case 2:
         text = '30k';
         break;
+      case 3:
+        text = '40k';
+        break;
+      case 4:
+        text = '50K';
+        break;
       case 5:
-        text = '50k';
+        text = '60k';
         break;
       default:
         return Container();
@@ -111,19 +125,14 @@ class _GraphItemCardState extends State<GraphItemCard> {
     return LineChartData(
       gridData: FlGridData(
         show: true,
-        drawVerticalLine: true,
+        drawVerticalLine: false,
         horizontalInterval: 1,
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
-          return const FlLine(
-            color: Colors.grey,
+          return FlLine(
+            color: greyColor.withOpacity(0.7),
             strokeWidth: 1,
-          );
-        },
-        getDrawingVerticalLine: (value) {
-          return const FlLine(
-            color: Colors.grey,
-            strokeWidth: 1,
+              dashArray: [5, 10]
           );
         },
       ),
@@ -153,13 +162,13 @@ class _GraphItemCardState extends State<GraphItemCard> {
         ),
       ),
       borderData: FlBorderData(
-        show: true,
+        show: false,
         border: Border.all(color: const Color(0xff37434d)),
       ),
       minX: 0,
       maxX: 11,
       minY: 0,
-      maxY: 6,
+      maxY: 5,
       lineBarsData: [
         LineChartBarData(
           spots: const [
@@ -172,17 +181,20 @@ class _GraphItemCardState extends State<GraphItemCard> {
             FlSpot(11, 4),
           ],
           isCurved: false,
-          gradient: LinearGradient(
-            colors: gradientColors,
-          ),
-          barWidth: 5,
+          // gradient: LinearGradient(
+          //   colors: mainColor,
+          // ),
+          color: mainColor.withOpacity(0.5),
+          barWidth: 2,
           isStrokeCapRound: true,
           dotData: const FlDotData(
-            show: false,
+            show: true,
           ),
           belowBarData: BarAreaData(
             show: true,
             gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
               colors: gradientColors
                   .map((color) => color.withOpacity(0.3))
                   .toList(),

@@ -15,7 +15,6 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
   TextEditingController positionC = TextEditingController();
   TextEditingController addressC = TextEditingController();
 
-
   bool isAgree = false;
 
   @override

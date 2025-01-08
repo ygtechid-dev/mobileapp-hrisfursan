@@ -38,9 +38,9 @@ class _TaskSummaryCardState extends State<TaskSummaryCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                itemTodo((widget.width - 2*16)/3 - 5, "To Do", "${prefixIcons}ic_task_todo.svg", 3),
-                itemTodo((widget.width - 2*16)/3 - 5, "In Progress", "${prefixIcons}ic_task_progress.svg", 1),
-                itemTodo((widget.width - 2*16)/3 - 5, "Done", "${prefixIcons}ic_task_done.svg", 2),
+                itemTodo((widget.width - 2*16)/3 - 5, "To Do", "ic_task_todo.svg", 3),
+                itemTodo((widget.width - 2*16)/3 - 5, "In Progress", "ic_task_progress.svg", 1),
+                itemTodo((widget.width - 2*16)/3 - 5, "Done", "ic_task_done.svg", 2),
               ],
             ),
           ]
@@ -56,17 +56,19 @@ class _TaskSummaryCardState extends State<TaskSummaryCard> {
           border: Border.all(color: greyColor),
           borderRadius: BorderRadius.circular(8),
         ),
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 8),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SvgPicture.asset("${prefixIcons}${iconPath}", width: 16, height: 16,),
+                SizedBox(width: 4),
                 Text(
                   "${title}",
                   textAlign: TextAlign.start,
-                  style: blackFontStyle.copyWith(fontSize: 11, fontWeight: FontWeight.w400),
+                  style: blackFontStyle.copyWith(fontSize: 11, fontWeight: FontWeight.w600),
                 ),
               ],
             ),
@@ -122,7 +124,10 @@ class TaskGroupCard extends StatelessWidget {
             ),
             SizedBox(height: 15),
             Column(
-              children: []
+              children: [
+                TaskItemCard(width, "Design 1"),
+                TaskItemCard(width, "Design 1"),
+              ]
             ),
             SizedBox(height: 15),
             ButtonHorizontalCard(width, "Create New Task", Icons.add_box_rounded, mainColor)
@@ -146,17 +151,15 @@ class _TaskItemCardState extends State<TaskItemCard> {
   bool isShow = false;
   bool isShowImage = false;
 
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
         width: widget.width,
-        margin: EdgeInsets.only(bottom: 15),
+        margin: EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: greyColor)
+          border: Border.all(color: greyColor.withOpacity(0.3))
         ),
         padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         child: Column(
@@ -183,19 +186,21 @@ class _TaskItemCardState extends State<TaskItemCard> {
             ),
             (isShow) ? Column(
               children: [
+                SizedBox(height: 10),
                 (isShowImage) ? Column(
                     children: [
                       SizedBox(height: 5),
-                      CommonDottedButtonWithImage(onPicked: (value){
+                      CommonDottedButtonWithImage(widget.width - 2*16, onPicked: (value){
                         setState(() {
 
                         });
-                      }, icon: "${prefixIcons}ic_add_picture.svg")
+                      }, icon: "${prefixIcons}ic_add_picture.svg"),
+                      SizedBox(height: 5),
                     ]
                 ) : SizedBox(),
                 SizedBox(height: 5),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     InkWell(
                       onTap: (){},
@@ -224,7 +229,6 @@ class _TaskItemCardState extends State<TaskItemCard> {
                     ),
                   ],
                 ),
-                SizedBox(height: 15),
                 Column(
                     children: [
 

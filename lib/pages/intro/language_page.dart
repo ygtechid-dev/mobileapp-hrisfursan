@@ -9,10 +9,10 @@ class LanguagePage extends StatefulWidget {
 class _LanguagePageState extends State<LanguagePage> {
 
   List<List<String>> listData = [
-    ["English", "ic_language_english.svg"],
-    ["Indonesian", "ic_language_indonesian.svg"],
-    ["Melayu", "ic_language_melayu.svg"],
-    ["Arabic", "ic_language_arabic.svg"],
+    ["English", "ic_language_english.png"],
+    ["Indonesian", "ic_language_indonesian.png"],
+    ["Melayu", "ic_language_melayu.png"],
+    ["Arabic", "ic_language_arabic.png"],
   ];
 
   String? selectedData;
@@ -26,6 +26,7 @@ class _LanguagePageState extends State<LanguagePage> {
       title: "",
       isAppBarCircular: true,
       appBarColorGradient: backgroundGradient,
+      heightAppBar: 300,
       child: Container(
           height: MediaQuery.of(context).size.height - 60,
           child: Stack(
@@ -37,6 +38,7 @@ class _LanguagePageState extends State<LanguagePage> {
                     right: 0,
                     child: Container(
                         width: double.infinity,
+                        height: MediaQuery.of(context).size.height - 240,
                         padding: EdgeInsets.symmetric(vertical: 0, horizontal: defaultMargin),
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -60,15 +62,23 @@ class _LanguagePageState extends State<LanguagePage> {
                             SizedBox(height: 20),
                             Column(
                               children: listData.map((e) => LanguageCard(defaultWidth, e[0], e[1], isSelected: (selectedData == e[0]), onSelected: (value){
-                                selectedData = value;
+                                setState((){
+                                  selectedData = value;
+                                });
+
                               })).toList(),
-                            )
+                            ),
+                            SizedBox(height: 20),
+                            ButtonCard("Next", defaultWidth, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                              Get.to(SignInPage());
+                            }),
+                            SizedBox(height: 20),
                           ],
                         )
                     )
                 ),
                 Positioned(
-                  top: 0,
+                  top: 120,
                   width: 100,
                   height: 100,
                   child: Container(

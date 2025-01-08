@@ -29,22 +29,23 @@ class _SignUpPageState extends State<SignUpPage> {
           alignment: Alignment.center,
           child: Column(
             children: [
-              SizedBox(height: 40),
+              SizedBox(height: 50),
               Container(
                 width: defaultWidth,
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 child: Container(
-                  width: 56,
-                  height: 56,
+                  width: 80,
+                  height: 80,
                   decoration: BoxDecoration(
-                    color: mainColor,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: mainColor),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: mainColor),
+                      boxShadow: boxShadowBlue
                   ),
                   child: Image.asset("${prefixImages}img_logo.png", width: 60, height: 60,),
                 ),
               ),
-              SizedBox(height: 5),
+              SizedBox(height: 15),
               Text(
                 "Sign Up",
                 textAlign: TextAlign.center,

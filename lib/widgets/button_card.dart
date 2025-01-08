@@ -198,11 +198,12 @@ class ButtonHorizontalProfileCard extends StatelessWidget {
 }
 
 class CommonDottedButtonWithImage extends StatefulWidget {
+  final double width;
   final ValueChanged<File> onPicked;
   final String icon;
   final bool isCamera;
 
-  CommonDottedButtonWithImage(
+  CommonDottedButtonWithImage(this.width,
       {required this.onPicked, required this.icon, this.isCamera = false});
 
   @override
@@ -216,7 +217,7 @@ class _CommonDottedButtonWithImageState extends State<CommonDottedButtonWithImag
   @override
   Widget build(BuildContext context) {
 
-    double defaultWidth = MediaQuery.of(context).size.width - 2*20;
+    double defaultWidth = widget.width;
 
     return InkWell(
       onTap: () async {
@@ -253,18 +254,19 @@ class _CommonDottedButtonWithImageState extends State<CommonDottedButtonWithImag
         child: Container(
             alignment: Alignment.center,
             width: defaultWidth,
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.all(40),
             decoration: BoxDecoration(
-                color: mainColor.withOpacity(0.25),
+                color: mainColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
               image: (selectedFile != null) ? DecorationImage(
+                fit: BoxFit.cover,
                 image: FileImage(selectedFile!)
               ) : null
             ),
-            child: (selectedFile != null) ? Column(
+            child: (selectedFile == null) ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset(widget.icon, width: 45, height: 45),
+                SvgPicture.asset(widget.icon, width: 20, height: 20),
                 // SizedBox(height: 12),
                 // Text(
                 //   (selectedFile == null) ? "${widget.title}" : "${path.basename(selectedFile.path)}",
@@ -282,7 +284,7 @@ class _CommonDottedButtonWithImageState extends State<CommonDottedButtonWithImag
                 //       color: greyColor),
                 // ),
               ],
-            ) : SizedBox()
+            ) : SizedBox(width: 20, height: 20)
         ),
       ),
     );

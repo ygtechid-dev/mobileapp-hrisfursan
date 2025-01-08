@@ -59,15 +59,17 @@ class _TaskPageState extends State<TaskPage> {
           TaskSummaryCard('', defaultWidth),
           SizedBox(height: 15),
           Container(
-            height: 300,
-            child: ListView(
+            child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              children: [
-                SizedBox(height: 20),
-                TaskGroupCard(defaultWidth, "To Do", "The tasks assigned to you for today"),
-                TaskGroupCard(defaultWidth, "In Progress", "The tasks assigned to you for today"),
-                TaskGroupCard(defaultWidth, "Done", "The tasks assigned to you for today"),
-              ],
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children:[
+                    SizedBox(width: 20),
+                    TaskGroupCard(defaultWidth*75/100, "To Do", "The tasks assigned to you for today"),
+                    TaskGroupCard(defaultWidth*75/100, "In Progress", "The tasks assigned to you for today"),
+                    TaskGroupCard(defaultWidth*75/100, "Done", "The tasks assigned to you for today"),
+                  ]
+              )
             ),
           ),
           SizedBox(height: 50),

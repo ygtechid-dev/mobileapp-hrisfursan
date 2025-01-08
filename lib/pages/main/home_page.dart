@@ -60,7 +60,9 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 InkWell(
-                  onTap: (){},
+                  onTap: (){
+                    Get.to(NotificationPage());
+                  },
                   child: SvgPicture.asset("${prefixIcons}ic_notification.svg", height: 36, width: 36),
                 )
               ],
@@ -81,8 +83,12 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    MenuCard((defaultWidth - 2*12)/3, "Attendance Log", "ic_attendance.svg"),
-                    MenuCard((defaultWidth - 2*12)/3, "Leave Request", "ic_leave.svg"),
+                    MenuCard((defaultWidth - 2*12)/3, "Attendance Log", "ic_attendance.svg", onTap: (result){
+                      Get.to(AttendantHistoryPage());
+                    }),
+                    MenuCard((defaultWidth - 2*12)/3, "Leave Request", "ic_leave.svg", onTap: (result){
+                      Get.to(LeavePage());
+                    }),
                     MenuCard((defaultWidth - 2*12)/3, "Overtime Request", "ic_overtime.svg"),
                   ],
                 ),
@@ -91,8 +97,12 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     MenuCard((defaultWidth - 2*12)/3, "Reimbursement Request", "ic_reimbursement.svg"),
-                    MenuCard((defaultWidth - 2*12)/3, "Calendar", "ic_calendar_home.svg"),
-                    MenuCard((defaultWidth - 2*12)/3, "Payslip", "ic_payslip.svg"),
+                    MenuCard((defaultWidth - 2*12)/3, "Calendar", "ic_calendar_home.svg", onTap: (result){
+                      Get.to(CalendarPage());
+                    },),
+                    MenuCard((defaultWidth - 2*12)/3, "Payslip", "ic_payslip.svg", onTap: (result){
+                      Get.to(PayslipHistoryPage());
+                    },),
                   ],
                 ),
               ],

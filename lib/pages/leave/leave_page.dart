@@ -1,0 +1,242 @@
+part of '../pages.dart';
+
+class LeavePage extends StatefulWidget {
+  const LeavePage({super.key});
+
+  @override
+  State<LeavePage> createState() => _LeavePageState();
+}
+
+class _LeavePageState extends State<LeavePage> {
+
+  List<List<String>> listData = [
+    ["22 December 2024", "10 Nov - 17 Nov", "7 Days", "Waiting Approval", "request"],
+  ];
+
+  List<List<String>> listData2 = [
+    ["22 December 2024", "10 Nov - 17 Nov", "2 Days", "Approved at 19 Sept 2024", "approved"],
+    ["22 December 2024", "10 Nov - 17 Nov", "2 Days", "Rejected at 22 Sept 2024", "rejected"],
+  ];
+
+  String selectedTab = "Request";
+  String selectedMenu = "All Status";
+
+  List<String> menuEvents = [
+    "All Status",
+    "Approve",
+    "Reject",
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    double defaultWidth = MediaQuery.of(context).size.width - 2*defaultMargin2;
+    double fullWidth = MediaQuery.of(context).size.width;
+
+    return GeneralPage(
+      appBarColor: mainColor,
+      appBarColorGradient: backgroundGradient,
+      isAppBarCircular: true,
+      heightAppBar: 210,
+      backColor: "F1F3F8".toColor(),
+      title: "",
+      child: Column(
+        children: [
+          Container(
+            width: defaultWidth,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: (){},
+                  child: Container(
+                    height: 32,
+                    width: 32,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(Icons.arrow_back_ios_new_outlined, color: mainColor, size: 20),
+                  )
+                ),
+                Text(
+                  "Leave Summary",
+                  textAlign: TextAlign.center,
+                  style: blackFontStyle.copyWith(fontSize: 18, fontWeight: FontWeight.w600),
+                ),
+                SizedBox(width: 32,)
+              ],
+            ),
+          ),
+          SizedBox(height: 20),
+          LeaveSummaryCard("", defaultWidth),
+          SizedBox(height: 16),
+          Container(
+            width: defaultWidth,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(50),
+            ),
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+            child: Row(
+              children: [
+                InkWell(
+                  onTap: (){
+                    setState((){
+                      selectedTab = "Request";
+                    });
+                  },
+                  child: Container(
+                    width: defaultWidth,
+                    decoration: BoxDecoration(
+                      color: (selectedTab == "Request") ? mainColor : Colors.white,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    child: Text(
+                      "Request",
+                      textAlign: TextAlign.center,
+                      style: blackFontStyle.copyWith(fontSize: 12, color: (selectedTab == "Request") ? Colors.white : blackColor, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: (){
+                    setState((){
+                      selectedTab = "Status";
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Container(
+                        width: defaultWidth,
+                        decoration: BoxDecoration(
+                          color: (selectedTab == "Status") ? mainColor : Colors.white,
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                        child: Text(
+                          "Status",
+                          textAlign: TextAlign.center,
+                          style: blackFontStyle.copyWith(fontSize: 12, color: (selectedTab == "Status") ? Colors.white : blackColor, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      (selectedTab == "Status") ? Row(
+                        children: [
+                          SizedBox(width: 15),
+                          PopupMenuButton<String>(
+                            padding: EdgeInsets.all(0),
+                            icon: Icon(Icons.tune, size: 24, color: mainColor),
+                            onSelected: (String selected) async {
+                              setState(() {
+                                selectedMenu = selected;
+                              });
+                            },
+                            itemBuilder: (BuildContext context) {
+                              return menuEvents.map((String choice) {
+                                return PopupMenuItem<String>(
+                                  value: choice,
+                                  child: Text(choice, style: blackFontStyle.copyWith(fontSize: 10, color: (selectedMenu == choice) ? mainColor : blackColor, fontWeight: FontWeight.w400)),
+                                );
+                              }).toList();
+                            },
+                          ),
+                        ]
+                      ) : SizedBox()
+                    ]
+                  ),
+                ),
+
+              ]
+            ),
+          ),
+          SizedBox(height: 16),
+          Column(
+            children: [
+              (selectedTab == "Request") ? (listData.isEmpty) ? Container(
+                width: defaultWidth,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "No Leave Submitted!",
+                        textAlign: TextAlign.start,
+                        style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        "Ready to catch some fresh air? Click “Submit Leave” and \ntake that well-deserved break!",
+                        textAlign: TextAlign.start,
+                        style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                      ),
+                      SizedBox(height: 140),
+                    ]
+                ),
+              ) : Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Column(
+                        children: listData.map((e) => LeaveItemCard(defaultWidth, date: e[0], leave_date: e[1], value: e[2], status: e[3], type: e[4])).toList()
+                    ),
+                  ]
+              ) : SizedBox(),
+              (selectedTab == "Status") ? (listData2.isEmpty) ? Container(
+                width: defaultWidth,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "No Leave Submitted!",
+                        textAlign: TextAlign.start,
+                        style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        "Ready to catch some fresh air? Click “Submit Leave” and \ntake that well-deserved break!",
+                        textAlign: TextAlign.start,
+                        style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                      ),
+                      SizedBox(height: 140),
+                    ]
+                ),
+              ) : Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Column(
+                        children: listData2.map((e) => LeaveItemCard(defaultWidth, date: e[0], leave_date: e[1], value: e[2], status: e[3], type: e[4])).toList()
+                    ),
+                  ]
+              ) : SizedBox(),
+            ]
+          ),
+          SizedBox(height: 50),
+        ],
+      ),
+      navBar: Container(
+        width: fullWidth,
+        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: boxShadow
+        ),
+        child: ButtonCard("Submit Leave", defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
+          Get.to(LeaveCreatePage());
+        }),
+      ),
+    );
+  }
+
+
+}

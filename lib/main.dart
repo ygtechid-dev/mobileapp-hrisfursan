@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:face_camera/face_camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,7 +24,10 @@ Future<void> main() async {
   var jakarta = tz.getLocation('Asia/Jakarta');
   tz.setLocalLocation(jakarta);
 
+
   WidgetsFlutterBinding.ensureInitialized();
+
+  await FaceCamera.initialize(); //Add this
 
   runApp(MyApp());
 }

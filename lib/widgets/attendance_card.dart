@@ -84,7 +84,6 @@ class TimeCard extends StatelessWidget {
   }
 }
 
-
 class TitleCard extends StatelessWidget {
   final String title;
   final String? iconPath;
@@ -111,3 +110,92 @@ class TitleCard extends StatelessWidget {
     );
   }
 }
+
+class AttendantCard extends StatelessWidget {
+  final double width;
+  final String? date;
+  final String? total_hours;
+  final String? clock_in;
+  final String? clock_out;
+
+  AttendantCard(this.width, {this.date, this.total_hours, this.clock_in, this.clock_out});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap:(){
+        Get.to(AttendantDetailPage());
+      },
+      child: Container(
+          width: width,
+          margin: EdgeInsets.only(bottom: 15),
+          padding: EdgeInsets.symmetric(vertical: 24, horizontal: defaultMargin3),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8)
+          ),
+          child: Column(
+              children: [
+                Row(
+                    children: [
+                      Icon(Icons.date_range, size: 14, color: mainColor),
+                      SizedBox(width: 6),
+                      Text(
+                        "${date}",
+                        textAlign: TextAlign.start,
+                        style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                    ]
+                ),
+                SizedBox(height: 10),
+                Container(
+                    width: width - 2*defaultMargin3,
+                    padding: EdgeInsets.symmetric(vertical: 10.5, horizontal: 12),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                      color: "F9FAFB".toColor(),
+                      border: Border.all(color: "EAECF0".toColor()),
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(5)),
+                    ),
+                    child: Row(
+                        children: [
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Total Hours",
+                                  textAlign: TextAlign.start,
+                                  style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                                ),
+                                Text(
+                                  "${total_hours}",
+                                  textAlign: TextAlign.start,
+                                  style: blackFontStyle.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
+                                ),
+                              ]
+                          ),
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Clock in & Out",
+                                  textAlign: TextAlign.start,
+                                  style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                                ),
+                                Text(
+                                  "${clock_in} -- ${clock_out}",
+                                  textAlign: TextAlign.start,
+                                  style: blackFontStyle.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
+                                ),
+                              ]
+                          ),
+                        ]
+                    )
+                ),
+              ]
+          )
+      )
+    );
+  }
+}
+

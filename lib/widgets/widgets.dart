@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fursan_hris/pages/pages.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -15,6 +16,7 @@ import 'package:pinput/pinput.dart';
 import 'package:supercharged/supercharged.dart';
 import 'package:intl/intl.dart' as intl;
 
+import '../models/models.dart';
 import '../shared/shared.dart';
 import '../utils/helper.dart';
 
@@ -28,3 +30,7 @@ part 'activity_card.dart';
 part 'language_card.dart';
 part 'graph_card.dart';
 part 'task_card.dart';
+part 'notification_card.dart';
+part 'calendar_card.dart';
+part 'payslip_card.dart';
+part 'leave_card.dart';

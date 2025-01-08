@@ -8,6 +8,14 @@ class AttendancePage extends StatefulWidget {
 }
 
 class _AttendancePageState extends State<AttendancePage> {
+
+  List<List<String>> listData = [
+    ["22 December 2024", "08:00:00", "09:00 AM", "05:00 PM"],
+    ["21 December 2024", "08:00:00", "09:00 AM", "05:00 PM"],
+    ["20 December 2024", "08:00:00", "09:00 AM", "05:00 PM"],
+    ["19 December 2024", "08:00:00", "09:00 AM", "05:00 PM"],
+  ];
+
   @override
   Widget build(BuildContext context) {
     double defaultWidth = MediaQuery.of(context).size.width - 2*defaultMargin2;
@@ -58,7 +66,7 @@ class _AttendancePageState extends State<AttendancePage> {
           SizedBox(height: 10),
           WorkingCard("", defaultWidth),
           SizedBox(height: 20),
-          Container(
+          (listData.isEmpty) ? Container(
             width: defaultWidth,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -82,6 +90,34 @@ class _AttendancePageState extends State<AttendancePage> {
                   SizedBox(height: 140),
                 ]
             ),
+          ) : Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "History of Work",
+                      textAlign: TextAlign.start,
+                      style: blackFontStyle.copyWith(fontSize: 20, fontWeight: FontWeight.w600),
+                    ),
+                    InkWell(
+                      onTap: (){
+                        Get.to(AttendantHistoryPage());
+                      },
+                      child: Text(
+                        "See More",
+                        textAlign: TextAlign.end,
+                        style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w600, color: mainColor),
+                      ),
+                    )
+                  ]
+                ),
+                SizedBox(height: 15),
+                Column(
+                  children: listData.map((e) => AttendantCard(defaultWidth, date: e[0], total_hours: e[1], clock_in: e[2], clock_out: e[3])).toList()
+                ),
+              ]
           ),
           SizedBox(height: 50),
         ],

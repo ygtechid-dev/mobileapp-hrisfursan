@@ -18,16 +18,24 @@ class LanguageCard extends StatelessWidget {
       },
       child: Container(
         width: width,
-        margin: EdgeInsets.only(bottom: 20),
+        margin: EdgeInsets.only(bottom: 15),
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(color: (isSelected) ? mainColor : mainColor.withOpacity(0.3)),
+          border: Border.all(color: (isSelected) ? mainColor : mainColor.withOpacity(0.3), width: (isSelected) ? 2 : 1),
           borderRadius: BorderRadius.circular(8),
         ),
         padding: EdgeInsets.symmetric(vertical: 14, horizontal: 14),
         child: Row(
           children: [
-            SvgPicture.asset("${prefixIcons}${iconPath}", width: 32, height: 32,),
+            Container(
+              width: 32, height: 32,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: AssetImage("${prefixIcons}${iconPath}")
+                )
+              ),
+            ),
             SizedBox(width: 10),
             Text(
               "${title}",

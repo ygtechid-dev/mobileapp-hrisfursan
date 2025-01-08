@@ -17,7 +17,7 @@ class ActivityCard extends StatelessWidget {
       },
       child: Container(
         width: width,
-        margin: EdgeInsets.only(bottom: 20),
+        margin: EdgeInsets.only(bottom: 15),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8),

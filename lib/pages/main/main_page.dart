@@ -137,8 +137,8 @@ class _MainPageState extends State<MainPage> {
                                     BottomNavigationBarItem(
                                       label: "Home",
                                       icon: (kIsWeb) ? Container(
-                                          width: 25,
-                                          height: 25,
+                                          width: 24,
+                                          height: 24,
                                           decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage("assets/icons/ic_home_unactive.png"),
@@ -146,13 +146,13 @@ class _MainPageState extends State<MainPage> {
                                               )
                                           )
                                       ) : Container(
-                                        width: 25,
-                                        height: 25,
+                                        width: 24,
+                                        height: 24,
                                         child: SvgPicture.asset("assets/icons/ic_home_unactive.svg"),
                                       ),
                                       activeIcon: (kIsWeb) ? Container(
-                                          width: 25,
-                                          height: 25,
+                                          width: 24,
+                                          height: 24,
                                           decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage("assets/icons/ic_home_active.png"),
@@ -160,16 +160,16 @@ class _MainPageState extends State<MainPage> {
                                               )
                                           )
                                       ) : Container(
-                                        width: 25,
-                                        height: 25,
+                                        width: 24,
+                                        height: 24,
                                         child: SvgPicture.asset("assets/icons/ic_home_active.svg"),
                                       ),
                                     ),
                                     BottomNavigationBarItem(
                                       label: "Activity",
                                       icon: (kIsWeb) ? Container(
-                                          width: 25,
-                                          height: 25,
+                                          width: 24,
+                                          height: 24,
                                           decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage("assets/icons/ic_activity_unactive.png"),
@@ -177,13 +177,13 @@ class _MainPageState extends State<MainPage> {
                                               )
                                           )
                                       ) : Container(
-                                        width: 25,
-                                        height: 25,
+                                        width: 24,
+                                        height: 24,
                                         child: SvgPicture.asset("assets/icons/ic_activity_unactive.svg"),
                                       ),
                                       activeIcon: (kIsWeb) ? Container(
-                                          width: 25,
-                                          height: 25,
+                                          width: 24,
+                                          height: 24,
                                           decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage("assets/icons/ic_activity_active.png"),
@@ -191,16 +191,16 @@ class _MainPageState extends State<MainPage> {
                                               )
                                           )
                                       ) : Container(
-                                        width: 25,
-                                        height: 25,
+                                        width: 24,
+                                        height: 24,
                                         child: SvgPicture.asset("assets/icons/ic_activity_active.svg"),
                                       ),
                                     ),
                                     BottomNavigationBarItem(
                                       label: "Attendance",
                                       icon: (kIsWeb) ? Container(
-                                          width: 25,
-                                          height: 25,
+                                          width: 24,
+                                          height: 24,
                                           decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage("assets/icons/ic_eye_unactive.png"),
@@ -208,13 +208,13 @@ class _MainPageState extends State<MainPage> {
                                               )
                                           )
                                       ) : Container(
-                                        width: 25,
-                                        height: 25,
+                                        width: 24,
+                                        height: 24,
                                         child: SvgPicture.asset("assets/icons/ic_eye_unactive.svg", color: Colors.white),
                                       ),
                                       activeIcon: (kIsWeb) ? Container(
-                                          width: 25,
-                                          height: 25,
+                                          width: 24,
+                                          height: 24,
                                           decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage("assets/icons/ic_eye_active.png"),
@@ -222,16 +222,16 @@ class _MainPageState extends State<MainPage> {
                                               )
                                           )
                                       ) : Container(
-                                        width: 25,
-                                        height: 25,
+                                        width: 24,
+                                        height: 24,
                                         child: SvgPicture.asset("assets/icons/ic_eye_active.svg", color: Colors.white),
                                       ),
                                     ),
                                     (isTask) ? BottomNavigationBarItem(
                                       label: "Task",
                                       icon: (kIsWeb) ? Container(
-                                          width: 25,
-                                          height: 25,
+                                          width: 24,
+                                          height: 24,
                                           decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage("assets/icons/ic_task_unactive.png"),
@@ -239,14 +239,14 @@ class _MainPageState extends State<MainPage> {
                                               )
                                           )
                                       ) : Container(
-                                        width: 25,
-                                        height: 25,
+                                        width: 24,
+                                        height: 24,
                                         child:
                                         SvgPicture.asset("assets/icons/ic_task_unactive.svg"),
                                       ),
                                       activeIcon: (kIsWeb) ? Container(
-                                          width: 25,
-                                          height: 25,
+                                          width: 24,
+                                          height: 24,
                                           decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage("assets/icons/ic_task_active.png"),
@@ -254,15 +254,15 @@ class _MainPageState extends State<MainPage> {
                                               )
                                           )
                                       ) : Container(
-                                        width: 25,
-                                        height: 25,
+                                        width: 24,
+                                        height: 24,
                                         child: SvgPicture.asset("assets/icons/ic_task_active.svg"),
                                       ),
                                     ) : BottomNavigationBarItem(
                                       label: "Analytics",
                                       icon: (kIsWeb) ? Container(
-                                          width: 25,
-                                          height: 25,
+                                          width: 24,
+                                          height: 24,
                                           decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage("assets/icons/ic_graph_unactive.png"),
@@ -270,14 +270,14 @@ class _MainPageState extends State<MainPage> {
                                               )
                                           )
                                       ) : Container(
-                                        width: 25,
-                                        height: 25,
+                                        width: 24,
+                                        height: 24,
                                         child:
                                         SvgPicture.asset("assets/icons/ic_graph_unactive.svg"),
                                       ),
                                       activeIcon: (kIsWeb) ? Container(
-                                          width: 25,
-                                          height: 25,
+                                          width: 24,
+                                          height: 24,
                                           decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage("assets/icons/ic_graph_active.png"),
@@ -285,16 +285,16 @@ class _MainPageState extends State<MainPage> {
                                               )
                                           )
                                       ) : Container(
-                                        width: 25,
-                                        height: 25,
+                                        width: 24,
+                                        height: 24,
                                         child: SvgPicture.asset("assets/icons/ic_graph_active.svg"),
                                       ),
                                     ),
                                     BottomNavigationBarItem(
                                       label: "Account",
                                       icon: (kIsWeb) ? Container(
-                                          width: 25,
-                                          height: 25,
+                                          width: 24,
+                                          height: 24,
                                           decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage("assets/icons/ic_user_unactive.png"),
@@ -302,13 +302,13 @@ class _MainPageState extends State<MainPage> {
                                               )
                                           )
                                       ) : Container(
-                                        width: 25,
-                                        height: 25,
+                                        width: 24,
+                                        height: 24,
                                         child: SvgPicture.asset("assets/icons/ic_user_unactive.svg"),
                                       ),
                                       activeIcon: (kIsWeb) ? Container(
-                                          width: 25,
-                                          height: 25,
+                                          width: 24,
+                                          height: 24,
                                           decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage("assets/icons/ic_user_active.png"),
@@ -316,8 +316,8 @@ class _MainPageState extends State<MainPage> {
                                               )
                                           )
                                       ) : Container(
-                                        width: 25,
-                                        height: 25,
+                                        width: 24,
+                                        height: 24,
                                         child: SvgPicture.asset("assets/icons/ic_user_active.svg"),
                                       ),
                                     ),
@@ -327,7 +327,7 @@ class _MainPageState extends State<MainPage> {
                             ),
                             Positioned(
                                 top: (kIsWeb) ? 45 : ((Platform.isIOS) ? 65 : 45),
-                                bottom: (kIsWeb) ? 25 : ((Platform.isIOS) ? 60 : 28),
+                                bottom: (kIsWeb) ? 24 : ((Platform.isIOS) ? 60 : 28),
                                 left: 0,
                                 right: 0,
                                 child: Container(

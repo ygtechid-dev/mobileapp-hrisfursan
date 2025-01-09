@@ -290,3 +290,93 @@ class _CommonDottedButtonWithImageState extends State<CommonDottedButtonWithImag
     );
   }
 }
+
+class CommonDottedButtonWithImage2 extends StatefulWidget {
+  final String title;
+  final String subtitle;
+  final ValueChanged<File> onPicked;
+  final bool isCamera;
+
+  CommonDottedButtonWithImage2(
+      {required this.title, required this.subtitle, required this.onPicked, this.isCamera = false});
+
+  @override
+  State<CommonDottedButtonWithImage2> createState() => _CommonDottedButtonWithImage2State();
+}
+
+class _CommonDottedButtonWithImage2State extends State<CommonDottedButtonWithImage2> {
+
+  File? selectedFile;
+
+  @override
+  Widget build(BuildContext context) {
+
+    double defaultWidth = MediaQuery.of(context).size.width - 2*20;
+
+    return InkWell(
+      onTap: () async {
+        if(widget.isCamera == true){
+          XFile? pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+          if (pickedFile != null) {
+            setState(() {
+              selectedFile = File(pickedFile.path);
+            });
+
+            widget.onPicked(selectedFile!);
+          }
+        } else {
+          FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image, );
+
+          if (result != null) {
+
+            setState(() {
+              selectedFile = File(result.files.single.path!);
+            });
+
+            widget.onPicked(selectedFile!);
+          } else {
+            // User canceled the picker
+          }
+        }
+
+      },
+      child: DottedBorder(
+        strokeWidth: 1,
+        dashPattern: [8,4],
+        radius: const Radius.circular(8),
+        color: mainColor,
+        child: Container(
+            alignment: Alignment.center,
+            width: defaultWidth,
+            padding: EdgeInsets.all(30),
+            decoration: BoxDecoration(
+                color: mainColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8)
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.attach_file, size: 45, color: mainColor),
+                SizedBox(height: 12),
+                Text(
+                  (selectedFile == null) ? "${widget.title}" : "${path.basename(selectedFile!.path)}",
+                  textAlign: TextAlign.center,
+                  style: blackFontStyle.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: (selectedFile == null) ? mainColor : blackColor),
+                ),
+                SizedBox(height: 12),
+                Text(
+                  "${widget.subtitle}",
+                  textAlign: TextAlign.center,
+                  style: blackFontStyle.copyWith(
+                      fontWeight: FontWeight.w400,
+                      color: greyColor),
+                ),
+              ],
+            )
+        ),
+      ),
+    );
+  }
+}

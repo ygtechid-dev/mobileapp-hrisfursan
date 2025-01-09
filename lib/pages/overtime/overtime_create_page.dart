@@ -1,15 +1,15 @@
 part of '../pages.dart';
 
-class LeaveCreatePage extends StatefulWidget {
+class OvertimeCreatePage extends StatefulWidget {
 
   @override
-  State<LeaveCreatePage> createState() => _LeaveCreatePageState();
+  State<OvertimeCreatePage> createState() => _OvertimeCreatePageState();
 }
 
-class _LeaveCreatePageState extends State<LeaveCreatePage> {
+class _OvertimeCreatePageState extends State<OvertimeCreatePage> {
   TextEditingController categoryC = TextEditingController();
   TextEditingController durationC = TextEditingController();
-  TextEditingController delegationC = TextEditingController();
+  TextEditingController priorityC = TextEditingController();
   TextEditingController descriptionC = TextEditingController();
   TextEditingController phoneC = TextEditingController();
 
@@ -26,7 +26,7 @@ class _LeaveCreatePageState extends State<LeaveCreatePage> {
       isBackInvert: false,
       isFrontAppBar: true,
       marginAppBar: 65,
-      title: "Submit Leave",
+      title: "Submit Overtime",
       onBackButtonPressed: (){
         Get.back();
       },
@@ -49,18 +49,18 @@ class _LeaveCreatePageState extends State<LeaveCreatePage> {
                   child: Column(
                     children: [
                       Text(
-                        "Fill Leave Information",
+                        "Fill Overtime Information",
                         textAlign: TextAlign.start,
                         style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                       ),
                       SizedBox(height: 3),
                       Text(
-                        "Information about leave details",
+                        "Information about overtime details",
                         textAlign: TextAlign.start,
                         style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                       ),
                       FormWithLabelCard(
-                          outerLabelText: "Leave Category",
+                          outerLabelText: "Overtime Category",
                           hintText: "Select Category",
                           controller: categoryC,
                           prefixSvg: "${prefixIcons}ic_form_title.svg",
@@ -76,7 +76,7 @@ class _LeaveCreatePageState extends State<LeaveCreatePage> {
                           filled: true),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Leave Duration",
+                          outerLabelText: "Overtime Duration",
                           hintText: "Select Duration",
                           controller: durationC,
                           prefixSvg: "${prefixIcons}ic_form_date.svg",
@@ -92,12 +92,12 @@ class _LeaveCreatePageState extends State<LeaveCreatePage> {
                           filled: true),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Task Delegation",
-                          hintText: "Select Category",
-                          controller: delegationC,
+                          outerLabelText: "Priority",
+                          hintText: "Select Priority",
+                          controller: priorityC,
                           prefixSvg: "${prefixIcons}ic_form_assign.svg",
                           onSaved: (e) {
-                            delegationC.text = e ?? "";
+                            priorityC.text = e ?? "";
                           },
                           validator: (e) {
                             return simpleValidator(e, null);
@@ -105,22 +105,8 @@ class _LeaveCreatePageState extends State<LeaveCreatePage> {
                           filled: true),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Phone Number",
-                          hintText: "+62 0000 0000 0000",
-                          controller: phoneC,
-                          inputType: TextInputType.number,
-                          prefixSvg: "${prefixIcons}ic_phone.svg",
-                          onSaved: (e) {
-                            phoneC.text = e ?? "";
-                          },
-                          validator: (e) {
-                            return phoneValidator(e, null);
-                          },
-                          filled: true),
-                      SizedBox(height: 20),
-                      FormWithLabelCard(
-                          outerLabelText: "Leave Description",
-                          hintText: "Leave Description",
+                          outerLabelText: "Overtime Description",
+                          hintText: "Overtime Description",
                           controller: descriptionC,
                           inputType: TextInputType.multiline,
                           maxLines: 6,
@@ -185,7 +171,7 @@ class _LeaveCreatePageState extends State<LeaveCreatePage> {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (bc){
-          return ModalLeaveCalendarCard(token, fullWidth, 16);
+          return ModalOvertimeCalendarCard(token, fullWidth, 16);
         });
   }
 
@@ -201,7 +187,7 @@ class _LeaveCreatePageState extends State<LeaveCreatePage> {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (bc){
-          return ModalLeaveCategoryCard(token, fullWidth, 16);
+          return ModalOvertimeCategoryCard(token, fullWidth, 16);
         });
   }
 

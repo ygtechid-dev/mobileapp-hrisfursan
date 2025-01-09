@@ -1,17 +1,17 @@
 part of '../pages.dart';
 
-class LeaveCreatePage extends StatefulWidget {
+class ReimburseCreatePage extends StatefulWidget {
 
   @override
-  State<LeaveCreatePage> createState() => _LeaveCreatePageState();
+  State<ReimburseCreatePage> createState() => _ReimburseCreatePageState();
 }
 
-class _LeaveCreatePageState extends State<LeaveCreatePage> {
+class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
   TextEditingController categoryC = TextEditingController();
-  TextEditingController durationC = TextEditingController();
+  TextEditingController dateC = TextEditingController();
   TextEditingController delegationC = TextEditingController();
   TextEditingController descriptionC = TextEditingController();
-  TextEditingController phoneC = TextEditingController();
+  TextEditingController amountC = TextEditingController();
 
   bool isAgree = false;
 
@@ -26,7 +26,7 @@ class _LeaveCreatePageState extends State<LeaveCreatePage> {
       isBackInvert: false,
       isFrontAppBar: true,
       marginAppBar: 65,
-      title: "Submit Leave",
+      title: "Submit Expense",
       onBackButtonPressed: (){
         Get.back();
       },
@@ -49,18 +49,23 @@ class _LeaveCreatePageState extends State<LeaveCreatePage> {
                   child: Column(
                     children: [
                       Text(
-                        "Fill Leave Information",
+                        "Fill Claim Information",
                         textAlign: TextAlign.start,
                         style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                       ),
                       SizedBox(height: 3),
                       Text(
-                        "Information about leave details",
+                        "Information about claim details",
                         textAlign: TextAlign.start,
                         style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                       ),
+                      SizedBox(height: 20),
+                      CommonDottedButtonWithImage2(title: "Upload Claim Document", subtitle: "Format should be in .pdf .jpeg .png less than 5MB", onPicked: (value){
+
+                      }),
+                      SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Leave Category",
+                          outerLabelText: "Expense Category",
                           hintText: "Select Category",
                           controller: categoryC,
                           prefixSvg: "${prefixIcons}ic_form_title.svg",
@@ -76,15 +81,15 @@ class _LeaveCreatePageState extends State<LeaveCreatePage> {
                           filled: true),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Leave Duration",
-                          hintText: "Select Duration",
-                          controller: durationC,
+                          outerLabelText: "Transaction Date",
+                          hintText: "Enter Date Transaction",
+                          controller: dateC,
                           prefixSvg: "${prefixIcons}ic_form_date.svg",
                           onSaved: (e) {
-                            durationC.text = e ?? "";
+                            dateC.text = e ?? "";
                           },
                           onTap: (){
-                            modalBottomSheetCalendar(context, "");
+                            // modalBottomSheetCalendar(context, "");
                           },
                           validator: (e) {
                             return simpleValidator(e, null);
@@ -92,35 +97,22 @@ class _LeaveCreatePageState extends State<LeaveCreatePage> {
                           filled: true),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Task Delegation",
-                          hintText: "Select Category",
-                          controller: delegationC,
-                          prefixSvg: "${prefixIcons}ic_form_assign.svg",
-                          onSaved: (e) {
-                            delegationC.text = e ?? "";
-                          },
-                          validator: (e) {
-                            return simpleValidator(e, null);
-                          },
-                          filled: true),
-                      SizedBox(height: 20),
-                      FormWithLabelCard(
-                          outerLabelText: "Phone Number",
-                          hintText: "+62 0000 0000 0000",
-                          controller: phoneC,
+                          outerLabelText: "Expense Amount (IDR)",
+                          hintText: "Enter Amount",
+                          controller: amountC,
                           inputType: TextInputType.number,
-                          prefixSvg: "${prefixIcons}ic_phone.svg",
+                          prefixSvg: "${prefixIcons}ic_form_amount.svg",
                           onSaved: (e) {
-                            phoneC.text = e ?? "";
+                            amountC.text = e ?? "";
                           },
                           validator: (e) {
-                            return phoneValidator(e, null);
+                            return simpleValidator(e, null);
                           },
                           filled: true),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Leave Description",
-                          hintText: "Leave Description",
+                          outerLabelText: "Expense Description",
+                          hintText: "Expense Description",
                           controller: descriptionC,
                           inputType: TextInputType.multiline,
                           maxLines: 6,
@@ -170,22 +162,6 @@ class _LeaveCreatePageState extends State<LeaveCreatePage> {
           return ModalDefaultSubmitCard(token, fullWidth, 16, "Ready to Submit?", "Double-check your form details to ensure everything is correct. Do you want to proceed?", "img_leave.png", onSubmit: (){
 
           });
-        });
-  }
-
-  void modalBottomSheetCalendar(contexts, String token){
-    double fullWidth = MediaQuery.of(context).size.width;
-
-    showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-        ),
-        context: contexts,
-        enableDrag: true,
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        builder: (bc){
-          return ModalLeaveCalendarCard(token, fullWidth, 16);
         });
   }
 

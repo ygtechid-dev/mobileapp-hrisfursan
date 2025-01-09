@@ -1476,3 +1476,356 @@ class _ModalLeaveCalendarCardState extends State<ModalLeaveCalendarCard> {
   }
 
 }
+
+class ModalReimburseCategoryCard extends StatefulWidget {
+  final String token;
+  final double width;
+  final double padding;
+  final ValueChanged<String>? onSelected;
+
+  ModalReimburseCategoryCard(this.token, this.width, this.padding, {this.onSelected});
+
+  @override
+  State<ModalReimburseCategoryCard> createState() => _ModalReimburseCategoryCardState();
+}
+
+class _ModalReimburseCategoryCardState extends State<ModalReimburseCategoryCard> {
+  bool isLoading = false;
+
+  List<String> listData = [
+    "Businesss Trip",
+    "Office Supplies",
+    "Meals and Entertainment",
+    "Professional Development",
+    "Home Office Expenses",
+    "Mileage Reimbursement",
+    "Miscellaneous Expenses",
+  ];
+
+  String? selectedData;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: widget.width,
+      // height: MediaQuery.of(context).size.height * 45/100,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))
+      ),
+      child: Column(
+        children: [
+          SizedBox(height: 30),
+          Container(
+            padding: EdgeInsets.all(widget.padding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Leave Category",
+                  textAlign: TextAlign.start,
+                  style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                ),
+                SizedBox(height: 3),
+                Text(
+                  "Select Leave Category",
+                  textAlign: TextAlign.start,
+                  style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                ),
+                SizedBox(height: 15),
+                Column(
+                    children: listData.map((e) => itemCategory(e, (selectedData == e), onSelected: (){
+                      setState((){
+                        selectedData = e;
+                      });
+                    })).toList()
+                ),
+                SizedBox(height: 15),
+                ButtonCard("Submit", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                  if(selectedData != null){
+                    widget.onSelected!(selectedData!);
+                    Navigator.of(context).pop(false);
+                  }
+
+                }),
+                SizedBox(height: 5),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget itemCategory(String title, bool isSelected, {Function? onSelected}){
+    return InkWell(
+        onTap: (){
+          onSelected!();
+        },
+        child: Container(
+          margin: EdgeInsets.only(bottom: 10),
+          width: widget.width,
+          padding: EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: (isSelected) ? mainColor : greyColor)
+          ),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "${title}",
+                  textAlign: TextAlign.start,
+                  style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                ),
+                Icon((isSelected) ? Icons.check_circle : Icons.circle_outlined, size: 24, color: (isSelected) ? mainColor : greyColor)
+              ]
+          ),
+        )
+    );
+  }
+
+}
+
+class ModalOvertimeCategoryCard extends StatefulWidget {
+  final String token;
+  final double width;
+  final double padding;
+  final ValueChanged<String>? onSelected;
+
+  ModalOvertimeCategoryCard(this.token, this.width, this.padding, {this.onSelected});
+
+  @override
+  State<ModalOvertimeCategoryCard> createState() => _ModalOvertimeCategoryCardState();
+}
+
+class _ModalOvertimeCategoryCardState extends State<ModalOvertimeCategoryCard> {
+  bool isLoading = false;
+
+  List<String> listData = [
+    "Many Jobs",
+    "Personal Purpose",
+    "Personal Purpose",
+    "Personal Purpose",
+  ];
+
+  String? selectedData;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: widget.width,
+      // height: MediaQuery.of(context).size.height * 45/100,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))
+      ),
+      child: Column(
+        children: [
+          SizedBox(height: 30),
+          Container(
+            padding: EdgeInsets.all(widget.padding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Overtime Category",
+                  textAlign: TextAlign.start,
+                  style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                ),
+                SizedBox(height: 3),
+                Text(
+                  "Select Overtime Category",
+                  textAlign: TextAlign.start,
+                  style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                ),
+                SizedBox(height: 15),
+                Column(
+                    children: listData.map((e) => itemCategory(e, (selectedData == e), onSelected: (){
+                      setState((){
+                        selectedData = e;
+                      });
+                    })).toList()
+                ),
+                SizedBox(height: 15),
+                ButtonCard("Submit", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                  if(selectedData != null){
+                    widget.onSelected!(selectedData!);
+                    Navigator.of(context).pop(false);
+                  }
+
+                }),
+                SizedBox(height: 5),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget itemCategory(String title, bool isSelected, {Function? onSelected}){
+    return InkWell(
+        onTap: (){
+          onSelected!();
+        },
+        child: Container(
+          margin: EdgeInsets.only(bottom: 10),
+          width: widget.width,
+          padding: EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: (isSelected) ? mainColor : greyColor)
+          ),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "${title}",
+                  textAlign: TextAlign.start,
+                  style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                ),
+                Icon((isSelected) ? Icons.check_circle : Icons.circle_outlined, size: 24, color: (isSelected) ? mainColor : greyColor)
+              ]
+          ),
+        )
+    );
+  }
+
+}
+
+class ModalOvertimeCalendarCard extends StatefulWidget {
+  final String token;
+  final double width;
+  final double padding;
+  final ValueChanged<String>? onSelected;
+
+  ModalOvertimeCalendarCard(this.token, this.width, this.padding, {this.onSelected});
+
+  @override
+  State<ModalOvertimeCalendarCard> createState() => _ModalOvertimeCalendarCardState();
+}
+
+class _ModalOvertimeCalendarCardState extends State<ModalOvertimeCalendarCard> {
+  bool isBeginActive = false;
+  bool isEndActive = false;
+
+  String? selectedData;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: widget.width,
+      // height: MediaQuery.of(context).size.height * 45/100,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))
+      ),
+      child: Column(
+        children: [
+          SizedBox(height: 30),
+          Container(
+            padding: EdgeInsets.all(widget.padding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Overtime Duration",
+                  textAlign: TextAlign.start,
+                  style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                ),
+                SizedBox(height: 3),
+                Text(
+                  "Choose a date of duration",
+                  textAlign: TextAlign.start,
+                  style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                ),
+                SizedBox(height: 15),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(bottom: 10),
+                        width: widget.width,
+                        padding: EdgeInsets.symmetric(vertical: 21, horizontal: 30),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: (isBeginActive) ? mainColor : greyColor)
+                        ),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "01 Desember",
+                                textAlign: TextAlign.center,
+                                style: greyFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(height: 3),
+                              Text(
+                                "Monday",
+                                textAlign: TextAlign.center,
+                                style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                              ),
+                            ]
+                        ),
+                      ),
+                      Text(
+                        "-",
+                        textAlign: TextAlign.center,
+                        style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 10),
+                        width: widget.width,
+                        padding: EdgeInsets.symmetric(vertical: 21, horizontal: 30),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: (isEndActive) ? mainColor : greyColor)
+                        ),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "07 Desember",
+                                textAlign: TextAlign.center,
+                                style: greyFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(height: 3),
+                              Text(
+                                "Sunday",
+                                textAlign: TextAlign.center,
+                                style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                              ),
+                            ]
+                        ),
+                      ),
+                    ]
+                ),
+                SizedBox(height: 15),
+                CalendarCard(),
+                SizedBox(height: 25),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ButtonCard("Reset", (widget.width - 2 * widget.padding)/2 - 15, mainColor, isActive: true, colorGradient: buttonGradient, onPressed: () async {
+
+                      }),
+                      ButtonCard("Show", (widget.width - 2 * widget.padding)/2 - 15, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                        Navigator.of(context).pop(false);
+                      }),
+                    ]
+                ),
+                SizedBox(height: 5),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+}

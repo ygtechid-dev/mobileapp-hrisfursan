@@ -89,14 +89,18 @@ class _HomePageState extends State<HomePage> {
                     MenuCard((defaultWidth - 2*12)/3, "Leave Request", "ic_leave.svg", onTap: (result){
                       Get.to(LeavePage());
                     }),
-                    MenuCard((defaultWidth - 2*12)/3, "Overtime Request", "ic_overtime.svg"),
+                    MenuCard((defaultWidth - 2*12)/3, "Overtime Request", "ic_overtime.svg", onTap: (result){
+                      Get.to(OvertimePage());
+                    }),
                   ],
                 ),
                 SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    MenuCard((defaultWidth - 2*12)/3, "Reimbursement Request", "ic_reimbursement.svg"),
+                    MenuCard((defaultWidth - 2*12)/3, "Reimbursement Request", "ic_reimbursement.svg", onTap: (result){
+                      Get.to(ReimbursePage());
+                    },),
                     MenuCard((defaultWidth - 2*12)/3, "Calendar", "ic_calendar_home.svg", onTap: (result){
                       Get.to(CalendarPage());
                     },),

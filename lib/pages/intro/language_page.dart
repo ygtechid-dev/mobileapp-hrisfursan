@@ -33,6 +33,16 @@ class _LanguagePageState extends State<LanguagePage> {
               alignment: Alignment.center,
               children: [
                 Positioned(
+                  top: 20,
+                  width: 300,
+                  height: 300,
+                  child: Container(
+                    width: 300,
+                    height: 300,
+                    child: SvgPicture.asset("${prefixIcons}img_illustration_language.svg", width: 300, height: 300,),
+                  ),
+                ),
+                Positioned(
                     bottom: 0,
                     left: 0,
                     right: 0,

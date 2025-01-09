@@ -65,6 +65,13 @@ part "task/task_create_page.dart";
 part "task/task_detail_page.dart";
 part "intro/language_page.dart";
 part "notification/notification_page.dart";
+part "profile/office_asset_page.dart";
+part "profile/form_resign_page.dart";
+part "profile/password_page.dart";
+part "profile/profile_edit_page.dart";
+part "profile/profile_language_page.dart";
+part "intro/onboarding_page.dart";
+
 
 String prefixIcons = "assets/icons/";
 String prefixImages = "assets/images/";

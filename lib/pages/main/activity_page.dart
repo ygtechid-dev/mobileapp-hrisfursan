@@ -58,12 +58,18 @@ class _ActivityPageState extends State<ActivityPage> {
           SizedBox(height: 15),
           Column(
             children: [
-              ActivityCard(defaultWidth, "Workspace", "Summary of your work"),
+              ActivityCard(defaultWidth, "Workspace", "Summary of your work", onTap: (result){
+                Get.to(AnalyticsPage());
+              }),
               ActivityCard(defaultWidth, "Leave Request", "Request your off day", onTap: (result){
                 Get.to(LeavePage());
               }),
-              ActivityCard(defaultWidth, "Overtime Request", "Request to overtime work"),
-              ActivityCard(defaultWidth, "Reimbursement Request", "Claim your expenses here"),
+              ActivityCard(defaultWidth, "Overtime Request", "Request to overtime work", onTap: (result){
+                Get.to(OvertimePage());
+              }),
+              ActivityCard(defaultWidth, "Reimbursement Request", "Claim your expenses here", onTap: (result){
+                Get.to(ReimbursePage());
+              }),
               ActivityCard(defaultWidth, "Calendar", "All Event are Here", onTap: (result){
                 Get.to(CalendarPage());
               }),

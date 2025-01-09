@@ -28,6 +28,13 @@ class _SignInPageState extends State<SignInPage> {
           alignment: Alignment.center,
           children: [
             Positioned(
+              top: 0,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: SvgPicture.asset("${prefixIcons}bcg_intro.svg", width: MediaQuery.of(context).size.width),
+              ),
+            ),
+            Positioned(
               top: 50,
               left: 0,
               right: 0,

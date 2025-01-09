@@ -165,13 +165,17 @@ class ButtonHorizontalProfileCard extends StatelessWidget {
   final String title;
   final String icon;
   final Color color;
+  final Function? onTap;
 
-  ButtonHorizontalProfileCard(this.width, this.title, this.icon, this.color);
+  ButtonHorizontalProfileCard(this.width, this.title, this.icon, this.color,
+      {this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){},
+      onTap: (){
+        onTap!();
+      },
       child: Container(
         width: width,
         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 0),

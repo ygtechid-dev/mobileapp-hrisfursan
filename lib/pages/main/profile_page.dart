@@ -83,11 +83,24 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   child: Column(
                                     children: [
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Personal Data", "ic_user_fill.svg", mainColor),
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Office Assets", "ic_folder_fill.svg", mainColor),
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Payroll & Tax", "ic_payroll_fill.svg", mainColor),
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Change Password", "ic_setting_fill.svg", mainColor),
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Resign", "ic_note_fill.svg", mainColor),
+                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Personal Data", "ic_user_fill.svg", mainColor, onTap: (){
+                                        Get.to(ProfileEditPage());
+                                      }),
+                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Office Assets", "ic_folder_fill.svg", mainColor, onTap: (){
+                                        Get.to(OfficeAssetPage());
+                                      }),
+                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Payroll & Tax", "ic_payroll_fill.svg", mainColor, onTap: (){
+                                        // Get.to(ProfileEditPage());
+                                      }),
+                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Resign", "ic_resign.svg", mainColor, onTap: (){
+                                        Get.to(FormResignPage());
+                                      }),
+                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Language", "ic_language.svg", mainColor, onTap: (){
+                                        Get.to(ProfileLanguagePage());
+                                      }),
+                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Change Password", "ic_setting_fill.svg", mainColor, onTap: (){
+                                        Get.to(PasswordPage());
+                                      }),
                                     ],
                                   ),
                                 ),
@@ -113,6 +126,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   child: Column(
                                     children: [
                                       ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Versioning", "ic_version_fill.svg", mainColor),
+                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "FAQ and Help", "ic_faq.svg", mainColor),
+                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Logout", "ic_logout.svg", Colors.red),
                                     ],
                                   ),
                                 ),

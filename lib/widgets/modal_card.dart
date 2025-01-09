@@ -779,7 +779,7 @@ class _ModalClockOutSuccessCardState extends State<ModalClockOutSuccessCard> {
                     border: Border.all(color: mainColor),
                     boxShadow: boxShadowBlue,
                     image: DecorationImage(
-                        image: AssetImage("${prefixImages}img_clock_in.png")
+                        image: AssetImage("${prefixImages}img_clock_out.png")
                     )
                 ),
               ),
@@ -1824,6 +1824,309 @@ class _ModalOvertimeCalendarCardState extends State<ModalOvertimeCalendarCard> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+}
+
+class ModalUpdatePasswordCard extends StatefulWidget {
+  final String token;
+  final double width;
+  final double padding;
+  final Function? onSubmit;
+
+  ModalUpdatePasswordCard(this.token, this.width, this.padding, {this.onSubmit});
+
+  @override
+  State<ModalUpdatePasswordCard> createState() => _ModalUpdatePasswordCardState();
+}
+
+class _ModalUpdatePasswordCardState extends State<ModalUpdatePasswordCard> {
+  bool isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 43/100 + MediaQuery.of(context).viewInsets.bottom,
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      color: Colors.transparent,
+      child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Column(
+                children: [
+                  Container(
+                    width: widget.width,
+                    height: MediaQuery.of(context).size.height * 38/100,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(20))
+                    ),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 60),
+                        Container(
+                          padding: EdgeInsets.all(widget.padding),
+                          child: Column(
+                            children: [
+                              Container(
+                                width: widget.width - 2 * widget.padding,
+                                alignment: Alignment.center,
+                                child: Text("Update Password",
+                                    textAlign: TextAlign.center,
+                                    style: blackFontStyle.copyWith(fontSize: 20, fontWeight: FontWeight.w700)),
+                              ),
+                              SizedBox(
+                                  height: 10
+                              ),
+                              Container(
+                                width: widget.width - 2 * widget.padding,
+                                alignment: Alignment.centerLeft,
+                                child: Text("Are you sure you want to update your password? To ensure your account safety we will send verification code to your email",
+                                    textAlign: TextAlign.start,
+                                    style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400)),
+                              ),
+                              SizedBox(height: 20),
+                              ButtonCard("Yes, Update Password", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                                widget.onSubmit!();
+                              }),
+                              SizedBox(height: 20),
+                              ButtonCard("No, Let me check", widget.width - 2 * widget.padding, mainColor, isActive: true, colorGradient: buttonGradient, onPressed: () async {
+                                Navigator.of(context).pop(false);
+                              }),
+                              SizedBox(height: 5),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+              width: 100,
+              height: 100,
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                    color: mainColor,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: mainColor),
+                    boxShadow: boxShadowBlue,
+                    image: DecorationImage(
+                        image: AssetImage("${prefixImages}img_password.png")
+                    )
+                ),
+              ),
+            ),
+          ]
+      ),
+    );
+  }
+
+}
+
+class ModalPasswordSuccessCard extends StatefulWidget {
+  final String token;
+  final double width;
+  final double padding;
+
+  ModalPasswordSuccessCard(this.token, this.width, this.padding);
+
+  @override
+  State<ModalPasswordSuccessCard> createState() => _ModalPasswordSuccessCardState();
+}
+
+class _ModalPasswordSuccessCardState extends State<ModalPasswordSuccessCard> {
+  bool isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 37/100 + MediaQuery.of(context).viewInsets.bottom,
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      color: Colors.transparent,
+      child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Column(
+                children: [
+
+                  Container(
+                    width: widget.width,
+                    height: MediaQuery.of(context).size.height * 31/100,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(20))
+                    ),
+                    child: Column(
+
+                      children: [
+                        SizedBox(height: 60),
+                        Container(
+                          padding: EdgeInsets.all(widget.padding),
+                          child: Column(
+                            children: [
+                              Container(
+                                width: widget.width - 2 * widget.padding,
+                                alignment: Alignment.center,
+                                child: Text("Password Has Been Created",
+                                    textAlign: TextAlign.center,
+                                    style: blackFontStyle.copyWith(fontSize: 20, fontWeight: FontWeight.w700)),
+                              ),
+                              SizedBox(
+                                  height: 10
+                              ),
+                              Container(
+                                width: widget.width - 2 * widget.padding,
+                                alignment: Alignment.centerLeft,
+                                child: Text("Congratulations! you have been updated your password successfully! you can now access your account with your new password",
+                                    textAlign: TextAlign.start,
+                                    style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400)),
+                              ),
+                              SizedBox(height: 20),
+                              ButtonCard("Sign In", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                                Navigator.of(context).pop(false);
+                              }),
+                              SizedBox(height: 5),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+              width: 100,
+              height: 100,
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                    color: mainColor,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: mainColor),
+                    boxShadow: boxShadowBlue,
+                    image: DecorationImage(
+                        image: AssetImage("${prefixImages}img_password.png")
+                    )
+                ),
+              ),
+            ),
+          ]
+      ),
+    );
+  }
+
+}
+
+class ModalTerminationCard extends StatefulWidget {
+  final String token;
+  final double width;
+  final double padding;
+
+  ModalTerminationCard(this.token, this.width, this.padding);
+
+  @override
+  State<ModalTerminationCard> createState() => _ModalTerminationCardState();
+}
+
+class _ModalTerminationCardState extends State<ModalTerminationCard> {
+  bool isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 37/100 + MediaQuery.of(context).viewInsets.bottom,
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      color: Colors.transparent,
+      child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Column(
+                children: [
+
+                  Container(
+                    width: widget.width,
+                    height: MediaQuery.of(context).size.height * 31/100,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(20))
+                    ),
+                    child: Column(
+
+                      children: [
+                        SizedBox(height: 60),
+                        Container(
+                          padding: EdgeInsets.all(widget.padding),
+                          child: Column(
+                            children: [
+                              Container(
+                                width: widget.width - 2 * widget.padding,
+                                alignment: Alignment.center,
+                                child: Text("Termination Info",
+                                    textAlign: TextAlign.center,
+                                    style: blackFontStyle.copyWith(fontSize: 20, fontWeight: FontWeight.w700)),
+                              ),
+                              SizedBox(
+                                  height: 10
+                              ),
+                              Container(
+                                width: widget.width - 2 * widget.padding,
+                                alignment: Alignment.centerLeft,
+                                child: Text("Your account gets Termination because you get Penalty Points. Everything about Termination Information will be emailed to Adam@work.com or contact HDR Staff.",
+                                    textAlign: TextAlign.start,
+                                    style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400)),
+                              ),
+                              SizedBox(height: 20),
+                              ButtonCard("Close Message", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                                Navigator.of(context).pop(false);
+                              }),
+                              SizedBox(height: 5),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+              width: 100,
+              height: 100,
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                    color: mainColor,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: mainColor),
+                    boxShadow: boxShadowBlue,
+                    image: DecorationImage(
+                        image: AssetImage("${prefixImages}img_security.png")
+                    )
+                ),
+              ),
+            ),
+          ]
       ),
     );
   }

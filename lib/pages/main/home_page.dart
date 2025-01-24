@@ -28,41 +28,43 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    InkWell(
-                      onTap: (){
-                        modalBottomSheetTermination(context, "");
-                      },
-                        child: Container(
-                          width: 56,
-                          height: 56,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage("${prefixImages}img_avatar_dummy.png")
-                              )
-                          ),
-                        ),
+                BlocBuilder<UserCubit, UserState>(
+                    builder: (context, state) => (state is UserLoaded) ? (state.user != null) ? Row(
+              children: [
+                InkWell(
+                  onTap: (){
+                    modalBottomSheetTermination(context, "");
+                  },
+                  child: Container(
+                    width: 56,
+                    height: 56,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage("${prefixImages}img_avatar_dummy.png")
+                        )
                     ),
-                    SizedBox(width: 8),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Adam Sudjana",
-                          textAlign: TextAlign.start,
-                          style: blackFontStyle.copyWith(fontSize: 15, color: Colors.white, fontWeight: FontWeight.w600),
-                        ),
-                        Text(
-                          "Graphic Design",
-                          textAlign: TextAlign.start,
-                          style: blackFontStyle.copyWith(fontSize: 13, color: Colors.white, fontWeight: FontWeight.w400),
-                        ),
-                      ],
-                    )
+                  ),
+                ),
+                SizedBox(width: 8),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${state.user!.first_name} ${state.user!.last_name}",
+                      textAlign: TextAlign.start,
+                      style: blackFontStyle.copyWith(fontSize: 15, color: Colors.white, fontWeight: FontWeight.w600),
+                    ),
+                    Text(
+                      "Graphic Design",
+                      textAlign: TextAlign.start,
+                      style: blackFontStyle.copyWith(fontSize: 13, color: Colors.white, fontWeight: FontWeight.w400),
+                    ),
                   ],
+                )
+              ],
+            ) : SizedBox() : loadingIndicator
                 ),
                 InkWell(
                   onTap: (){

@@ -281,7 +281,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
           boxShadow: boxShadow
         ),
         child: ButtonCard("Save", defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
-          Get.to(MainPage());
+          // Get.to(MainPage());
         }),
       ),
     );

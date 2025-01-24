@@ -92,7 +92,7 @@ class _MainPageState extends State<MainPage> {
                       ActivityPage(),
                       AttendancePage(),
                       (isTask) ? TaskPage() : AnalyticsPage(),
-                      ProfilePage(),
+                      ProfilePage(widget.token ?? ""),
                     ],
                   ),
                 ),

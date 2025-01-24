@@ -17,6 +17,8 @@ import 'package:supercharged/supercharged.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
+import 'cubits/user/user_cubit.dart';
+
 
 Future<void> main() async {
   /// Initialization time zones
@@ -61,8 +63,13 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
-    return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: page);
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => UserCubit()),
+        ],
+        child: GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: page)
+    );
   }
 }

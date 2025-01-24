@@ -12,6 +12,9 @@ class _SignInPageState extends State<SignInPage> {
   TextEditingController passwordC = TextEditingController();
 
   bool isRemember = false;
+  bool isLoading = false;
+
+  String? token;
 
   @override
   Widget build(BuildContext context) {
@@ -127,8 +130,82 @@ class _SignInPageState extends State<SignInPage> {
                       ],
                     ),
                     SizedBox(height: 20),
-                    ButtonCard("Sign In", defaultWidth, mainColor, colorGradient: buttonGradient, onPressed: () async {
-                      Get.to(MainPage());
+                    ButtonCard("Sign In", defaultWidth, mainColor, isLoading: isLoading, colorGradient: buttonGradient, onPressed: () async {
+                      String? uid;
+
+                      if (emailC.text.isNotEmpty && passwordC.text.isNotEmpty){
+
+                        setState(() {
+                          isLoading = true;
+                        });
+
+                        await context.read<UserCubit>().login(
+                            emailC.text,
+                            passwordC.text).then((result) {
+                        });
+
+                        UserState state = context.read<UserCubit>().state;
+                        if(state is UserLoaded){
+                          SharedPreferences prefs = await SharedPreferences.getInstance().whenComplete(() async {
+
+                          });
+                          if(state.user != null){
+                            if (prefs.getString('token') != null) {
+                              setState(() {
+                                token = prefs.getString('token');
+                                // ignore: deprecated_member_use
+                              });
+
+                              Fluttertoast.showToast(
+                                  msg: "Berhasil Login",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.green,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0
+                              );
+
+                              Get.to(MainPage(token: token!));
+
+                              setState(() {
+                                isLoading = false;
+                              });
+
+                            } else {
+                              token = "";
+                              Get.snackbar('', '',
+                                  backgroundColor: Colors.red,
+                                  icon: Icon(Icons.close, color: Colors.white,),
+                                  titleText: Text('Akun belum terdaftar', style: blackFontStyle.copyWith(color: Colors.white),)
+                              );
+                              setState(() {
+                                isLoading = false;
+                              });
+                            }
+                          } else {
+                            Get.snackbar('', '',
+                                backgroundColor: Colors.red,
+                                icon: Icon(Icons.close, color: Colors.white,),
+                                titleText: Text('Akun Belum Terdaftar', style: blackFontStyle.copyWith(color: Colors.white),)
+                            );
+                            setState(() {
+                              isLoading = false;
+                            });
+                          }
+                        } else {
+                          Get.snackbar('', '',
+                              backgroundColor: Colors.red,
+                              icon: Icon(Icons.close, color: Colors.white,),
+                              titleText: Text('Akun Belum Terdaftar', style: blackFontStyle.copyWith(color: Colors.white),)
+                          );
+                          setState(() {
+                            isLoading = false;
+                          });
+                        }
+
+
+                      }
                     }),
                     SizedBox(height: 20),
                     Row(

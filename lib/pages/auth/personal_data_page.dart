@@ -1,7 +1,10 @@
 part of '../pages.dart';
 
 class PersonalDataPage extends StatefulWidget {
-  const PersonalDataPage({super.key});
+  final String token;
+  final User user;
+
+  PersonalDataPage(this.token, this.user);
 
   @override
   State<PersonalDataPage> createState() => _PersonalDataPageState();
@@ -16,6 +19,35 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
   TextEditingController addressC = TextEditingController();
 
   bool isAgree = false;
+  bool isLoading = false;
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    phoneC.text = widget.user.phone ?? "";
+  }
+
+  DateTime selectedDate = DateTime.now();
+
+  Future<void> _selectDate(BuildContext context) async {
+
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1980, 8),
+        lastDate: DateTime(2040)
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+
+        String data = DateFormat('yyyy-MM-dd').format(selectedDate);
+        dateC.text = data;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +174,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                         SizedBox(height: 20),
                         FormWithLabelCard(
                             outerLabelText: "Phone Number",
-                            hintText: "+62 0000 0000 0000",
+                            hintText: "081234567890",
                             controller: phoneC,
                             inputType: TextInputType.number,
                             prefixSvg: "${prefixIcons}ic_phone.svg",
@@ -159,6 +191,10 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                             hintText: "Input Date of Birth",
                             controller: dateC,
                             prefixSvg: "${prefixIcons}ic_calendar.svg",
+                            readOnly: true,
+                            onTap: (){
+                              _selectDate(context);
+                            },
                             onSaved: (e) {
                               dateC.text = e ?? "";
                             },
@@ -280,8 +316,61 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
           color: Colors.white,
           boxShadow: boxShadow
         ),
-        child: ButtonCard("Save", defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
-          // Get.to(MainPage());
+        child: ButtonCard("Save", defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, isLoading:isLoading, onPressed: () async {
+          if(firstNameC.text.isNotEmpty && phoneC.text.isNotEmpty && lastNameC.text.isNotEmpty && dateC.text.isNotEmpty){
+            setState(() {
+              isLoading = true;
+            });
+
+            User user = User(
+                phone: phoneC.text,
+                dob: dateC.text,
+                first_name: firstNameC.text,
+                last_name: lastNameC.text,
+                address: "${addressC.text}",
+            );
+
+            await UserServices.update(widget.token, user).then((result) {
+
+              if(result != null && result.value != null){
+
+                setState(() {
+                  isLoading = false;
+                });
+
+                Fluttertoast.showToast(
+                    msg: "Berhasil Update Data Personal, Silahkan login",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.green,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+
+                Get.to(MainPage(token: widget.token));
+
+              } else {
+                setState(() {
+                  isLoading = false;
+                });
+
+                Fluttertoast.showToast(
+                    msg: "${result.message}",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+              }
+
+
+            });
+
+
+          }
         }),
       ),
     );

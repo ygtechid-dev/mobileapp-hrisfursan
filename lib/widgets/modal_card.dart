@@ -78,8 +78,46 @@ class _ModalForgotPasswordCardState extends State<ModalForgotPasswordCard> {
                                   filled: true),
                               SizedBox(height: 20),
                               ButtonCard("Send Verification Code", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
-                                Navigator.of(context).pop(false);
-                                modalBottomSheetForgot(context, "");
+
+                                await UserServices.forgot_password(widget.token, emailC.text,).then((result) async {
+
+                                  if(result != null && result.value != null && result.value == true){
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+
+                                    Fluttertoast.showToast(
+                                        msg: "${result.message}",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.green,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0
+                                    );
+
+                                    Navigator.of(context).pop(false);
+                                    modalBottomSheetForgot(context, widget.token);
+
+                                  } else {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+
+                                    Fluttertoast.showToast(
+                                        msg: "${result.message}",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0
+                                    );
+                                  }
+
+
+                                });
+
                               }),
                               SizedBox(height: 10),
                             ],
@@ -125,7 +163,7 @@ class _ModalForgotPasswordCardState extends State<ModalForgotPasswordCard> {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (bc){
-          return ModalForgotPasswordPinCard(token, fullWidth, 16);
+          return ModalForgotPasswordPinCard(token, emailC.text, fullWidth, 16);
         });
   }
 
@@ -133,10 +171,11 @@ class _ModalForgotPasswordCardState extends State<ModalForgotPasswordCard> {
 
 class ModalForgotPasswordPinCard extends StatefulWidget {
   final String token;
+  final String email;
   final double width;
   final double padding;
 
-  ModalForgotPasswordPinCard(this.token, this.width, this.padding);
+  ModalForgotPasswordPinCard(this.token, this.email, this.width, this.padding);
 
   @override
   State<ModalForgotPasswordPinCard> createState() => _ModalForgotPasswordPinCardState();
@@ -293,8 +332,47 @@ class _ModalForgotPasswordPinCardState extends State<ModalForgotPasswordPinCard>
                               ),
                               SizedBox(height: 20),
                               ButtonCard("Submit", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
-                                Navigator.of(context).pop(false);
-                                modalBottomSheetForgot(context, "");
+
+                                await UserServices.check_token(widget.token, widget.email).then((result) async {
+
+                                  if(result != null && result.value != null && result.value == true){
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+
+                                    Fluttertoast.showToast(
+                                        msg: "${result.message}",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.green,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0
+                                    );
+
+                                    Navigator.of(context).pop(false);
+                                    modalBottomSheetForgot(context, widget.token);
+
+                                  } else {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+
+                                    Fluttertoast.showToast(
+                                        msg: "${result.message}",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0
+                                    );
+                                  }
+
+
+                                });
+
+
                               }),
                               SizedBox(height: 5),
                             ],
@@ -340,7 +418,7 @@ class _ModalForgotPasswordPinCardState extends State<ModalForgotPasswordPinCard>
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (bc){
-          return ModalForgotPasswordNewCard(token, fullWidth, 16);
+          return ModalForgotPasswordNewCard(token, widget.email, fullWidth, 16);
         });
   }
 
@@ -348,10 +426,11 @@ class _ModalForgotPasswordPinCardState extends State<ModalForgotPasswordPinCard>
 
 class ModalForgotPasswordNewCard extends StatefulWidget {
   final String token;
+  final String email;
   final double width;
   final double padding;
 
-  ModalForgotPasswordNewCard(this.token, this.width, this.padding);
+  ModalForgotPasswordNewCard(this.token, this.email, this.width, this.padding);
 
   @override
   State<ModalForgotPasswordNewCard> createState() => _ModalForgotPasswordNewCardState();
@@ -442,8 +521,59 @@ class _ModalForgotPasswordNewCardState extends State<ModalForgotPasswordNewCard>
                                   filled: true),
                               SizedBox(height: 20),
                               ButtonCard("Submit", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
-                                Navigator.of(context).pop(false);
-                                modalBottomSheetForgot(context, "");
+                                if(passwordC.text.isNotEmpty && passwordConfirmC.text.isNotEmpty){
+                                  if(passwordC.text == passwordConfirmC.text){
+                                    await UserServices.reset_password(widget.token, widget.email, passwordC.text, passwordConfirmC.text).then((result) async {
+
+                                      if(result != null && result.value != null && result.value == true){
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+
+                                        Fluttertoast.showToast(
+                                            msg: "${result.message}",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.green,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0
+                                        );
+
+                                        Navigator.of(context).pop(false);
+                                        modalBottomSheetForgot(context, widget.token);
+
+                                      } else {
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+
+                                        Fluttertoast.showToast(
+                                            msg: "${result.message}",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.red,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0
+                                        );
+                                      }
+
+
+                                    });
+                                  } else {
+                                    Fluttertoast.showToast(
+                                        msg: "Password konfirmasi tidak cocok",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0
+                                    );
+                                  }
+                                }
+
                               }),
                               SizedBox(height: 5),
                             ],

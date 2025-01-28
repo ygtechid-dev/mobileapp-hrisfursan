@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:workwise/pages/pages.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,6 +18,7 @@ import 'package:supercharged/supercharged.dart';
 import 'package:intl/intl.dart' as intl;
 
 import '../models/models.dart';
+import '../services/services.dart';
 import '../shared/shared.dart';
 import '../utils/helper.dart';
 import 'package:path/path.dart' as path;

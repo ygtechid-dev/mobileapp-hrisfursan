@@ -14,6 +14,8 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController phoneC = TextEditingController();
   TextEditingController passwordConfirmC = TextEditingController();
 
+  bool isLoading = false;
+
   bool isAgree = false;
 
   @override
@@ -74,7 +76,7 @@ class _SignUpPageState extends State<SignUpPage> {
               SizedBox(height: 20),
               FormWithLabelCard(
                   outerLabelText: "Phone Number",
-                  hintText: "+62 0000 0000 0000",
+                  hintText: "0813456890",
                   controller: phoneC,
                   inputType: TextInputType.number,
                   prefixSvg: "${prefixIcons}ic_phone.svg",
@@ -170,8 +172,89 @@ class _SignUpPageState extends State<SignUpPage> {
                 ],
               ),
               SizedBox(height: 25),
-              ButtonCard("Sign Up", defaultWidth, mainColor, colorGradient: buttonGradient, onPressed: () async {
-                Get.to(PersonalDataPage());
+              ButtonCard("Sign Up", defaultWidth, (isAgree == true && emailC.text.isNotEmpty && phoneC.text.isNotEmpty && companyC.text.isNotEmpty && passwordC.text.isNotEmpty && passwordConfirmC.text.isNotEmpty) ? mainColor : greyColor, isLoading: isLoading, colorGradient: buttonGradient, onPressed: () async {
+                if(isAgree == true && emailC.text.isNotEmpty && phoneC.text.isNotEmpty && companyC.text.isNotEmpty && passwordC.text.isNotEmpty && passwordConfirmC.text.isNotEmpty){
+
+
+                  if(passwordC.text == passwordConfirmC.text){
+                    User user = User(
+                        email: emailC.text,
+                        phone: phoneC.text,
+                        company_id: companyC.text,
+                        first_name: "h",
+                        last_name: "h"
+                    );
+
+                    setState(() {
+                      isLoading = true;
+                    });
+
+                    await UserServices.register(user, passwordC.text).then((result) async {
+
+                      if(result != null && result.value != null){
+
+                        await context.read<UserCubit>().login(
+                            emailC.text,
+                            passwordC.text).then((result2) async {
+
+                          SharedPreferences prefs = await SharedPreferences.getInstance().whenComplete(() async {
+
+                          });
+
+                          if (prefs.getString('token') != null) {
+                            setState(() {
+                              isLoading = false;
+                            });
+
+                            Fluttertoast.showToast(
+                                msg: "Berhasil Registrasi",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.green,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+
+                            Get.to(PersonalDataPage(prefs.getString('token')!, result.value!));
+                          }
+
+                        });
+
+
+
+                      } else {
+                        setState(() {
+                          isLoading = false;
+                        });
+
+                        Fluttertoast.showToast(
+                            msg: "${result.message}",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                        );
+                      }
+
+
+                    });
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "Password konfirmasi tidak cocok",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0
+                    );
+                  }
+
+
+                }
               }),
               SizedBox(height: 20),
               Row(

@@ -5,8 +5,12 @@ class User extends Equatable {
   final String? first_name;
   final String? last_name;
   final String? email;
+  final String? phone;
+  final String? company_id;
   final String? email_verified_at;
   final String? avatar;
+  final String? dob;
+  final String? address;
   final String? type;
   final String? lang;
   final int? plan;
@@ -27,10 +31,14 @@ class User extends Equatable {
       {this.id,
       this.first_name,
       this.last_name,
+        this.phone,
+        this.company_id,
       this.email,
       this.email_verified_at,
       this.avatar,
       this.type,
+        this.dob,
+        this.address,
       this.lang,
       this.plan,
       this.plan_expire_date,
@@ -50,6 +58,8 @@ class User extends Equatable {
         id: data['id'],
         last_name: data['last_name'] ?? null,
         email: data['email'] ?? null,
+        phone: data['phone'] ?? null,
+        company_id: data['company_id'] ?? null,
         email_verified_at: data['email_verified_at'] ?? null,
         avatar: data['avatar'] ?? null,
         type: data['type'] ?? null,
@@ -64,7 +74,9 @@ class User extends Equatable {
         dark_mode: data['dark_mode'] ?? null,
         messenger_color: data['messenger_color'] ?? null,
         is_disable: data['is_disable'] ?? null,
-        created_by: data['created_by'] ?? null,
+        // created_by: data['created_by'] ?? null,
+        dob: data['dob'] ?? null,
+        address: data['address'] ?? null,
 
       );
 
@@ -78,6 +90,8 @@ class User extends Equatable {
         last_name,
         email,
         email_verified_at,
+        company_id,
+        phone,
         email,
         avatar,
         type,
@@ -92,6 +106,8 @@ class User extends Equatable {
         messenger_color,
         is_disable,
         created_by,
+        dob,
+        address,
       ];
 }
 

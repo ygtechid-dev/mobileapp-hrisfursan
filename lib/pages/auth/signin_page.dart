@@ -294,7 +294,7 @@ class _SignInPageState extends State<SignInPage> {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (bc){
-          return ModalForgotPasswordCard(token, fullWidth, 16);
+          return ModalForgotPasswordCard("6|5ijdhiXsWTY0jxumalFAiYap99uULaKucJtmnI4V3c79bfeb", fullWidth, 16);
         });
   }
 }

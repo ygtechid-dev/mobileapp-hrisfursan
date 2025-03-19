@@ -10,6 +10,7 @@ class User extends Equatable {
   final String? email_verified_at;
   final String? avatar;
   final String? dob;
+  final String? designation_id;
   final String? address;
   final String? type;
   final String? lang;
@@ -33,6 +34,7 @@ class User extends Equatable {
       this.last_name,
         this.phone,
         this.company_id,
+        this.designation_id,
       this.email,
       this.email_verified_at,
       this.avatar,

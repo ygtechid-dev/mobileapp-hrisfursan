@@ -31,13 +31,13 @@ class _TaskPageState extends State<TaskPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "To Do!",
+                      "todo".trans(context),
                       textAlign: TextAlign.start,
                       style: blackFontStyle.copyWith(fontSize: 24, color: Colors.white, fontWeight: FontWeight.w600),
                     ),
                     SizedBox(height: 5),
                     Text(
-                      "Let’s tackle your to do list",
+                      "lets_tackle".trans(context),
                       textAlign: TextAlign.start,
                       style: blackFontStyle.copyWith(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w400),
                     ),

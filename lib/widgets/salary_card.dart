@@ -63,7 +63,7 @@ class _SalaryCardState extends State<SalaryCard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Your Salary",
+                  "your_salary".trans(context),
                   textAlign: TextAlign.start,
                   style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
@@ -100,7 +100,7 @@ class _SalaryCardState extends State<SalaryCard> {
                   style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w600),
                 ),
                 Text(
-                  "3 Days until Payday",
+                  "3 ${"days_until".trans(context)}",
                   textAlign: TextAlign.start,
                   style: greyFontStyle.copyWith(fontSize: 11, fontWeight: FontWeight.w400),
                 ),
@@ -121,7 +121,7 @@ class _SalaryCardState extends State<SalaryCard> {
               backgroundColor: greyColor,
             ),
             SizedBox(height: 20),
-            ButtonHorizontalCard(widget.width - 2*16, "Take the Emergency fund", Icons.arrow_forward, mainColor)
+            ButtonHorizontalCard(widget.width - 2*16, "take_emergency".trans(context), Icons.arrow_forward, mainColor)
           ]
       ),
     );
@@ -150,7 +150,7 @@ class PerformanceStatsCard extends StatelessWidget {
           Row(
             children: [
               Text(
-                "Perfomance Stats",
+                "performance_stats".trans(context),
                 textAlign: TextAlign.start,
                 style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
               ),
@@ -160,7 +160,7 @@ class PerformanceStatsCard extends StatelessWidget {
           ),
           SizedBox(height: 3),
           Text(
-            "You've maintain your time at the right pace! keep it up!",
+            "maintain_your_time".trans(context),
             textAlign: TextAlign.start,
             style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
           ),
@@ -215,7 +215,7 @@ class GraphCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Working Period",
+                  "working_period".trans(context),
                   textAlign: TextAlign.start,
                   style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
@@ -225,7 +225,7 @@ class GraphCard extends StatelessWidget {
             ),
             SizedBox(height: 3),
             Text(
-              "Average your working period",
+              "average_your".trans(context),
               textAlign: TextAlign.start,
               style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
             ),

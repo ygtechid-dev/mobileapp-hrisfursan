@@ -49,20 +49,20 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               SizedBox(height: 15),
               Text(
-                "Sign Up",
+                "signup".trans(context),
                 textAlign: TextAlign.center,
                 style: blackFontStyle.copyWith(fontSize: 22, fontWeight: FontWeight.w600),
               ),
               SizedBox(height: 5),
               Text(
-                "Register Using Your Credentials",
+                "register_using".trans(context),
                 textAlign: TextAlign.center,
                 style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
               ),
               SizedBox(height: 15),
               FormWithLabelCard(
-                  outerLabelText: "Email",
-                  hintText: "My Mail",
+                  outerLabelText: "email".trans(context),
+                  hintText: "my_mail".trans(context),
                   controller: emailC,
                   inputType: TextInputType.emailAddress,
                   prefixSvg: "${prefixIcons}ic_email.svg",
@@ -75,7 +75,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   filled: true),
               SizedBox(height: 20),
               FormWithLabelCard(
-                  outerLabelText: "Phone Number",
+                  outerLabelText: "phone_number".trans(context),
                   hintText: "0813456890",
                   controller: phoneC,
                   inputType: TextInputType.number,
@@ -89,8 +89,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   filled: true),
               SizedBox(height: 20),
               FormWithLabelCard(
-                  outerLabelText: "Company ID",
-                  hintText: "Enter Company ID",
+                  outerLabelText: "company_id".trans(context),
+                  hintText: "enter_company_id".trans(context),
                   controller: companyC,
                   prefixSvg: "${prefixIcons}ic_company.svg",
                   onSaved: (e) {
@@ -102,8 +102,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   filled: true),
               SizedBox(height: 20),
               FormWithLabelCard(
-                  outerLabelText: "Password",
-                  hintText: "My Password",
+                  outerLabelText: "password".trans(context),
+                  hintText: "my_password".trans(context),
                   controller: passwordC,
                   prefixSvg: "${prefixIcons}ic_password.svg",
                   obscure: true,
@@ -116,8 +116,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   filled: true),
               SizedBox(height: 20),
               FormWithLabelCard(
-                  outerLabelText: "Confirm Password",
-                  hintText: "Confirm My Password",
+                  outerLabelText: "confirm_password".trans(context),
+                  hintText: "enter_confirm_password".trans(context),
                   controller: passwordConfirmC,
                   prefixSvg: "${prefixIcons}ic_password.svg",
                   obscure: true,
@@ -144,25 +144,25 @@ class _SignUpPageState extends State<SignUpPage> {
                   Row(
                     children: [
                       Text(
-                        "I agree with ",
+                        "i_agree".trans(context),
                         textAlign: TextAlign.start,
                         style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                       ),
                       InkWell(
                         child: Text(
-                          "terms & conditions",
+                          "term_conditions".trans(context),
                           textAlign: TextAlign.start,
                           style: blackFontStyle.copyWith(fontSize: 12, color: mainColor, fontWeight: FontWeight.w600),
                         ),
                       ),
                       Text(
-                        " and ",
+                        "and".trans(context),
                         textAlign: TextAlign.start,
                         style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                       ),
                       InkWell(
                         child: Text(
-                          "privacy policy",
+                          "privacy_policy".trans(context),
                           textAlign: TextAlign.start,
                           style: blackFontStyle.copyWith(fontSize: 12, color: mainColor, fontWeight: FontWeight.w600),
                         ),
@@ -172,7 +172,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ],
               ),
               SizedBox(height: 25),
-              ButtonCard("Sign Up", defaultWidth, (isAgree == true && emailC.text.isNotEmpty && phoneC.text.isNotEmpty && companyC.text.isNotEmpty && passwordC.text.isNotEmpty && passwordConfirmC.text.isNotEmpty) ? mainColor : greyColor, isLoading: isLoading, colorGradient: buttonGradient, onPressed: () async {
+              ButtonCard("signup".trans(context), defaultWidth, (isAgree == true && emailC.text.isNotEmpty && phoneC.text.isNotEmpty && companyC.text.isNotEmpty && passwordC.text.isNotEmpty && passwordConfirmC.text.isNotEmpty) ? mainColor : greyColor, isLoading: isLoading, colorGradient: buttonGradient, onPressed: () async {
                 if(isAgree == true && emailC.text.isNotEmpty && phoneC.text.isNotEmpty && companyC.text.isNotEmpty && passwordC.text.isNotEmpty && passwordConfirmC.text.isNotEmpty){
 
 
@@ -207,7 +207,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             });
 
                             Fluttertoast.showToast(
-                                msg: "Berhasil Registrasi",
+                                msg: "success_register".trans(context),
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.BOTTOM,
                                 timeInSecForIosWeb: 1,
@@ -243,7 +243,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     });
                   } else {
                     Fluttertoast.showToast(
-                        msg: "Password konfirmasi tidak cocok",
+                        msg: "confirm_password_not_match".trans(context),
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.BOTTOM,
                         timeInSecForIosWeb: 1,
@@ -261,7 +261,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Already have an account?  ",
+                    "already_accouny".trans(context),
                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                     textAlign: TextAlign.start,
                   ),
@@ -270,7 +270,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       Get.to(SignInPage());
                     },
                     child: Text(
-                      "Sign In Here",
+                      "signin_here".trans(context),
                       style: blackFontStyle.copyWith(fontSize: 12, color: mainColor, fontWeight: FontWeight.w600),
                       textAlign: TextAlign.end,
                     ),

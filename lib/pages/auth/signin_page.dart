@@ -55,20 +55,20 @@ class _SignInPageState extends State<SignInPage> {
                   children: [
                     SizedBox(height: 60),
                     Text(
-                      "Sign In",
+                      "signin".trans(context),
                       textAlign: TextAlign.center,
                       style: blackFontStyle.copyWith(fontSize: 22, fontWeight: FontWeight.w600),
                     ),
                     SizedBox(height: 5),
                     Text(
-                      "Sign in to my account",
+                      "signin_myaccount".trans(context),
                       textAlign: TextAlign.center,
                       style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
                     ),
                     SizedBox(height: 20),
                     FormWithLabelCard(
-                        outerLabelText: "Email",
-                        hintText: "My Mail",
+                        outerLabelText: "email".trans(context),
+                        hintText: "my_mail".trans(context),
                         controller: emailC,
                         inputType: TextInputType.emailAddress,
                         prefixSvg: "${prefixIcons}ic_email.svg",
@@ -81,8 +81,8 @@ class _SignInPageState extends State<SignInPage> {
                         filled: true),
                     SizedBox(height: 20),
                     FormWithLabelCard(
-                        outerLabelText: "Password",
-                        hintText: "My Password",
+                        outerLabelText: "password".trans(context),
+                        hintText: "my_password".trans(context),
                         controller: passwordC,
                         prefixSvg: "${prefixIcons}ic_password.svg",
                         obscure: true,
@@ -110,7 +110,7 @@ class _SignInPageState extends State<SignInPage> {
                             ),
                             SizedBox(width: 6),
                             Text(
-                              "Remember Me",
+                              "remember_me".trans(context),
                               textAlign: TextAlign.start,
                               style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                             ),
@@ -121,7 +121,7 @@ class _SignInPageState extends State<SignInPage> {
                             modalBottomSheetForgot(context, "");
                           },
                           child: Text(
-                            "Forgot Password",
+                            "forgot_password".trans(context),
                             textAlign: TextAlign.end,
                             style: blackFontStyle.copyWith(fontSize: 12, color: mainColor, fontWeight: FontWeight.w400),
                           ),
@@ -130,7 +130,7 @@ class _SignInPageState extends State<SignInPage> {
                       ],
                     ),
                     SizedBox(height: 20),
-                    ButtonCard("Sign In", defaultWidth, mainColor, isLoading: isLoading, colorGradient: buttonGradient, onPressed: () async {
+                    ButtonCard("signin".trans(context), defaultWidth, mainColor, isLoading: isLoading, colorGradient: buttonGradient, onPressed: () async {
                       String? uid;
 
                       if (emailC.text.isNotEmpty && passwordC.text.isNotEmpty){
@@ -157,7 +157,7 @@ class _SignInPageState extends State<SignInPage> {
                               });
 
                               Fluttertoast.showToast(
-                                  msg: "Berhasil Login",
+                                  msg: "success_login".trans(context),
                                   toastLength: Toast.LENGTH_SHORT,
                                   gravity: ToastGravity.BOTTOM,
                                   timeInSecForIosWeb: 1,
@@ -177,7 +177,7 @@ class _SignInPageState extends State<SignInPage> {
                               Get.snackbar('', '',
                                   backgroundColor: Colors.red,
                                   icon: Icon(Icons.close, color: Colors.white,),
-                                  titleText: Text('Akun belum terdaftar', style: blackFontStyle.copyWith(color: Colors.white),)
+                                  titleText: Text('account_not_register'.trans(context), style: blackFontStyle.copyWith(color: Colors.white),)
                               );
                               setState(() {
                                 isLoading = false;
@@ -187,7 +187,7 @@ class _SignInPageState extends State<SignInPage> {
                             Get.snackbar('', '',
                                 backgroundColor: Colors.red,
                                 icon: Icon(Icons.close, color: Colors.white,),
-                                titleText: Text('Akun Belum Terdaftar', style: blackFontStyle.copyWith(color: Colors.white),)
+                                titleText: Text('account_not_register'.trans(context), style: blackFontStyle.copyWith(color: Colors.white),)
                             );
                             setState(() {
                               isLoading = false;
@@ -197,7 +197,7 @@ class _SignInPageState extends State<SignInPage> {
                           Get.snackbar('', '',
                               backgroundColor: Colors.red,
                               icon: Icon(Icons.close, color: Colors.white,),
-                              titleText: Text('Akun Belum Terdaftar', style: blackFontStyle.copyWith(color: Colors.white),)
+                              titleText: Text('account_not_register'.trans(context), style: blackFontStyle.copyWith(color: Colors.white),)
                           );
                           setState(() {
                             isLoading = false;
@@ -217,7 +217,7 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         SizedBox(width: 15),
                         Text(
-                          "OR",
+                          "or".trans(context),
                           textAlign: TextAlign.center,
                           style: blackFontStyle.copyWith(fontSize: 12, color: greyColor, fontWeight: FontWeight.w400),
                         ),
@@ -229,17 +229,17 @@ class _SignInPageState extends State<SignInPage> {
                       ],
                     ),
                     SizedBox(height: 20),
-                    ButtonCard("Sign in With Google", defaultWidth, mainColor, isActive: true, iconPath: "${prefixIcons}ic_google.svg", onPressed: () async {}),
+                    ButtonCard("signin_google".trans(context), defaultWidth, mainColor, isActive: true, iconPath: "${prefixIcons}ic_google.svg", onPressed: () async {}),
                     SizedBox(height: 15),
-                    ButtonCard("Sign in With Employee ID", defaultWidth, mainColor, isActive: true, iconPath: "${prefixIcons}ic_employee.svg", onPressed: () async {}),
+                    ButtonCard("signin_employee".trans(context), defaultWidth, mainColor, isActive: true, iconPath: "${prefixIcons}ic_employee.svg", onPressed: () async {}),
                     SizedBox(height: 15),
-                    ButtonCard("Sign In With Phone", defaultWidth, mainColor, isActive: true, iconPath: "${prefixIcons}ic_phone.svg", onPressed: () async {}),
+                    ButtonCard("signin_phone".trans(context), defaultWidth, mainColor, isActive: true, iconPath: "${prefixIcons}ic_phone.svg", onPressed: () async {}),
                     SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Don’t have account?  ",
+                          "dont_have_account".trans(context),
                           style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                           textAlign: TextAlign.start,
                         ),
@@ -248,7 +248,7 @@ class _SignInPageState extends State<SignInPage> {
                             Get.to(SignUpPage());
                           },
                           child: Text(
-                            "Sign Up Here",
+                            "signup_here".trans(context),
                             style: blackFontStyle.copyWith(fontSize: 12, color: mainColor, fontWeight: FontWeight.w600),
                             textAlign: TextAlign.end,
                           ),

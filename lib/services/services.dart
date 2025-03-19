@@ -19,8 +19,16 @@ import '../shared/shared.dart';
 // import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 part 'user_services.dart';
+part 'leave_services.dart';
+part 'designation_services.dart';
+part 'overtimes_services.dart';
+part "attendance_services.dart";
+part "task_services.dart";
+part "reimbursement_services.dart";
+part "payslip_services.dart";
 
 
 // String baseUrl = 'https://grahasahid.yuvan.dev/api/';
 String baseUrl = 'http://103.196.155.202:3333/api/';
+String baseUrl2 = 'http://103.196.155.202:3333/storage/';
 String baseUrlFcm = 'https://fcm.googleapis.com/fcm/send';

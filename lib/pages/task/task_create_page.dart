@@ -26,7 +26,7 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
       isBackInvert: false,
       isFrontAppBar: true,
       marginAppBar: 65,
-      title: "Create New Task",
+      title: "create_task".trans(context),
       onBackButtonPressed: (){
         Get.back();
       },
@@ -49,8 +49,8 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
                   child: Column(
                     children: [
                       FormWithLabelCard(
-                          outerLabelText: "Task Title",
-                          hintText: "Input Task Title",
+                          outerLabelText: "task_title".trans(context),
+                          hintText: "Input ${"task_title".trans(context)}",
                           controller: taskTitleC,
                           prefixSvg: "${prefixIcons}ic_form_title.svg",
                           onSaved: (e) {
@@ -62,8 +62,8 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
                           filled: true),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Due Date",
-                          hintText: "Input Due Date",
+                          outerLabelText: "due_date".trans(context),
+                          hintText: "Input ${"due_date".trans(context)}",
                           controller: dueDateC,
                           prefixSvg: "${prefixIcons}ic_form_date.svg",
                           onSaved: (e) {
@@ -75,8 +75,8 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
                           filled: true),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Assign To",
-                          hintText: "Input Assign To",
+                          outerLabelText: "assign_to".trans(context),
+                          hintText: "Input ${"assign_to".trans(context)}",
                           controller: assignToC,
                           prefixSvg: "${prefixIcons}ic_form_assign.svg",
                           onSaved: (e) {
@@ -88,8 +88,8 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
                           filled: true),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Task Description",
-                          hintText: "Task Description",
+                          outerLabelText: "task_description".trans(context),
+                          hintText: "Input ${"task_description".trans(context)}",
                           controller: descriptionC,
                           inputType: TextInputType.multiline,
                           maxLines: 6,
@@ -109,13 +109,13 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Attachment",
+                              "attachment".trans(context),
                               textAlign: TextAlign.start,
                               style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                             ),
                             SizedBox(height: 3),
                             Text(
-                              "Format should be in .pdf .jpeg .png less than 5MB",
+                              "format_should".trans(context),
                               textAlign: TextAlign.start,
                               style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                             ),
@@ -145,8 +145,8 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
                       ),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Add Link File",
-                          hintText: "Input Add Link File",
+                          outerLabelText: "add_link".trans(context),
+                          hintText: "Input ${"add_link".trans(context)}",
                           controller: linkC,
                           prefixSvg: "${prefixIcons}ic_form_link.svg",
                           onSaved: (e) {
@@ -172,7 +172,7 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
             color: Colors.white,
             boxShadow: boxShadow
         ),
-        child: ButtonCard("Create Task", defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
+        child: ButtonCard("create_task".trans(context), defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
           Get.to(MainPage(index_: 3));
         }),
       ),

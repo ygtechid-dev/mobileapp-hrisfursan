@@ -19,7 +19,7 @@ class _PayslipDetailPageState extends State<PayslipDetailPage> {
       isBackInvert: false,
       isFrontAppBar: true,
       marginAppBar: 72,
-      title: "Payslip",
+      title: "payslip".trans(context),
       onBackButtonPressed: (){
         Get.back();
       },
@@ -46,7 +46,7 @@ class _PayslipDetailPageState extends State<PayslipDetailPage> {
             color: Colors.white,
             boxShadow: boxShadow
         ),
-        child: ButtonCard("Export As PDF", defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
+        child: ButtonCard("export_as_pdf".trans(context), defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
           modalBottomSheet(context, "");
         }),
       ),

@@ -25,7 +25,7 @@ class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
       isBackInvert: false,
       isFrontAppBar: true,
       marginAppBar: 65,
-      title: "Submit Expense",
+      title: "submit_expense".trans(context),
       onBackButtonPressed: (){
         Get.back();
       },
@@ -49,24 +49,24 @@ class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Fill Claim Information",
+                        "fill_claim".trans(context),
                         textAlign: TextAlign.start,
                         style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                       ),
                       SizedBox(height: 3),
                       Text(
-                        "Information about claim details",
+                        "information_claim".trans(context),
                         textAlign: TextAlign.start,
                         style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                       ),
                       SizedBox(height: 20),
-                      CommonDottedButtonWithImage2(title: "Upload Claim Document", subtitle: "Format should be in .pdf .jpeg .png less than 5MB", onPicked: (value){
+                      CommonDottedButtonWithImage2(title: "upload_claim".trans(context), subtitle: "format_should".trans(context), onPicked: (value){
 
                       }),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Expense Category",
-                          hintText: "Select Category",
+                          outerLabelText: "expense_category".trans(context),
+                          hintText: "select_category".trans(context),
                           controller: categoryC,
                           prefixSvg: "${prefixIcons}ic_form_title.svg",
                           onSaved: (e) {
@@ -81,8 +81,8 @@ class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
                           filled: true),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Transaction Date",
-                          hintText: "Enter Date Transaction",
+                          outerLabelText: "transaction_date".trans(context),
+                          hintText: "Enter ${"transaction_date".trans(context)}",
                           controller: dateC,
                           prefixSvg: "${prefixIcons}ic_form_date.svg",
                           onSaved: (e) {
@@ -97,8 +97,8 @@ class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
                           filled: true),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Expense Amount (IDR)",
-                          hintText: "Enter Amount",
+                          outerLabelText: "expense_amount".trans(context),
+                          hintText: "Enter ${"expense_amount".trans(context)}",
                           controller: amountC,
                           inputType: TextInputType.number,
                           prefixSvg: "${prefixIcons}ic_form_amount.svg",
@@ -111,8 +111,8 @@ class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
                           filled: true),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Expense Description",
-                          hintText: "Expense Description",
+                          outerLabelText: "expense_description".trans(context),
+                          hintText: "Enter ${"expense_description".trans(context)}",
                           controller: descriptionC,
                           inputType: TextInputType.multiline,
                           maxLines: 6,
@@ -140,7 +140,7 @@ class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
             color: Colors.white,
             boxShadow: boxShadow
         ),
-        child: ButtonCard("Submit", defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
+        child: ButtonCard("submit".trans(context), defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
           modalBottomSheet(context, "");
         }),
       ),
@@ -159,7 +159,7 @@ class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (bc){
-          return ModalDefaultSubmitCard(token, fullWidth, 16, "Ready to Submit?", "Double-check your form details to ensure everything is correct. Do you want to proceed?", "img_leave.png", onSubmit: (){
+          return ModalDefaultSubmitCard(token, fullWidth, 16, "ready_submit".trans(context), "double_check_form".trans(context), "img_leave.png", onSubmit: (){
 
           });
         });

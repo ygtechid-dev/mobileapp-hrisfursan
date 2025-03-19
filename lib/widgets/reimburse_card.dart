@@ -24,13 +24,13 @@ class _ReimburseSummaryCardState extends State<ReimburseSummaryCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Remaining Balance",
+              "remaining_balance".trans(context),
               textAlign: TextAlign.start,
               style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
             ),
             SizedBox(height: 3),
             Text(
-              "Period 1 Jan 2024 - 30 Dec 2024",
+              "${"period".trans(context)} 1 Jan 2024 - 30 Dec 2024",
               textAlign: TextAlign.start,
               style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
             ),
@@ -38,8 +38,8 @@ class _ReimburseSummaryCardState extends State<ReimburseSummaryCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                itemReimburse((widget.width - 2*16)/2 - 5, "Total", Colors.green, "Rp8.888.000"),
-                itemReimburse((widget.width - 2*16)/2 - 5, "Approved", Colors.blue, "Rp0"),
+                itemReimburse((widget.width - 2*16)/2 - 5, "total".trans(context), Colors.green, "Rp8.888.000"),
+                itemReimburse((widget.width - 2*16)/2 - 5, "approved".trans(context), Colors.blue, "Rp0"),
               ],
             ),
           ]
@@ -169,7 +169,7 @@ class ReimburseItemCard extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Type",
+                                    "type".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                                   ),
@@ -184,7 +184,7 @@ class ReimburseItemCard extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Total",
+                                    "total".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                                   ),
@@ -228,7 +228,7 @@ class ReimburseItemCard extends StatelessWidget {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (bc){
-          return ModalDefaultInfoCard(token, fullWidth, 16, "Refusal of Reimbursement", "The application was rejected because your fee had expired.", "img_leave.png");
+          return ModalDefaultInfoCard(token, fullWidth, 16, "refusal_reimbursement".trans(contexts), "refusal_reimbursement_notes".trans(contexts), "img_leave.png");
         });
   }
 
@@ -244,7 +244,7 @@ class ReimburseItemCard extends StatelessWidget {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (bc){
-          return ModalDefaultInfoCard(token, fullWidth, 16, "Approve of Reimbursement", "Congrats your Reimburse application is approved!", "img_leave.png");
+          return ModalDefaultInfoCard(token, fullWidth, 16, "approval_reimbursement".trans(contexts), "approval_reimbursement_notes".trans(contexts), "img_leave.png");
         });
   }
 }

@@ -60,7 +60,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         ),
                       ]
                   ),
-                  ButtonCard("Next", defaultWidth, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                  ButtonCard("next".trans(context), defaultWidth, mainColor, colorGradient: buttonGradient, onPressed: () async {
                     Get.to(LanguagePage());
                   }),
                 ],

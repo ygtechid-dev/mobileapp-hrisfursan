@@ -48,7 +48,7 @@ class _ModalForgotPasswordCardState extends State<ModalForgotPasswordCard> {
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.center,
-                                child: Text("Forgot Password",
+                                child: Text("forgot_password".trans(context),
                                     textAlign: TextAlign.center,
                                     style: blackFontStyle.copyWith(fontSize: 20, fontWeight: FontWeight.w700)),
                               ),
@@ -58,14 +58,14 @@ class _ModalForgotPasswordCardState extends State<ModalForgotPasswordCard> {
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.centerLeft,
-                                child: Text("A verification code will be sent to your email to reset your password.",
+                                child: Text("a_verification_code".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400)),
                               ),
                               SizedBox(height: 10),
                               FormWithLabelCard(
-                                  outerLabelText: "Email",
-                                  hintText: "My Mail",
+                                  outerLabelText: "email".trans(context),
+                                  hintText: "my_mail".trans(context),
                                   controller: emailC,
                                   inputType: TextInputType.emailAddress,
                                   prefixSvg: "${prefixIcons}ic_email.svg",
@@ -77,9 +77,9 @@ class _ModalForgotPasswordCardState extends State<ModalForgotPasswordCard> {
                                   },
                                   filled: true),
                               SizedBox(height: 20),
-                              ButtonCard("Send Verification Code", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                              ButtonCard("send_verification".trans(context), widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
 
-                                await UserServices.forgot_password(widget.token, emailC.text,).then((result) async {
+                                await UserServices.forgot_password(emailC.text,).then((result) async {
 
                                   if(result != null && result.value != null && result.value == true){
                                     setState(() {
@@ -247,7 +247,7 @@ class _ModalForgotPasswordPinCardState extends State<ModalForgotPasswordPinCard>
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.center,
-                                child: Text("Forgot Password",
+                                child: Text("forgot_assword".trans(context),
                                     textAlign: TextAlign.center,
                                     style: blackFontStyle.copyWith(fontSize: 20, fontWeight: FontWeight.w700)),
                               ),
@@ -257,7 +257,7 @@ class _ModalForgotPasswordPinCardState extends State<ModalForgotPasswordPinCard>
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.centerLeft,
-                                child: Text("A reset code has been sent to Adam@work.com, check your email to continue the password reset process.",
+                                child: Text("a_reset_code".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400)),
                               ),
@@ -321,19 +321,19 @@ class _ModalForgotPasswordPinCardState extends State<ModalForgotPasswordPinCard>
                                 alignment: Alignment.centerLeft,
                                 child: Row(
                                   children: [
-                                    Text("Haven't received the verification code? ",
+                                    Text("havent_received".trans(context),
                                         textAlign: TextAlign.start,
                                         style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400)),
-                                    Text(" Resend it.",
+                                    Text("resend_it".trans(context),
                                         textAlign: TextAlign.start,
                                         style: blackFontStyle.copyWith(fontSize: 12, color: mainColor, fontWeight: FontWeight.w400)),
                                   ]
                                 )
                               ),
                               SizedBox(height: 20),
-                              ButtonCard("Submit", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                              ButtonCard("submit".trans(context), widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
 
-                                await UserServices.check_token(widget.token, widget.email).then((result) async {
+                                await UserServices.check_token(widget.email).then((result) async {
 
                                   if(result != null && result.value != null && result.value == true){
                                     setState(() {
@@ -475,7 +475,7 @@ class _ModalForgotPasswordNewCardState extends State<ModalForgotPasswordNewCard>
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.center,
-                                child: Text("Set a New Password",
+                                child: Text("set_new_password".trans(context),
                                     textAlign: TextAlign.center,
                                     style: blackFontStyle.copyWith(fontSize: 20, fontWeight: FontWeight.w700)),
                               ),
@@ -485,7 +485,7 @@ class _ModalForgotPasswordNewCardState extends State<ModalForgotPasswordNewCard>
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.centerLeft,
-                                child: Text("Please set a new password to secure your Work Mate account.",
+                                child: Text("please_set_password".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400)),
                               ),
@@ -493,8 +493,8 @@ class _ModalForgotPasswordNewCardState extends State<ModalForgotPasswordNewCard>
                                   height: 10
                               ),
                               FormWithLabelCard(
-                                  outerLabelText: "Password",
-                                  hintText: "New Password",
+                                  outerLabelText: "password".trans(context),
+                                  hintText: "new_password".trans(context),
                                   controller: passwordC,
                                   prefixSvg: "${prefixIcons}ic_password.svg",
                                   obscure: true,
@@ -507,8 +507,8 @@ class _ModalForgotPasswordNewCardState extends State<ModalForgotPasswordNewCard>
                                   filled: true),
                               SizedBox(height: 10),
                               FormWithLabelCard(
-                                  outerLabelText: "Confirm Password",
-                                  hintText: "Re Enter Your Password",
+                                  outerLabelText: "confirm_password".trans(context),
+                                  hintText: "reenter".trans(context),
                                   controller: passwordConfirmC,
                                   prefixSvg: "${prefixIcons}ic_password.svg",
                                   obscure: true,
@@ -520,10 +520,10 @@ class _ModalForgotPasswordNewCardState extends State<ModalForgotPasswordNewCard>
                                   },
                                   filled: true),
                               SizedBox(height: 20),
-                              ButtonCard("Submit", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                              ButtonCard("submit".trans(context), widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
                                 if(passwordC.text.isNotEmpty && passwordConfirmC.text.isNotEmpty){
                                   if(passwordC.text == passwordConfirmC.text){
-                                    await UserServices.reset_password(widget.token, widget.email, passwordC.text, passwordConfirmC.text).then((result) async {
+                                    await UserServices.reset_password( widget.email, passwordC.text, passwordConfirmC.text).then((result) async {
 
                                       if(result != null && result.value != null && result.value == true){
                                         setState(() {
@@ -563,7 +563,7 @@ class _ModalForgotPasswordNewCardState extends State<ModalForgotPasswordNewCard>
                                     });
                                   } else {
                                     Fluttertoast.showToast(
-                                        msg: "Password konfirmasi tidak cocok",
+                                        msg: "confirm_pass_match".trans(context),
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.BOTTOM,
                                         timeInSecForIosWeb: 1,
@@ -673,7 +673,7 @@ class _ModalForgotPasswordSuccessCardState extends State<ModalForgotPasswordSucc
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.center,
-                                child: Text("Password Has Been Created",
+                                child: Text("password_created".trans(context),
                                     textAlign: TextAlign.center,
                                     style: blackFontStyle.copyWith(fontSize: 20, fontWeight: FontWeight.w700)),
                               ),
@@ -683,12 +683,12 @@ class _ModalForgotPasswordSuccessCardState extends State<ModalForgotPasswordSucc
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.centerLeft,
-                                child: Text("To log in to your account, click the Sign in button and enter your email along with your new password.",
+                                child: Text("to_login".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400)),
                               ),
                               SizedBox(height: 20),
-                              ButtonCard("Sign In", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                              ButtonCard("signin".trans(context), widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
                                 Navigator.of(context).pop(false);
                               }),
                               SizedBox(height: 5),
@@ -771,7 +771,7 @@ class _ModalClockInSuccessCardState extends State<ModalClockInSuccessCard> {
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.center,
-                                child: Text("Clock-In Successful!",
+                                child: Text("clockin_success".trans(context),
                                     textAlign: TextAlign.center,
                                     style: blackFontStyle.copyWith(fontSize: 20, fontWeight: FontWeight.w700)),
                               ),
@@ -781,13 +781,13 @@ class _ModalClockInSuccessCardState extends State<ModalClockInSuccessCard> {
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.centerLeft,
-                                child: Text("You’re all set! Your clock-in was successful. Head over to your dashboard to see your assigned tasks.",
+                                child: Text("clockin_success_notes".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400)),
                               ),
                               SizedBox(height: 20),
-                              ButtonCard("Go To Attendance Page", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
-                                Get.to(MainPage(index_: 2));
+                              ButtonCard("goto_attendance".trans(context), widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                                Get.to(MainPage(token: widget.token, index_: 2));
                               }),
                               SizedBox(height: 5),
                             ],
@@ -869,7 +869,7 @@ class _ModalClockOutSuccessCardState extends State<ModalClockOutSuccessCard> {
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.center,
-                                child: Text("Clock-Out Successful!",
+                                child: Text("clockout_success".trans(context),
                                     textAlign: TextAlign.center,
                                     style: blackFontStyle.copyWith(fontSize: 20, fontWeight: FontWeight.w700)),
                               ),
@@ -879,13 +879,13 @@ class _ModalClockOutSuccessCardState extends State<ModalClockOutSuccessCard> {
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.centerLeft,
-                                child: Text("You’ve officially clocked out for the day. Thank you for your hard work! Time to relax and enjoy your break.",
+                                child: Text("clockout_success_notes".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400)),
                               ),
                               SizedBox(height: 20),
-                              ButtonCard("Close Message", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
-                                Get.to(MainPage());
+                              ButtonCard("close_message".trans(context), widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                                Get.to(MainPage(token: widget.token));
                               }),
                               SizedBox(height: 5),
                             ],
@@ -967,7 +967,7 @@ class _ModalExportPDFSuccessCardState extends State<ModalExportPDFSuccessCard> {
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.center,
-                                child: Text("Export As PDF Successful!",
+                                child: Text("export_pdf_success".trans(context),
                                     textAlign: TextAlign.center,
                                     style: blackFontStyle.copyWith(fontSize: 20, fontWeight: FontWeight.w700)),
                               ),
@@ -977,13 +977,13 @@ class _ModalExportPDFSuccessCardState extends State<ModalExportPDFSuccessCard> {
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.centerLeft,
-                                child: Text("Your data has been exported as a PDF. Download it now!",
+                                child: Text("export_pdf_success_notes".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400)),
                               ),
                               SizedBox(height: 20),
-                              ButtonCard("Close Message", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
-                                Get.to(MainPage(index_: 2));
+                              ButtonCard("close_message".trans(context), widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                                Get.to(MainPage(token: widget.token, index_: 2));
                               }),
                               SizedBox(height: 5),
                             ],
@@ -1034,6 +1034,58 @@ class _ModalClockOutCardState extends State<ModalClockOutCard> {
 
   bool isLoading = false;
 
+  String? _timeString;
+  String? _hoursString;
+
+  @override
+  void initState() {
+
+    _timeString = _formatDateTime(DateTime.now());
+    Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
+    super.initState();
+  }
+
+  void _getTime() async {
+    final DateTime now = DateTime.now();
+    final String formattedDateTime = _formatDateTime(now);
+    final String formattedDateTime2 = _formatDateTime2(now);
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? clockin = await prefs.getString('clockin');
+
+    if(clockin != null){
+      var clockin_temp = clockin.split(":");
+      double hours = double.parse(clockin_temp[0]);
+      double minutes = double.parse(clockin_temp[1]);
+      double seconds = double.parse(clockin_temp[2]);
+
+      var timeHehe = formattedDateTime2.split(":");
+      double hours_ = double.parse(timeHehe[0]);
+      double minutes_ = double.parse(timeHehe[1]);
+      double seconds_ = double.parse(timeHehe[2]);
+
+      double fixHours = hours_ - hours;
+      double fixMinutes = minutes_ - minutes;
+      double fixSeconds = seconds_ - seconds;
+
+      setState(() {
+        _hoursString = "${fixHours}:${(fixMinutes < 0) ? 0 : fixMinutes}:${(fixSeconds < 0) ? 0 : fixSeconds}";
+      });
+    }
+
+    setState(() {
+      _timeString = formattedDateTime;
+    });
+  }
+
+  String _formatDateTime(DateTime dateTime) {
+    return intl.DateFormat('h:mm:ss a').format(dateTime);
+  }
+
+  String _formatDateTime2(DateTime dateTime) {
+    return intl.DateFormat('hh:mm:ss').format(dateTime);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -1066,7 +1118,7 @@ class _ModalClockOutCardState extends State<ModalClockOutCard> {
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.center,
-                                child: Text("Confirm Clockout",
+                                child: Text("confirm_clockout".trans(context),
                                     textAlign: TextAlign.center,
                                     style: blackFontStyle.copyWith(fontSize: 20, fontWeight: FontWeight.w700)),
                               ),
@@ -1076,7 +1128,7 @@ class _ModalClockOutCardState extends State<ModalClockOutCard> {
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.centerLeft,
-                                child: Text("Once you clock out, you won’t be able to edit this time. Please double-check your hours before proceeding.",
+                                child: Text("confirm_clockout_notes".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400)),
                               ),
@@ -1089,8 +1141,8 @@ class _ModalClockOutCardState extends State<ModalClockOutCard> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    TimeCard((widget.width - 2*16)/2 - 5, "Clock In", "00:00"),
-                                    TimeCard((widget.width - 2*16)/2 - 5, "Clock Out", "00:00"),
+                                    TimeCard((widget.width - 2*16)/2 - 5, "clock_out".trans(context), "${_timeString}"),
+                                    TimeCard((widget.width - 2*16)/2 - 5, "total_hours".trans(context), "${_hoursString}"),
                                   ],
                                 ),
                               ),
@@ -1098,11 +1150,48 @@ class _ModalClockOutCardState extends State<ModalClockOutCard> {
                                   height: 10
                               ),
                               SizedBox(height: 20),
-                              ButtonCard("Yes, Clock Out", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
-                                Get.to(ClockOutCameraPage());
+                              ButtonCard("yes_clockout".trans(context), widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                                if (await Permission.location.isGranted) {
+                                  if(await Permission.locationWhenInUse.serviceStatus.isEnabled || await Permission.locationAlways.serviceStatus.isEnabled || await Permission.location.serviceStatus.isEnabled){
+                                    // Use location.
+                                    var position = await Geolocator.getCurrentPosition(
+                                        forceAndroidLocationManager: false,
+                                        desiredAccuracy: LocationAccuracy.best);
+
+                                    try {
+                                      List<Placemark> placemarks = await placemarkFromCoordinates(
+                                          position!.latitude,
+                                          position!.longitude,
+                                          localeIdentifier: "id"
+                                      );
+
+                                      print("LOKASI " + placemarks[0].toString());
+
+                                      List<String> jj = placemarks[0].subAdministrativeArea!.split(' ');
+
+                                      String kota = placemarks[0].subAdministrativeArea!.replaceAll('Kota ', '').replaceAll(' City', '');
+
+                                      String cc = placemarks[0]!.administrativeArea!;
+
+                                      String provinsi = cc;
+
+                                      String jalan = placemarks[0].street ?? "";
+                                      String country = placemarks[0].country ?? "";
+
+                                      String location = "${jalan} ${kota}, ${provinsi}, ${country}";
+
+                                      Get.to(ClockOutCameraPage(widget.token, "${position!.latitude}", "${position!.longitude}", location));
+
+                                    } catch(err){
+
+                                      // await context.read<PrayerCubit>().getPrayer("", "");
+
+                                    }
+                                  }
+                                }
                               }),
                               SizedBox(height: 15),
-                              ButtonCard("No, Let me check", widget.width - 2 * widget.padding, mainColor, isActive: true, onPressed: () async {
+                              ButtonCard("no_letme".trans(context), widget.width - 2 * widget.padding, mainColor, isActive: true, onPressed: () async {
                                 Navigator.of(context).pop(false);
                               }),
                               SizedBox(height: 5),
@@ -1220,7 +1309,7 @@ class _ModalDefaultInfoCardState extends State<ModalDefaultInfoCard> {
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400)),
                               ),
                               SizedBox(height: 20),
-                              ButtonCard("Close Message", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                              ButtonCard("close_message".trans(context), widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
                                 Navigator.of(context).pop(false);
                               }),
                               SizedBox(height: 5),
@@ -1323,11 +1412,11 @@ class _ModalDefaultSubmitCardState extends State<ModalDefaultSubmitCard> {
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400)),
                               ),
                               SizedBox(height: 20),
-                              ButtonCard("Yes, Submit", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                              ButtonCard("yes_submit".trans(context), widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
                                 widget.onSubmit!();
                               }),
                               SizedBox(height: 15),
-                              ButtonCard("No, Let me check", widget.width - 2 * widget.padding, mainColor, isActive: true, onPressed: () async {
+                              ButtonCard("no_letme".trans(context), widget.width - 2 * widget.padding, mainColor, isActive: true, onPressed: () async {
                                 Navigator.of(context).pop(false);
                               }),
                               SizedBox(height: 5),
@@ -1368,7 +1457,7 @@ class ModalLeaveCategoryCard extends StatefulWidget {
   final String token;
   final double width;
   final double padding;
-  final ValueChanged<String>? onSelected;
+  final ValueChanged<List<String>>? onSelected;
 
   ModalLeaveCategoryCard(this.token, this.width, this.padding, {this.onSelected});
 
@@ -1386,13 +1475,19 @@ class _ModalLeaveCategoryCardState extends State<ModalLeaveCategoryCard> {
     "Personal Purpose",
   ];
 
-  String? selectedData;
+  @override
+  void initState() {
+    context.read<LeavesTypesCubit>().getLeavesTypes(widget.token);
+    super.initState();
+  }
+
+  List<String>? selectedData;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: widget.width,
-      height: MediaQuery.of(context).size.height * 58/100,
+      height: MediaQuery.of(context).size.height * 40/100,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))
@@ -1406,26 +1501,28 @@ class _ModalLeaveCategoryCardState extends State<ModalLeaveCategoryCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Leave Category",
+                  "leave_category".trans(context),
                   textAlign: TextAlign.start,
                   style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
                 SizedBox(height: 3),
                 Text(
-                  "Select Leave Category",
+                  "select_category".trans(context),
                   textAlign: TextAlign.start,
                   style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                 ),
                 SizedBox(height: 15),
-                Column(
-                  children: listData.map((e) => itemCategory(e, (selectedData == e), onSelected: (){
-                    setState((){
-                      selectedData = e;
-                    });
-                  })).toList()
+                BlocBuilder<LeavesTypesCubit, LeavesTypesState>(
+                    builder: (context, state) => (state is LeavesTypesLoaded) ? (state.data != null && state.data!.isNotEmpty) ? Column(
+                        children: state.data!.map((e) => itemCategory(e, ((selectedData != null) && selectedData!.contains("${e.id}")), onSelected: (){
+                          setState((){
+                            selectedData = ["${e.id}", "${e.title}"];
+                          });
+                        })).toList()
+                    ) : SizedBox() : loadingIndicator
                 ),
                 SizedBox(height: 15),
-                ButtonCard("Submit", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                ButtonCard("submit".trans(context), widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
                   if(selectedData != null){
                     widget.onSelected!(selectedData!);
                     Navigator.of(context).pop(false);
@@ -1441,7 +1538,7 @@ class _ModalLeaveCategoryCardState extends State<ModalLeaveCategoryCard> {
     );
   }
 
-  Widget itemCategory(String title, bool isSelected, {Function? onSelected}){
+  Widget itemCategory(LeavesTypes data, bool isSelected, {Function? onSelected}){
     return InkWell(
       onTap: (){
         onSelected!();
@@ -1459,7 +1556,7 @@ class _ModalLeaveCategoryCardState extends State<ModalLeaveCategoryCard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "${title}",
+                "${data.title}",
                 textAlign: TextAlign.start,
                 style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
               ),
@@ -1476,7 +1573,7 @@ class ModalLeaveCalendarCard extends StatefulWidget {
   final String token;
   final double width;
   final double padding;
-  final ValueChanged<String>? onSelected;
+  final ValueChanged<List<String>>? onSelected;
 
   ModalLeaveCalendarCard(this.token, this.width, this.padding, {this.onSelected});
 
@@ -1490,11 +1587,71 @@ class _ModalLeaveCalendarCardState extends State<ModalLeaveCalendarCard> {
 
   String? selectedData;
 
+  String _selectedDate = '';
+  String _dateCount = '';
+  String _range = '';
+  String _rangeCount = '';
+
+  String? startDate, endDate, startDay, endDay, selectedStartDate, selectedEndDate;
+
+  /// The method for [DateRangePickerSelectionChanged] callback, which will be
+  /// called whenever a selection changed on the date picker widget.
+  void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
+    /// The argument value will return the changed date as [DateTime] when the
+    /// widget [SfDateRangeSelectionMode] set as single.
+    ///
+    /// The argument value will return the changed dates as [List<DateTime>]
+    /// when the widget [SfDateRangeSelectionMode] set as multiple.
+    ///
+    /// The argument value will return the changed range as [PickerDateRange]
+    /// when the widget [SfDateRangeSelectionMode] set as range.
+    ///
+    /// The argument value will return the changed ranges as
+    /// [List<PickerDateRange] when the widget [SfDateRangeSelectionMode] set as
+    /// multi range.
+    setState(() {
+      if (args.value is PickerDateRange) {
+        _range = '${intl.DateFormat('dd/MM/yyyy').format(args.value.startDate)} -'
+        // ignore: lines_longer_than_80_chars
+            ' ${intl.DateFormat('dd/MM/yyyy').format(args.value.endDate ?? args.value.startDate)}';
+        startDate = '${intl.DateFormat('dd MMMM').format(args.value.startDate)}';
+        endDate = '${intl.DateFormat('dd MMMM').format(args.value.endDate)}';
+
+        startDay = '${intl.DateFormat('EEEE').format(args.value.startDate)}';
+        endDay = '${intl.DateFormat('EEEE').format(args.value.endDate)}';
+
+        selectedStartDate = '${intl.DateFormat('yyyy-MM-dd').format(args.value.startDate)}';
+        selectedEndDate = '${intl.DateFormat('yyyy-MM-dd').format(args.value.endDate)}';
+      } else if (args.value is DateTime) {
+        _selectedDate = args.value.toString();
+      } else if (args.value is List<DateTime>) {
+        _dateCount = args.value.length.toString();
+      } else {
+        _rangeCount = args.value.length.toString();
+      }
+    });
+  }
+
+
+  @override
+  void initState() {
+    startDate = intl.DateFormat('dd MMMM').format(DateTime.now().subtract(const Duration(days: 1)));
+    endDate = intl.DateFormat('dd MMMM').format(DateTime.now().add(const Duration(days: 1)));
+
+    startDay = intl.DateFormat('EEEE').format(DateTime.now().subtract(const Duration(days: 1)));
+    endDay = intl.DateFormat('EEEE').format(DateTime.now().add(const Duration(days: 1)));
+
+    selectedStartDate = '${intl.DateFormat('yyyy-MM-dd').format(DateTime.now().subtract(const Duration(days: 1)))}';
+    selectedEndDate = '${intl.DateFormat('yyyy-MM-dd').format(DateTime.now().add(const Duration(days: 1)))}';
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       width: widget.width,
-      height: MediaQuery.of(context).size.height * 82/100,
+      height: MediaQuery.of(context).size.height * 70/100,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))
@@ -1508,13 +1665,13 @@ class _ModalLeaveCalendarCardState extends State<ModalLeaveCalendarCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Leave Duration",
+                  "leave_duration".trans(context),
                   textAlign: TextAlign.start,
                   style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
                 SizedBox(height: 3),
                 Text(
-                  "Choose a date of duration",
+                  "choose_date".trans(context),
                   textAlign: TextAlign.start,
                   style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                 ),
@@ -1535,13 +1692,13 @@ class _ModalLeaveCalendarCardState extends State<ModalLeaveCalendarCard> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "01 Desember",
+                              "${startDate ?? '-'}",
                               textAlign: TextAlign.center,
                               style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                             ),
                             SizedBox(height: 3),
                             Text(
-                              "Monday",
+                              "${startDay ?? '-'}",
                               textAlign: TextAlign.center,
                               style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                             ),
@@ -1566,13 +1723,13 @@ class _ModalLeaveCalendarCardState extends State<ModalLeaveCalendarCard> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "07 Desember",
+                              "${endDate ?? '-'}",
                               textAlign: TextAlign.center,
                               style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                             ),
                             SizedBox(height: 3),
                             Text(
-                              "Sunday",
+                              "${endDay ?? '-'}",
                               textAlign: TextAlign.center,
                               style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                             ),
@@ -1582,15 +1739,32 @@ class _ModalLeaveCalendarCardState extends State<ModalLeaveCalendarCard> {
                   ]
                 ),
                 SizedBox(height: 5),
-                CalendarCard(),
-                SizedBox(height: 25),
+                SfDateRangePicker(
+                  backgroundColor: Colors.white,
+                  selectionColor: mainColor.withOpacity(0.5),
+                  startRangeSelectionColor: mainColor,
+                  endRangeSelectionColor: mainColor,
+                  rangeSelectionColor: mainColor.withOpacity(0.2),
+                  todayHighlightColor: mainColor,
+                  headerStyle: DateRangePickerHeaderStyle(
+                    backgroundColor: Colors.white,
+                  ),
+                  onSelectionChanged: _onSelectionChanged,
+                  selectionMode: DateRangePickerSelectionMode.range,
+                  initialSelectedRange: PickerDateRange(
+                      DateTime.now().subtract(const Duration(days: 1)),
+                      DateTime.now().add(const Duration(days: 1))
+                  ),
+                ),
+                // CalendarCard(),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ButtonCard("Reset", (widget.width - 2 * widget.padding)/2 - 15, mainColor, isActive: true, onPressed: () async {
+                    ButtonCard("reset".trans(context), (widget.width - 2 * widget.padding)/2 - 15, mainColor, isActive: true, onPressed: () async {
 
                     }),
-                    ButtonCard("Show", (widget.width - 2 * widget.padding)/2 - 15, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                    ButtonCard("show".trans(context), (widget.width - 2 * widget.padding)/2 - 15, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                      widget.onSelected!(["${selectedStartDate}", "${selectedEndDate}"]);
                       Navigator.of(context).pop(false);
                     }),
                   ]
@@ -1651,13 +1825,13 @@ class _ModalReimburseCategoryCardState extends State<ModalReimburseCategoryCard>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Leave Category",
+                  "leave_category".trans(context),
                   textAlign: TextAlign.start,
                   style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
                 SizedBox(height: 3),
                 Text(
-                  "Select Leave Category",
+                  "select_category".trans(context),
                   textAlign: TextAlign.start,
                   style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                 ),
@@ -1670,7 +1844,7 @@ class _ModalReimburseCategoryCardState extends State<ModalReimburseCategoryCard>
                     })).toList()
                 ),
                 SizedBox(height: 15),
-                ButtonCard("Submit", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                ButtonCard("submit".trans(context), widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
                   if(selectedData != null){
                     widget.onSelected!(selectedData!);
                     Navigator.of(context).pop(false);
@@ -1758,13 +1932,13 @@ class _ModalOvertimeCategoryCardState extends State<ModalOvertimeCategoryCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Overtime Category",
+                  "overtime_category".trans(context),
                   textAlign: TextAlign.start,
                   style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
                 SizedBox(height: 3),
                 Text(
-                  "Select Overtime Category",
+                  "select_category".trans(context),
                   textAlign: TextAlign.start,
                   style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                 ),
@@ -1777,7 +1951,7 @@ class _ModalOvertimeCategoryCardState extends State<ModalOvertimeCategoryCard> {
                     })).toList()
                 ),
                 SizedBox(height: 15),
-                ButtonCard("Submit", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                ButtonCard("submit".trans(context), widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
                   if(selectedData != null){
                     widget.onSelected!(selectedData!);
                     Navigator.of(context).pop(false);
@@ -1828,7 +2002,7 @@ class ModalOvertimeCalendarCard extends StatefulWidget {
   final String token;
   final double width;
   final double padding;
-  final ValueChanged<String>? onSelected;
+  final ValueChanged<List<String>>? onSelected;
 
   ModalOvertimeCalendarCard(this.token, this.width, this.padding, {this.onSelected});
 
@@ -1846,7 +2020,7 @@ class _ModalOvertimeCalendarCardState extends State<ModalOvertimeCalendarCard> {
   Widget build(BuildContext context) {
     return Container(
       width: widget.width,
-      height: MediaQuery.of(context).size.height * 82/100,
+      // height: MediaQuery.of(context).size.height * 82/100,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))
@@ -1860,13 +2034,13 @@ class _ModalOvertimeCalendarCardState extends State<ModalOvertimeCalendarCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Leave Duration",
+                  "overtime_duration".trans(context),
                   textAlign: TextAlign.start,
                   style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
                 SizedBox(height: 3),
                 Text(
-                  "Choose a date of duration",
+                  "choose_date".trans(context),
                   textAlign: TextAlign.start,
                   style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                 ),
@@ -2005,7 +2179,7 @@ class _ModalUpdatePasswordCardState extends State<ModalUpdatePasswordCard> {
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.center,
-                                child: Text("Update Password",
+                                child: Text("update_password".trans(context),
                                     textAlign: TextAlign.center,
                                     style: blackFontStyle.copyWith(fontSize: 20, fontWeight: FontWeight.w700)),
                               ),
@@ -2015,16 +2189,16 @@ class _ModalUpdatePasswordCardState extends State<ModalUpdatePasswordCard> {
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.centerLeft,
-                                child: Text("Are you sure you want to update your password? To ensure your account safety we will send verification code to your email",
+                                child: Text("are_you_sure_update_password".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400)),
                               ),
                               SizedBox(height: 20),
-                              ButtonCard("Yes, Update Password", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                              ButtonCard("yes_update".trans(context), widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
                                 widget.onSubmit!();
                               }),
                               SizedBox(height: 20),
-                              ButtonCard("No, Let me check", widget.width - 2 * widget.padding, mainColor, isActive: true, colorGradient: buttonGradient, onPressed: () async {
+                              ButtonCard("no_letme".trans(context), widget.width - 2 * widget.padding, mainColor, isActive: true, colorGradient: buttonGradient, onPressed: () async {
                                 Navigator.of(context).pop(false);
                               }),
                               SizedBox(height: 5),
@@ -2109,7 +2283,7 @@ class _ModalPasswordSuccessCardState extends State<ModalPasswordSuccessCard> {
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.center,
-                                child: Text("Password Has Been Created",
+                                child: Text("password_has_created".trans(context),
                                     textAlign: TextAlign.center,
                                     style: blackFontStyle.copyWith(fontSize: 20, fontWeight: FontWeight.w700)),
                               ),
@@ -2119,12 +2293,12 @@ class _ModalPasswordSuccessCardState extends State<ModalPasswordSuccessCard> {
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.centerLeft,
-                                child: Text("Congratulations! you have been updated your password successfully! you can now access your account with your new password",
+                                child: Text("password_has_created_notes".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400)),
                               ),
                               SizedBox(height: 20),
-                              ButtonCard("Sign In", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                              ButtonCard("signin".trans(context), widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
                                 Navigator.of(context).pop(false);
                               }),
                               SizedBox(height: 5),
@@ -2209,7 +2383,7 @@ class _ModalTerminationCardState extends State<ModalTerminationCard> {
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.center,
-                                child: Text("Termination Info",
+                                child: Text("termination_info".trans(context),
                                     textAlign: TextAlign.center,
                                     style: blackFontStyle.copyWith(fontSize: 20, fontWeight: FontWeight.w700)),
                               ),
@@ -2219,12 +2393,12 @@ class _ModalTerminationCardState extends State<ModalTerminationCard> {
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.centerLeft,
-                                child: Text("Your account gets Termination because you get Penalty Points. Everything about Termination Information will be emailed to Adam@work.com or contact HDR Staff.",
+                                child: Text("termination_info_notes".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400)),
                               ),
                               SizedBox(height: 20),
-                              ButtonCard("Close Message", widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                              ButtonCard("close_message".trans(context), widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
                                 Navigator.of(context).pop(false);
                               }),
                               SizedBox(height: 5),

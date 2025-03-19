@@ -24,13 +24,13 @@ class _OvertimeSummaryCardState extends State<OvertimeSummaryCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Total Overtime",
+              "total_overtime".trans(context),
               textAlign: TextAlign.start,
               style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
             ),
             SizedBox(height: 3),
             Text(
-              "Paid Period 25 Nov 2024 - 25 Dec 2024",
+              "${"paid_period".trans(context)} 25 Nov 2024 - 25 Dec 2024",
               textAlign: TextAlign.start,
               style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
             ),
@@ -38,8 +38,8 @@ class _OvertimeSummaryCardState extends State<OvertimeSummaryCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TimeCard((widget.width - 2*16)/2 - 5, "Today Overtime", "00:00"),
-                TimeCard((widget.width - 2*16)/2 - 5, "Total Period", "00:00"),
+                TimeCard((widget.width - 2*16)/2 - 5, "today_overtime".trans(context), "00:00"),
+                TimeCard((widget.width - 2*16)/2 - 5, "total_period".trans(context), "00:00"),
               ],
             ),
           ]
@@ -55,38 +55,43 @@ class OvertimeItemCard extends StatelessWidget {
   final String? priority;
   final String? category;
   final String? status;
-  final String? type;
+  final String? approved_at;
+  final String? rejected_at;
 
-  OvertimeItemCard(this.width, {this.date, this.overtime_date, this.priority, this.category, this.status, this.type});
+  OvertimeItemCard(this.width, {this.date, this.overtime_date, this.priority, this.category, this.status, this.approved_at, this.rejected_at});
 
   Color? colorStatus;
   IconData? iconStatus;
+  String? textStatus;
 
   @override
   Widget build(BuildContext context) {
 
-    if(type == "request"){
+    if(status == "pending"){
       colorStatus = Colors.orange;
       iconStatus = Icons.access_time;
+      textStatus = "waiting_approval".trans(context);
     }
 
-    if(type == "approved"){
+    if(status == "approved"){
       colorStatus = Colors.green;
       iconStatus = Icons.check_circle;
+      textStatus = "${"approved_at".trans(context)}${approved_at}";
     }
 
-    if(type == "rejected"){
+    if(status == "rejected"){
       colorStatus = Colors.red;
       iconStatus = Icons.cancel;
+      textStatus = "${"rejected_at".trans(context)}${rejected_at}";
     }
 
     return InkWell(
         onTap:(){
-          if(type == "rejected"){
+          if(status == "rejected"){
             modalBottomSheetRefusal(context, "");
           }
 
-          if(type == "approved"){
+          if(status == "approved"){
             modalBottomSheetApproved(context, "");
           }
         },
@@ -128,7 +133,7 @@ class OvertimeItemCard extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Overtime Date",
+                                    "overtime_date".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                                   ),
@@ -143,7 +148,7 @@ class OvertimeItemCard extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Priority",
+                                    "priority".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                                   ),
@@ -158,7 +163,7 @@ class OvertimeItemCard extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Category",
+                                    "category".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                                   ),
@@ -178,7 +183,7 @@ class OvertimeItemCard extends StatelessWidget {
                         Icon(iconStatus, size: 12, color: colorStatus),
                         SizedBox(width: 6),
                         Text(
-                          "${status}",
+                          "${textStatus}",
                           textAlign: TextAlign.start,
                           style: blackFontStyle.copyWith(fontSize: 12, color: colorStatus, fontWeight: FontWeight.w400),
                         ),
@@ -202,7 +207,7 @@ class OvertimeItemCard extends StatelessWidget {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (bc){
-          return ModalDefaultInfoCard(token, fullWidth, 16, "Refusal of Overtime Request", "Overtime application denied because", "img_leave.png");
+          return ModalDefaultInfoCard(token, fullWidth, 16, "refusal_overtime".trans(contexts), "refusal_overtime_notes".trans(contexts), "img_leave.png");
         });
   }
 
@@ -218,7 +223,7 @@ class OvertimeItemCard extends StatelessWidget {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (bc){
-          return ModalDefaultInfoCard(token, fullWidth, 16, "Approve of Overtime Request", "Congrats your Overtime application is approved!", "img_leave.png");
+          return ModalDefaultInfoCard(token, fullWidth, 16, "approval_overtime".trans(contexts), "approval_overtime_notes".trans(contexts), "img_leave.png");
         });
   }
 }

@@ -1,7 +1,9 @@
 part of '../pages.dart';
 
 class AttendancePage extends StatefulWidget {
-  const AttendancePage({super.key});
+  final String token;
+
+  AttendancePage(this.token);
 
   @override
   State<AttendancePage> createState() => _AttendancePageState();
@@ -9,12 +11,39 @@ class AttendancePage extends StatefulWidget {
 
 class _AttendancePageState extends State<AttendancePage> {
 
-  List<List<String>> listData = [
-    ["22 December 2024", "08:00:00", "09:00 AM", "05:00 PM"],
-    ["21 December 2024", "08:00:00", "09:00 AM", "05:00 PM"],
-    ["20 December 2024", "08:00:00", "09:00 AM", "05:00 PM"],
-    ["19 December 2024", "08:00:00", "09:00 AM", "05:00 PM"],
-  ];
+  Future<void> getDataAttendance() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? employee_id = await prefs.getString('employee_id');
+    // 2025-02-24
+    DateTime now = DateTime.now();
+    String formattedDate = intl.DateFormat('yyyy-MM').format(now);
+
+    String startDate = "${formattedDate}-01";
+    String endDate = "${formattedDate}-31";
+
+    if(employee_id != null){
+      await context.read<AttendanceHistoryCubit>().getAttendanceHistory(widget.token, employee_id, startDate, endDate);
+    } else {
+
+    }
+  }
+
+  @override
+  void initState() {
+    getDataAttendance();
+
+
+
+    super.initState();
+  }
+
+  Future<List<String?>> getDataShared() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? clockin = await prefs.getString('clockin');
+    String? clockout = await prefs.getString('clockout');
+
+    return [clockin, clockout];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +68,13 @@ class _AttendancePageState extends State<AttendancePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Let’s Clock-In!",
+                      "lets_clockin".trans(context),
                       textAlign: TextAlign.start,
                       style: blackFontStyle.copyWith(fontSize: 24, color: Colors.white, fontWeight: FontWeight.w600),
                     ),
                     SizedBox(height: 5),
                     Text(
-                      "Don’t miss your clock in schedule",
+                      "sub_lets_clockin".trans(context),
                       textAlign: TextAlign.start,
                       style: blackFontStyle.copyWith(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w400),
                     ),
@@ -64,63 +93,124 @@ class _AttendancePageState extends State<AttendancePage> {
             ),
           ),
           SizedBox(height: 10),
-          WorkingCard("", defaultWidth, isClockedIn: true),
+          FutureBuilder(
+            future: getDataShared(),
+            builder: (context, snapshot) {
+              if(snapshot.connectionState == ConnectionState.done){
+                return WorkingCard(widget.token, defaultWidth, clockin: snapshot.data![0], clockout: snapshot.data![1],);
+              } else {
+                return loadingIndicator;
+              }
+            }
+          ),
           SizedBox(height: 20),
-          (listData.isEmpty) ? Container(
-            width: defaultWidth,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "No Working Time Available",
-                    textAlign: TextAlign.start,
-                    style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(height: 5),
-                  Text(
-                    "It looks like you don’t have any working time in this period. Don’t worry, this space will be updated as new working time submitted.",
-                    textAlign: TextAlign.start,
-                    style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
-                  ),
-                  SizedBox(height: 140),
-                ]
-            ),
-          ) : Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: defaultWidth,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "History of Work",
-                          textAlign: TextAlign.start,
-                          style: blackFontStyle.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
-                        ),
-                        InkWell(
-                          onTap: (){
-                            Get.to(AttendantHistoryPage());
-                          },
-                          child: Text(
-                            "See More",
-                            textAlign: TextAlign.end,
-                            style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w600, color: mainColor),
-                          ),
-                        )
-                      ]
-                  ),
+          BlocBuilder<AttendanceHistoryCubit, AttendanceHistoryState>(
+              builder: (context, state) => (state is AttendanceHistoryLoaded) ? (state.data != null && state.data!.attendance_records != null && state.data!.attendance_records!.isNotEmpty) ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: defaultWidth,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "history_of_work".trans(context),
+                              textAlign: TextAlign.start,
+                              style: blackFontStyle.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
+                            ),
+                            InkWell(
+                              onTap: (){
+                                Get.to(AttendantHistoryPage(widget.token));
+                              },
+                              child: Text(
+                                "see_more".trans(context),
+                                textAlign: TextAlign.end,
+                                style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w600, color: mainColor),
+                              ),
+                            )
+                          ]
+                      ),
+                    ),
+                    SizedBox(height: 15),
+                    Column(
+                        children: state.data!.attendance_records!.map((e) {
+
+                          String? _hoursString;
+
+                          if(e.clock_out != null){
+                            var clockin_temp = e.clock_in!.split(":");
+                            double hours = double.parse(clockin_temp[0]);
+                            double minutes = double.parse(clockin_temp[1]);
+                            double seconds = double.parse(clockin_temp[2]);
+
+                            var timeHehe = e.clock_out!.split(":");
+                            double hours_ = double.parse(timeHehe[0]);
+                            double minutes_ = double.parse(timeHehe[1]);
+                            double seconds_ = double.parse(timeHehe[2]);
+
+                            double fixHours = hours_ - hours;
+                            double fixMinutes = minutes_ - minutes;
+                            double fixSeconds = seconds_ - seconds;
+
+                            _hoursString = "${fixHours}:${(fixMinutes < 0) ? 0 : fixMinutes}:${(fixSeconds < 0) ? 0 : fixSeconds}";
+                          }
+
+                          DateTime appliedDate = new DateFormat("yyyy-MM-dd").parse(e.date ?? "");
+                          String applied_date = DateFormat("dd MMMM yyyy").format(appliedDate);
+
+                          return AttendantCard(widget.token, e, defaultWidth, date: applied_date, total_hours: _hoursString, clock_in: e.clock_in, clock_out: e.clock_out);
+                        }).toList()
+                    )
+                  ]
+              ) : Container(
+                width: defaultWidth,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                SizedBox(height: 15),
-                Column(
-                  children: listData.map((e) => AttendantCard(defaultWidth, date: e[0], total_hours: e[1], clock_in: e[2], clock_out: e[3])).toList()
+                padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "no_working".trans(context),
+                        textAlign: TextAlign.start,
+                        style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        "desc_working".trans(context),
+                        textAlign: TextAlign.start,
+                        style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                      ),
+                      SizedBox(height: 140),
+                    ]
                 ),
-              ]
+              ) : Container(
+                width: defaultWidth,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "no_working".trans(context),
+                        textAlign: TextAlign.start,
+                        style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        "desc_working".trans(context),
+                        textAlign: TextAlign.start,
+                        style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                      ),
+                      SizedBox(height: 140),
+                    ]
+                ),
+              )
           ),
           SizedBox(height: 50),
         ],

@@ -59,7 +59,7 @@ class _ReimbursePageState extends State<ReimbursePage> {
                     )
                 ),
                 Text(
-                  "Reimbursement",
+                  "reimbursement".trans(context),
                   textAlign: TextAlign.center,
                   style: blackFontStyle.copyWith(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w600),
                 ),
@@ -96,7 +96,7 @@ class _ReimbursePageState extends State<ReimbursePage> {
                       alignment: Alignment.center,
                       padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                       child: Text(
-                        "Request",
+                        "request".trans(context),
                         textAlign: TextAlign.center,
                         style: blackFontStyle.copyWith(fontSize: 12, color: (selectedTab == "Request") ? Colors.white : blackColor, fontWeight: FontWeight.w600),
                       ),
@@ -119,7 +119,7 @@ class _ReimbursePageState extends State<ReimbursePage> {
                             alignment: Alignment.center,
                             padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                             child: Text(
-                              "Status",
+                              "status".trans(context),
                               textAlign: TextAlign.center,
                               style: blackFontStyle.copyWith(fontSize: 12, color: (selectedTab == "Status") ? Colors.white : blackColor, fontWeight: FontWeight.w600),
                             ),
@@ -167,13 +167,13 @@ class _ReimbursePageState extends State<ReimbursePage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "No Reimburse Submitted!",
+                          "no_reimbursement".trans(context),
                           textAlign: TextAlign.start,
                           style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                         ),
                         SizedBox(height: 5),
                         Text(
-                          "Ready to catch some fresh air? Click “Reimbursement Request” and \ntake that well-deserved break!",
+                          "ready_reimbursement".trans(context),
                           textAlign: TextAlign.start,
                           style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                         ),
@@ -199,13 +199,13 @@ class _ReimbursePageState extends State<ReimbursePage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "No Reimburse Submitted!",
+                          "no_reimbursement".trans(context),
                           textAlign: TextAlign.start,
                           style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                         ),
                         SizedBox(height: 5),
                         Text(
-                          "Ready to catch some fresh air? Click “Reimbursement Request” and \ntake that well-deserved break!",
+                          "ready_reimbursement".trans(context),
                           textAlign: TextAlign.start,
                           style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                         ),
@@ -233,7 +233,7 @@ class _ReimbursePageState extends State<ReimbursePage> {
             color: Colors.white,
             boxShadow: boxShadow
         ),
-        child: ButtonCard("Reimbursement Request", defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
+        child: ButtonCard("reimbursement_request".trans(context), defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
           Get.to(ReimburseCreatePage());
         }),
       ),

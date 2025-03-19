@@ -1,6 +1,12 @@
 part of '../../pages.dart';
 
 class ClockInCameraPage extends StatefulWidget {
+  final String token;
+  final String latitude;
+  final String longitude;
+  final String location;
+
+  ClockInCameraPage(this.token, this.latitude, this.longitude, this.location);
 
   @override
   State<ClockInCameraPage> createState() => _ClockInCameraPageState();
@@ -12,14 +18,21 @@ class _ClockInCameraPageState extends State<ClockInCameraPage> {
 
   @override
   void initState() {
+
     controller = FaceCameraController(
       autoCapture: true,
       defaultCameraLens: CameraLens.front,
       onCapture: (File? image) {
-        Get.to(ClockInDetailPage(image!));
+        Get.to(ClockInDetailPage(widget.token, widget.latitude, widget.longitude, widget.location, image!));
       },
     );
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -33,7 +46,7 @@ class _ClockInCameraPageState extends State<ClockInCameraPage> {
       isBackInvert: false,
       isFrontAppBar: true,
       marginAppBar: 65,
-      title: "Selfie To Clock In",
+      title: "selfie_to".trans(context),
       onBackButtonPressed: (){
         Get.back();
       },
@@ -41,7 +54,7 @@ class _ClockInCameraPageState extends State<ClockInCameraPage> {
       child: SmartFaceCamera(
         controller: controller,
         showControls: false,
-        message: 'Center your face in the square',
+        message: 'center_your'.trans(context),
       )
     );
   }

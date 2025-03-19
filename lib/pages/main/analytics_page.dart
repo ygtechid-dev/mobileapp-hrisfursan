@@ -31,13 +31,13 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Analytics",
+                      "analytics".trans(context),
                       textAlign: TextAlign.start,
                       style: blackFontStyle.copyWith(fontSize: 24, color: Colors.white, fontWeight: FontWeight.w600),
                     ),
                     SizedBox(height: 5),
                     Text(
-                      "Your working performance",
+                      "desc_analytics".trans(context),
                       textAlign: TextAlign.start,
                       style: blackFontStyle.copyWith(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w400),
                     ),

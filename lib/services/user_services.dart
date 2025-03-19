@@ -142,7 +142,7 @@ class UserServices {
       'dob': user.dob ?? "",
       'first_name': user.first_name ?? "",
       'last_name': user.last_name ?? "",
-      'designation_id': "1",
+      'designation_id': user.designation_id ?? "1",
       'address': user.address ?? "",
     };
 
@@ -171,14 +171,13 @@ class UserServices {
 
   }
 
-  static Future<ApiReturnValue<bool>> forgot_password(String token, String email, {http.MultipartRequest? request}) async {
+  static Future<ApiReturnValue<bool>> forgot_password(String email, {http.MultipartRequest? request}) async {
 
     String url = baseUrl + 'mobile/forgot-password';
 
     if (request == null) {
       request = http.MultipartRequest('POST', Uri.parse(url))
         ..headers["Content-Type"] = "multipart/form-data"
-        ..headers["Authorization"] = "Bearer $token"
         ..headers["Accept"] = "application/json";
     }
 
@@ -210,14 +209,13 @@ class UserServices {
     }
   }
 
-  static Future<ApiReturnValue<bool>> check_token(String token, String email, {http.MultipartRequest? request}) async {
+  static Future<ApiReturnValue<bool>> check_token(String email, {http.MultipartRequest? request}) async {
 
     String url = baseUrl + 'mobile/check-reset-token';
 
     if (request == null) {
       request = http.MultipartRequest('POST', Uri.parse(url))
         ..headers["Content-Type"] = "multipart/form-data"
-        ..headers["Authorization"] = "Bearer $token"
         ..headers["Accept"] = "application/json";
     }
 
@@ -250,7 +248,7 @@ class UserServices {
     }
   }
 
-  static Future<ApiReturnValue<bool>> reset_password(String token, String email, String password, String password_confirmation, {http.MultipartRequest? request}) async {
+  static Future<ApiReturnValue<bool>> reset_password(String email, String password, String password_confirmation, {http.MultipartRequest? request}) async {
 
 
     String url = baseUrl + 'mobile/reset-password';
@@ -259,7 +257,6 @@ class UserServices {
     if (request == null) {
       request = http.MultipartRequest('POST', Uri.parse(url))
         ..headers["Content-Type"] = "multipart/form-data"
-        ..headers["Authorization"] = "Bearer $token"
         ..headers["Accept"] = "application/json";
     }
 

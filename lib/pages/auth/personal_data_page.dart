@@ -17,15 +17,21 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
   TextEditingController phoneC = TextEditingController();
   TextEditingController positionC = TextEditingController();
   TextEditingController addressC = TextEditingController();
+  TextEditingController stateC = TextEditingController();
+  TextEditingController countryC = TextEditingController();
+  TextEditingController cityC = TextEditingController();
 
   bool isAgree = false;
   bool isLoading = false;
 
+  bool initDesignation = false;
+
+  List<List<String>> listData = [];
 
   @override
   void initState() {
     super.initState();
-
+    context.read<DesignationCubit>().getDesignations(widget.token);
     phoneC.text = widget.user.phone ?? "";
   }
 
@@ -49,6 +55,8 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
     }
   }
 
+  String? selectedDesignation;
+
   @override
   Widget build(BuildContext context) {
     double defaultWidth = MediaQuery.of(context).size.width - 2*defaultMargin2;
@@ -60,7 +68,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
       isBackInvert: false,
       isFrontAppBar: true,
       marginAppBar: 65,
-      title: "Personal Data",
+      title: "personal_data".trans(context),
         onBackButtonPressed: (){
           Get.back();
         },
@@ -85,7 +93,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                           width: itemWidth,
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "My Personal Data",
+                            "my_personal_data".trans(context),
                             textAlign: TextAlign.start,
                             style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                           ),
@@ -95,7 +103,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                           width: itemWidth,
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "Details about my personal data",
+                            "details_about".trans(context),
                             textAlign: TextAlign.start,
                             style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                           ),
@@ -135,20 +143,19 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                         ),
                         SizedBox(height: 10),
                         Text(
-                          "Upload Photo",
+                          "upload_photo".trans(context),
                           textAlign: TextAlign.center,
                           style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w600),
                         ),
                         SizedBox(height: 5),
                         Text(
-                          "Format should be in .jpeg .png atleast\n800x800px and less than 5MB",
+                          "format_should".trans(context),
                           textAlign: TextAlign.center,
                           style: greyFontStyle.copyWith(fontSize: 10, fontWeight: FontWeight.w400),
                         ),
-
                         FormWithLabelCard(
-                            outerLabelText: "First Name",
-                            hintText: "Input First Name",
+                            outerLabelText: "first_name".trans(context),
+                            hintText: "first_name_input".trans(context),
                             controller: firstNameC,
                             prefixSvg: "${prefixIcons}ic_user.svg",
                             onSaved: (e) {
@@ -160,8 +167,8 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                             filled: true),
                         SizedBox(height: 20),
                         FormWithLabelCard(
-                            outerLabelText: "Last Name",
-                            hintText: "Input Last Name",
+                            outerLabelText: "last_name".trans(context),
+                            hintText: "last_name_input".trans(context),
                             controller: lastNameC,
                             prefixSvg: "${prefixIcons}ic_user.svg",
                             onSaved: (e) {
@@ -173,7 +180,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                             filled: true),
                         SizedBox(height: 20),
                         FormWithLabelCard(
-                            outerLabelText: "Phone Number",
+                            outerLabelText: "phone_number".trans(context),
                             hintText: "081234567890",
                             controller: phoneC,
                             inputType: TextInputType.number,
@@ -187,8 +194,8 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                             filled: true),
                         SizedBox(height: 20),
                         FormWithLabelCard(
-                            outerLabelText: "Date of Birth",
-                            hintText: "Input Date of Birth",
+                            outerLabelText: "date_of_birth".trans(context),
+                            hintText: "date_of_birth".trans(context),
                             controller: dateC,
                             prefixSvg: "${prefixIcons}ic_calendar.svg",
                             readOnly: true,
@@ -203,18 +210,46 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                             },
                             filled: true),
                         SizedBox(height: 20),
-                        FormDropdownCard(
-                            outerLabelText: "Position",
-                            hintText: "Enter Position",
-                            listItem: [],
-                            prefixSvg: "${prefixIcons}ic_position.svg",
-                            onSaved: (e) {
+                        BlocBuilder<DesignationCubit, DesignationState>(
+                            builder: (context, state) {
+                              if (state is DesignationLoaded){
+                                if (state.data != null) {
 
-                            },
-                            validator: (e) {
-                              return simpleValidator(e, null);
-                            },
-                            filled: true),
+                                  if(initDesignation == false){
+                                    listData.clear();
+                                    state.data!.forEach((items){
+                                      var temp = ["${items.id}", "${items.name}"];
+
+                                      listData.add(temp);
+                                    });
+                                    initDesignation = true;
+                                  }
+
+                                  return FormDropdownCard(
+                                      outerLabelText: "position".trans(context),
+                                      hintText: "enter_position".trans(context),
+                                      prefixSvg: "${prefixIcons}ic_position.svg",
+                                      listItem: listData,
+                                      initialValue: listData.isEmpty ? null : listData.firstWhere((e) => e[0] == listData[0]),
+                                      validator: (e) {
+                                        return simpleValidator(e, null);
+                                      },
+                                      filled: true,
+                                      onSaved: (String? newValue) async {
+                                        setState((){
+                                          selectedDesignation = newValue;
+                                        });
+                                      }
+                                  );
+                                } else {
+                                  return SizedBox();
+                                }
+                              } else {
+                                return loadingIndicator;
+                              }
+                            }
+                        ),
+
                       ],
                     )
                 ),
@@ -233,7 +268,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                           width: itemWidth,
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "Address",
+                            "address".trans(context),
                             textAlign: TextAlign.start,
                             style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                           ),
@@ -243,42 +278,16 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                           width: itemWidth,
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "Your current domicile",
+                            "current_domicile".trans(context),
                             textAlign: TextAlign.start,
                             style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                           ),
                         ),
                         SizedBox(height: 20),
-                        FormDropdownCard(
-                            outerLabelText: "Country",
-                            hintText: "Enter Country",
-                            listItem: [],
-                            prefixSvg: "${prefixIcons}ic_location.svg",
-                            onSaved: (e) {
-
-                            },
-                            validator: (e) {
-                              return simpleValidator(e, null);
-                            },
-                            filled: true),
-                        SizedBox(height: 20),
-                        FormDropdownCard(
-                            outerLabelText: "State",
-                            hintText: "Enter State",
-                            listItem: [],
-                            prefixSvg: "${prefixIcons}ic_location.svg",
-                            onSaved: (e) {
-
-                            },
-                            validator: (e) {
-                              return simpleValidator(e, null);
-                            },
-                            filled: true),
-                        SizedBox(height: 20),
-                        FormDropdownCard(
-                            outerLabelText: "City",
-                            hintText: "Enter City",
-                            listItem: [],
+                        FormWithLabelCard(
+                            controller: countryC,
+                            outerLabelText: "country".trans(context),
+                            hintText: "enter_country".trans(context),
                             prefixSvg: "${prefixIcons}ic_location.svg",
                             onSaved: (e) {
 
@@ -289,8 +298,34 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                             filled: true),
                         SizedBox(height: 20),
                         FormWithLabelCard(
-                            outerLabelText: "Full Address",
-                            hintText: "Input Full Address",
+                            controller: stateC,
+                            outerLabelText: "state".trans(context),
+                            hintText: "Enter State".trans(context),
+                            prefixSvg: "${prefixIcons}ic_location.svg",
+                            onSaved: (e) {
+
+                            },
+                            validator: (e) {
+                              return simpleValidator(e, null);
+                            },
+                            filled: true),
+                        SizedBox(height: 20),
+                        FormWithLabelCard(
+                            controller: cityC,
+                            outerLabelText: "city".trans(context),
+                            hintText: "enter_city".trans(context),
+                            prefixSvg: "${prefixIcons}ic_location.svg",
+                            onSaved: (e) {
+
+                            },
+                            validator: (e) {
+                              return simpleValidator(e, null);
+                            },
+                            filled: true),
+                        SizedBox(height: 20),
+                        FormWithLabelCard(
+                            outerLabelText: "full_address".trans(context),
+                            hintText: "full_address_input".trans(context),
                             controller: addressC,
                             minLines: 6,
                             maxLines: 6,
@@ -316,7 +351,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
           color: Colors.white,
           boxShadow: boxShadow
         ),
-        child: ButtonCard("Save", defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, isLoading:isLoading, onPressed: () async {
+        child: ButtonCard("save".trans(context), defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, isLoading:isLoading, onPressed: () async {
           if(firstNameC.text.isNotEmpty && phoneC.text.isNotEmpty && lastNameC.text.isNotEmpty && dateC.text.isNotEmpty){
             setState(() {
               isLoading = true;
@@ -327,7 +362,8 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                 dob: dateC.text,
                 first_name: firstNameC.text,
                 last_name: lastNameC.text,
-                address: "${addressC.text}",
+                designation_id: selectedDesignation,
+                address: "${addressC.text}, ${cityC.text}, ${stateC.text}, ${countryC.text}",
             );
 
             await UserServices.update(widget.token, user).then((result) {
@@ -339,7 +375,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                 });
 
                 Fluttertoast.showToast(
-                    msg: "Berhasil Update Data Personal, Silahkan login",
+                    msg: "success_update".trans(context),
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM,
                     timeInSecForIosWeb: 1,

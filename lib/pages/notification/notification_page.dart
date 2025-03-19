@@ -25,7 +25,7 @@ class _NotificationPageState extends State<NotificationPage> {
       isBackInvert: false,
       isFrontAppBar: true,
       marginAppBar: 65,
-      title: "Notification",
+      title: "notification".trans(context),
       onBackButtonPressed: (){
         Get.back();
       },
@@ -80,7 +80,7 @@ class _NotificationPageState extends State<NotificationPage> {
                     border: OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(0)),
-                    hintText: "Search",
+                    hintText: "search".trans(context),
                     prefixIcon: Padding(
                       padding: const EdgeInsets.only(left: 6.0),
                       child: Icon(Icons.search, color: greyColor, size: 20),

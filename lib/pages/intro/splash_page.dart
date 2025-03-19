@@ -46,6 +46,17 @@ class _SplashPageState extends State<SplashPage> {
   Future<void> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
+    await context.read<LocalCubit>().changeLanguage("id");
+
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('dd MMMM yyyy').format(now);
+
+    var dateBefore = await prefs.getString('date');
+
+    if(dateBefore != formattedDate){
+      await prefs.remove("clockin");
+    }
+
     if (prefs.getString('token') != null && prefs.getString('token') != '') {
       setState(() {
         token = prefs.getString('token') ;
@@ -55,7 +66,6 @@ class _SplashPageState extends State<SplashPage> {
       var connectivityResult = await (Connectivity().checkConnectivity());
 
       if (connectivityResult.contains(ConnectivityResult.mobile) || connectivityResult.contains(ConnectivityResult.wifi)) {
-
         // I am connected to a mobile network.
         new Future.delayed(const Duration(milliseconds: 100), () =>
             Navigator.push(
@@ -84,7 +94,6 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     // context.read<SettingCubit>().getSetting();
-
     getToken();
   }
 }

@@ -1,7 +1,9 @@
 part of '../pages.dart';
 
 class ActivityPage extends StatefulWidget {
-  const ActivityPage({super.key});
+  final String token;
+
+  ActivityPage(this.token);
 
   @override
   State<ActivityPage> createState() => _ActivityPageState();
@@ -31,13 +33,13 @@ class _ActivityPageState extends State<ActivityPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Activity",
+                      "activity".trans(context),
                       textAlign: TextAlign.start,
                       style: blackFontStyle.copyWith(fontSize: 24, color: Colors.white, fontWeight: FontWeight.w600),
                     ),
                     SizedBox(height: 5),
                     Text(
-                      "Choose your Requestment",
+                      "choose_requestment".trans(context),
                       textAlign: TextAlign.start,
                       style: blackFontStyle.copyWith(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w400),
                     ),
@@ -58,22 +60,22 @@ class _ActivityPageState extends State<ActivityPage> {
           SizedBox(height: 15),
           Column(
             children: [
-              ActivityCard(defaultWidth, "Analytics", "Summary of your work", onTap: (){
+              ActivityCard(defaultWidth, "analytics".trans(context), "sub_analytics".trans(context), onTap: (){
                 Get.to(AnalyticsPage());
               }),
-              ActivityCard(defaultWidth, "Leave Request", "Request your off day", onTap: (){
-                Get.to(LeavePage());
+              ActivityCard(defaultWidth, "leave_request".trans(context), "sub_leave_request".trans(context), onTap: (){
+                Get.to(LeavePage(widget.token));
               }),
-              ActivityCard(defaultWidth, "Overtime Request", "Request to overtime work", onTap: (){
-                Get.to(OvertimePage());
+              ActivityCard(defaultWidth, "overtime_request".trans(context), "sub_overtime_request".trans(context), onTap: (){
+                Get.to(OvertimePage(widget.token));
               }),
-              ActivityCard(defaultWidth, "Reimbursement Request", "Claim your expenses here", onTap: (){
+              ActivityCard(defaultWidth, "reimbursement_request".trans(context), "sub_reimbursement_request".trans(context), onTap: (){
                 Get.to(ReimbursePage());
               }),
-              ActivityCard(defaultWidth, "Calendar", "All Event are Here", onTap: (){
+              ActivityCard(defaultWidth, "calendar".trans(context), "sub_calendar".trans(context), onTap: (){
                 Get.to(CalendarPage());
               }),
-              ActivityCard(defaultWidth, "Payslip", "Download and check your payslip", onTap: (){
+              ActivityCard(defaultWidth, "payslip".trans(context), "sub_payslip".trans(context), onTap: (){
                 Get.to(PayslipHistoryPage());
               }),
             ]

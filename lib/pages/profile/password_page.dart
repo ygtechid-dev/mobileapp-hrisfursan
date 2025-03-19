@@ -25,7 +25,7 @@ class _PasswordPageState extends State<PasswordPage> {
       isBackInvert: false,
       isFrontAppBar: true,
       marginAppBar: 65,
-      title: "Change Password",
+      title: "change_password".trans(context),
       onBackButtonPressed: (){
         Get.back();
       },
@@ -49,20 +49,20 @@ class _PasswordPageState extends State<PasswordPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Set a New Password",
+                        "set_new_password".trans(context),
                         textAlign: TextAlign.start,
                         style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                       ),
                       SizedBox(height: 3),
                       Text(
-                        "Fill information to change your password.",
+                        "fill_password".trans(context),
                         textAlign: TextAlign.start,
                         style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                       ),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Current Password",
-                          hintText: "Current Password",
+                          outerLabelText: "current_password".trans(context),
+                          hintText: "current_password".trans(context),
                           controller: passwordC,
                           prefixSvg: "${prefixIcons}ic_password.svg",
                           obscure: true,
@@ -75,8 +75,8 @@ class _PasswordPageState extends State<PasswordPage> {
                           filled: true),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "New Password",
-                          hintText: "New Password",
+                          outerLabelText: "new_password".trans(context),
+                          hintText: "new_password".trans(context),
                           controller: passwordNewC,
                           prefixSvg: "${prefixIcons}ic_password.svg",
                           obscure: true,
@@ -89,8 +89,8 @@ class _PasswordPageState extends State<PasswordPage> {
                           filled: true),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Confirm New Password",
-                          hintText: "Confirm New Password",
+                          outerLabelText: "confirm_new_password".trans(context),
+                          hintText: "confirm_new_password".trans(context),
                           controller: passwordNewConfirmC,
                           prefixSvg: "${prefixIcons}ic_password.svg",
                           obscure: true,
@@ -117,7 +117,7 @@ class _PasswordPageState extends State<PasswordPage> {
             color: Colors.white,
             boxShadow: boxShadow
         ),
-        child: ButtonCard("Save", defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
+        child: ButtonCard("save".trans(context), defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
           modalBottomSheet(context, "");
         }),
       ),

@@ -11,6 +11,13 @@ class LeaveSummaryCard extends StatefulWidget {
 }
 
 class _LeaveSummaryCardState extends State<LeaveSummaryCard> {
+
+  @override
+  void initState() {
+    context.read<LeavesRemainingCubit>().getLeavesRemaining(widget.token);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,23 +31,49 @@ class _LeaveSummaryCardState extends State<LeaveSummaryCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Total Leave",
+              "total_leave".trans(context),
               textAlign: TextAlign.start,
               style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
             ),
             SizedBox(height: 3),
             Text(
-              "Period 1 Jan 2024 - 30 Dec 2024",
+              "${"period".trans(context)} 1 Jan 2025 - 31 Dec 2025",
               textAlign: TextAlign.start,
               style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
             ),
             SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                itemLeave((widget.width - 2*16)/2 - 5, "Available", Colors.green, 3),
-                itemLeave((widget.width - 2*16)/2 - 5, "Leave Used", Colors.blue, 1),
-              ],
+            BlocBuilder<LeavesRemainingCubit, LeavesRemainingState>(
+                builder: (context, state) {
+                  if (state is LeavesRemainingLoaded) {
+                    if (state.data != null && state.data!.isNotEmpty) {
+                      List<int> listAvailable = [];
+                      List<int> listUsed = [];
+
+                      state.data!.forEach((e) {
+                        int tempAvailable = e.remaining ?? 0;
+                        int tempUsed = e.used ?? 0;
+
+                        listAvailable.add(tempAvailable);
+                        listUsed.add(tempUsed);
+                      });
+
+                      int total_available = listAvailable.fold(0, (p, c) => p + ((c ?? 0).toInt()));
+                      int total_used = listUsed.fold(0, (p, c) => p + ((c ?? 0).toInt()));
+
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          itemLeave((widget.width - 2*16)/2 - 5, "Available", Colors.green, total_available),
+                          itemLeave((widget.width - 2*16)/2 - 5, "Leave Used", Colors.blue, total_used),
+                        ],
+                      );
+                    } else {
+                      return SizedBox();
+                    }
+                  }  else {
+                    return loadingIndicator;
+                  }
+                }
             ),
           ]
       ),
@@ -96,38 +129,43 @@ class LeaveItemCard extends StatelessWidget {
   final String? leave_date;
   final String? value;
   final String? status;
-  final String? type;
+  final String? approved_at;
+  final String? rejected_at;
 
-  LeaveItemCard(this.width, {this.date, this.leave_date, this.value, this.status, this.type});
+  LeaveItemCard(this.width, {this.date, this.leave_date, this.value, this.status, this.approved_at, this.rejected_at});
 
   Color? colorStatus;
   IconData? iconStatus;
+  String? textStatus;
 
   @override
   Widget build(BuildContext context) {
 
-    if(type == "request"){
+    if(status == "pending"){
       colorStatus = Colors.orange;
       iconStatus = Icons.access_time;
+      textStatus = "waiting_approval".trans(context);
     }
 
-    if(type == "approved"){
+    if(status == "approved"){
       colorStatus = Colors.green;
       iconStatus = Icons.check_circle;
+      textStatus = "${"approved_at".trans(context)}${approved_at}";
     }
 
-    if(type == "rejected"){
+    if(status == "rejected"){
       colorStatus = Colors.red;
       iconStatus = Icons.cancel;
+      textStatus = "${"rejected_at".trans(context)}${rejected_at}";
     }
 
     return InkWell(
         onTap:(){
-          if(type == "rejected"){
+          if(status == "rejected"){
             modalBottomSheetRefusal(context, "");
           }
 
-          if(type == "approved"){
+          if(status == "approved"){
             modalBottomSheetApproved(context, "");
           }
         },
@@ -169,7 +207,7 @@ class LeaveItemCard extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Leave Date",
+                                    "leave_date".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                                   ),
@@ -184,7 +222,7 @@ class LeaveItemCard extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Total Value",
+                                    "total_value".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                                   ),
@@ -204,7 +242,7 @@ class LeaveItemCard extends StatelessWidget {
                         Icon(iconStatus, size: 16, color: colorStatus),
                         SizedBox(width: 6),
                         Text(
-                          "${status}",
+                          "${textStatus}",
                           textAlign: TextAlign.start,
                           style: blackFontStyle.copyWith(fontSize: 12, color: colorStatus, fontWeight: FontWeight.w400),
                         ),
@@ -228,7 +266,7 @@ class LeaveItemCard extends StatelessWidget {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (bc){
-          return ModalDefaultInfoCard(token, fullWidth, 16, "Refusal of Leave Absence", "Leave application denied because your leave quota is already in use.", "img_leave.png");
+          return ModalDefaultInfoCard(token, fullWidth, 16, "refusal_leave".trans(contexts), "refusal_leave_desc".trans(contexts), "img_leave.png");
         });
   }
 
@@ -244,7 +282,7 @@ class LeaveItemCard extends StatelessWidget {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (bc){
-          return ModalDefaultInfoCard(token, fullWidth, 16, "Approve of Leave Absence", "Congrats your Leave application is approved! “Selamat Healing yaaa - HRD Staff”", "img_leave.png");
+          return ModalDefaultInfoCard(token, fullWidth, 16, "approve_leave".trans(contexts), "approve_leave_desc".trans(contexts), "img_leave.png");
         });
   }
 }

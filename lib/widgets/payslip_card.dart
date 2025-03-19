@@ -48,7 +48,7 @@ class PayslipCard extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Total Hours",
+                                    "total_hours".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                                   ),
@@ -63,7 +63,7 @@ class PayslipCard extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Received",
+                                    "received".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                                   ),
@@ -78,7 +78,7 @@ class PayslipCard extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Paid On",
+                                    "paid_on".trans(context),
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                                   ),
@@ -117,24 +117,24 @@ class PayslipResumeCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Payroll Details",
+              "payroll_details".trans(context),
               textAlign: TextAlign.start,
               style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
             ),
             SizedBox(height: 3),
             Text(
-              "Details about payroll",
+              "payroll_details_notes".trans(context),
               textAlign: TextAlign.start,
               style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
             ),
             SizedBox(height: 6),
             Divider(thickness: 1, color: Colors.grey.shade100),
             SizedBox(height: 6),
-            itemRow("Basic Salary", "Rp 7.000.000"),
-            itemRow("Tax", "Rp 300.000", color: Colors.red),
-            itemRow("Reimbursement", "Rp 1.000.000", color: Colors.green),
-            itemRow("Bonus", "Rp 500.000", color: Colors.green),
-            itemRow("Overtime", "Rp 0"),
+            itemRow("basic_salary".trans(context), "Rp 7.000.000"),
+            itemRow("tax".trans(context), "Rp 300.000", color: Colors.red),
+            itemRow("reimbursement".trans(context), "Rp 1.000.000", color: Colors.green),
+            itemRow("bonus".trans(context), "Rp 500.000", color: Colors.green),
+            itemRow("overtime".trans(context), "Rp 0"),
             SizedBox(height: 6),
             Divider(thickness: 1, color: Colors.grey.shade100),
             SizedBox(height: 6),
@@ -142,7 +142,7 @@ class PayslipResumeCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Total Salary",
+                  "total_salary".trans(context),
                   textAlign: TextAlign.start,
                   style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
@@ -204,13 +204,13 @@ class _PayslipSummaryCardState extends State<PayslipSummaryCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Total Working Hour",
+              "total_working_hour".trans(context),
               textAlign: TextAlign.start,
               style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
             ),
             SizedBox(height: 3),
             Text(
-              "Paid Period 25 Nov 2024 - 25 Dec 2024",
+              "${"paid_period".trans(context)} 25 Nov 2024 - 25 Dec 2024",
               textAlign: TextAlign.start,
               style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
             ),
@@ -218,8 +218,8 @@ class _PayslipSummaryCardState extends State<PayslipSummaryCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TimeCard((widget.width - 2*16)/2 - 5, "Overtime", "00:00"),
-                TimeCard((widget.width - 2*16)/2 - 5, "This Pay Period", "00:00"),
+                TimeCard((widget.width - 2*16)/2 - 5, "overtime".trans(context), "00:00"),
+                TimeCard((widget.width - 2*16)/2 - 5, "this_pay".trans(context), "00:00"),
               ],
             ),
           ]

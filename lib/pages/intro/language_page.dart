@@ -9,13 +9,35 @@ class LanguagePage extends StatefulWidget {
 class _LanguagePageState extends State<LanguagePage> {
 
   List<List<String>> listData = [
-    ["English", "ic_language_english.png"],
-    ["Indonesian", "ic_language_indonesian.png"],
-    ["Melayu", "ic_language_melayu.png"],
-    ["Arabic", "ic_language_arabic.png"],
+    ["en", "English", "ic_language_english.png"],
+    ["id", "Indonesian", "ic_language_indonesian.png"],
+    ["ms", "Melayu", "ic_language_melayu.png"],
+    ["ar", "Arabic", "ic_language_arabic.png"],
   ];
 
   String? selectedData;
+
+
+  @override
+  void initState() {
+    if(context.read<LocalCubit>().currentLanguage == "en"){
+      selectedData = listData[0][0];
+    }
+
+    if(context.read<LocalCubit>().currentLanguage == "id"){
+      selectedData = listData[1][0];
+    }
+
+    if(context.read<LocalCubit>().currentLanguage == "ms"){
+      selectedData = listData[2][0];
+    }
+
+    if(context.read<LocalCubit>().currentLanguage == "ar"){
+      selectedData = listData[3][0];
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,27 +81,29 @@ class _LanguagePageState extends State<LanguagePage> {
                           children: [
                             SizedBox(height: 60),
                             Text(
-                              "Welcome",
+                              "welcome".trans(context),
                               textAlign: TextAlign.center,
                               style: blackFontStyle.copyWith(fontSize: 22, fontWeight: FontWeight.w600),
                             ),
                             SizedBox(height: 2),
                             Text(
-                              "Choose your Language",
+                              "choose".trans(context),
                               textAlign: TextAlign.center,
                               style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
                             ),
                             SizedBox(height: 20),
                             Column(
-                              children: listData.map((e) => LanguageCard(defaultWidth, e[0], e[1], isSelected: (selectedData == e[0]), onSelected: (value){
+                              children: listData.map((e) => LanguageCard(defaultWidth, e[1], e[2], isSelected: (selectedData == e[0]), onSelected: (value) async {
                                 setState((){
-                                  selectedData = value;
+                                  selectedData = e[0];
                                 });
-
+                                await context.read<LocalCubit>().changeLanguage("${selectedData}");
                               })).toList(),
                             ),
                             SizedBox(height: 10),
-                            ButtonCard("Next", defaultWidth, mainColor, colorGradient: buttonGradient, onPressed: () async {
+                            ButtonCard("next".trans(context), defaultWidth, mainColor, colorGradient: buttonGradient, onPressed: () async {
+
+
                               Get.to(SignInPage());
                             }),
                             SizedBox(height: 20),

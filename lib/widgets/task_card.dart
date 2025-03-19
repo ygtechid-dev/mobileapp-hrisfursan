@@ -24,13 +24,13 @@ class _TaskSummaryCardState extends State<TaskSummaryCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Summary of Your Work",
+              "summary_work".trans(context),
               textAlign: TextAlign.start,
               style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
             ),
             SizedBox(height: 3),
             Text(
-              "Your current task progress",
+              "current_task".trans(context),
               textAlign: TextAlign.start,
               style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
             ),
@@ -38,9 +38,9 @@ class _TaskSummaryCardState extends State<TaskSummaryCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                itemTodo((widget.width - 2*16)/3 - 5, "To Do", "ic_task_todo.svg", 3),
-                itemTodo((widget.width - 2*16)/3 - 5, "In Progress", "ic_task_progress.svg", 1),
-                itemTodo((widget.width - 2*16)/3 - 5, "Done", "ic_task_done.svg", 2),
+                itemTodo((widget.width - 2*16)/3 - 5, "to_do".trans(context), "ic_task_todo.svg", 3),
+                itemTodo((widget.width - 2*16)/3 - 5, "in_progress".trans(context), "ic_task_progress.svg", 1),
+                itemTodo((widget.width - 2*16)/3 - 5, "done".trans(context), "ic_task_done.svg", 2),
               ],
             ),
           ]

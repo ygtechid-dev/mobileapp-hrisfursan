@@ -1,6 +1,12 @@
 part of '../../pages.dart';
 
 class ClockOutCameraPage extends StatefulWidget {
+  final String token;
+  final String latitude;
+  final String longitude;
+  final String location;
+
+  ClockOutCameraPage(this.token, this.latitude, this.longitude, this.location);
 
   @override
   State<ClockOutCameraPage> createState() => _ClockOutCameraPageState();
@@ -16,7 +22,7 @@ class _ClockOutCameraPageState extends State<ClockOutCameraPage> {
       autoCapture: true,
       defaultCameraLens: CameraLens.front,
       onCapture: (File? image) {
-        Get.to(ClockOutDetailPage(image!));
+        Get.to(ClockOutDetailPage(widget.token, widget.latitude, widget.longitude, widget.location, image!));
       },
     );
     super.initState();
@@ -33,7 +39,7 @@ class _ClockOutCameraPageState extends State<ClockOutCameraPage> {
       isBackInvert: false,
       isFrontAppBar: true,
       marginAppBar: 65,
-      title: "Selfie To Clock Out",
+      title: "selfie_to_out".trans(context),
       onBackButtonPressed: (){
         Get.back();
       },
@@ -41,7 +47,7 @@ class _ClockOutCameraPageState extends State<ClockOutCameraPage> {
       child: SmartFaceCamera(
         controller: controller,
         showControls: false,
-        message: 'Center your face in the square',
+        message: 'center_your'.trans(context),
       )
     );
   }

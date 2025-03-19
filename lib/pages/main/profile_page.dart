@@ -17,12 +17,12 @@ class _ProfilePageState extends State<ProfilePage> {
     return (kIsWeb) ? true : (await showDialog(
       context: context,
       builder: (context) => new AlertDialog(
-        title: new Text('Are you sure?'),
-        content: new Text('Do you want to logout your account?'),
+        title: new Text('are_you_sure'.trans(context)),
+        content: new Text('doyouwantlogout'.trans(context)),
         actions: <Widget>[
           new MaterialButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: new Text('No'),
+            child: new Text('no'.trans(context)),
           ),
           new MaterialButton(
             onPressed: () async {
@@ -60,7 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 }
               });
             },
-            child: new Text('Yes'),
+            child: new Text('yes'.trans(context)),
           ),
         ],
       ),
@@ -105,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "CONTACT",
+                                  "contact".trans(context),
                                   textAlign: TextAlign.start,
                                   style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w600),
                                 ),
@@ -133,7 +133,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "ACCOUNT",
+                                  "account_caps".trans(context),
                                   textAlign: TextAlign.start,
                                   style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w600),
                                 ),
@@ -147,22 +147,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   child: Column(
                                     children: [
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Personal Data", "ic_user_fill.svg", mainColor, onTap: (){
-                                        Get.to(ProfileEditPage());
+                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "personal_data".trans(context), "ic_user_fill.svg", mainColor, onTap: (){
+                                        Get.to(ProfileEditPage(widget.token));
                                       }),
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Office Assets", "ic_folder_fill.svg", mainColor, onTap: (){
+                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "office_assets".trans(context), "ic_folder_fill.svg", mainColor, onTap: (){
                                         Get.to(OfficeAssetPage());
                                       }),
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Payroll & Tax", "ic_payroll_fill.svg", mainColor, onTap: (){
+                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "payroll_tax".trans(context), "ic_payroll_fill.svg", mainColor, onTap: (){
                                         // Get.to(ProfileEditPage());
                                       }),
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Resign", "ic_resign.svg", mainColor, onTap: (){
+                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "resign".trans(context), "ic_resign.svg", mainColor, onTap: (){
                                         Get.to(FormResignPage());
                                       }),
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Language", "ic_language.svg", mainColor, onTap: (){
-                                        Get.to(ProfileLanguagePage());
+                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "language".trans(context), "ic_language.svg", mainColor, onTap: (){
+                                        Get.to(ProfileLanguagePage(widget.token));
                                       }),
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Change Password", "ic_setting_fill.svg", mainColor, onTap: (){
+                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "change_password".trans(context), "ic_setting_fill.svg", mainColor, onTap: (){
                                         Get.to(PasswordPage());
                                       }),
                                     ],
@@ -189,9 +189,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   child: Column(
                                     children: [
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Versioning", "ic_version_fill.svg", mainColor),
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "FAQ and Help", "ic_faq.svg", mainColor),
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Logout", "ic_logout.svg", Colors.red, onTap: () async {
+                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "versioning".trans(context), "ic_version_fill.svg", mainColor),
+                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "faq_help".trans(context), "ic_faq.svg", mainColor),
+                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "logout".trans(context), "ic_logout.svg", Colors.red, onTap: () async {
                                         await logout();
                                       },),
                                     ],
@@ -212,7 +212,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       builder: (context, state) => (state is UserLoaded) ? (state.user != null) ? Column(
                         children: [
                           Text(
-                            "My Profile",
+                            "my_profile".trans(context),
                             textAlign: TextAlign.center,
                             style: blackFontStyle.copyWith(fontSize: 22, color: Colors.white, fontWeight: FontWeight.w600),
                           ),

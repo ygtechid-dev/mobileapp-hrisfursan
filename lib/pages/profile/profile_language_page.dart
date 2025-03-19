@@ -1,7 +1,9 @@
 part of "../pages.dart";
 
 class ProfileLanguagePage extends StatefulWidget {
-  const ProfileLanguagePage({super.key});
+  final String token;
+
+  ProfileLanguagePage(this.token);
 
   @override
   State<ProfileLanguagePage> createState() => _ProfileLanguagePageState();
@@ -10,13 +12,34 @@ class ProfileLanguagePage extends StatefulWidget {
 class _ProfileLanguagePageState extends State<ProfileLanguagePage> {
 
   List<List<String>> listData = [
-    ["English", "ic_language_english.png"],
-    ["Indonesian", "ic_language_indonesian.png"],
-    ["Melayu", "ic_language_melayu.png"],
-    ["Arabic", "ic_language_arabic.png"],
+    ["en", "English", "ic_language_english.png"],
+    ["id", "Indonesian", "ic_language_indonesian.png"],
+    ["ms", "Melayu", "ic_language_melayu.png"],
+    ["ar", "Arabic", "ic_language_arabic.png"],
   ];
 
   String? selectedData;
+
+  @override
+  void initState() {
+    if(context.read<LocalCubit>().currentLanguage == "en"){
+      selectedData = listData[0][0];
+    }
+
+    if(context.read<LocalCubit>().currentLanguage == "id"){
+      selectedData = listData[1][0];
+    }
+
+    if(context.read<LocalCubit>().currentLanguage == "ms"){
+      selectedData = listData[2][0];
+    }
+
+    if(context.read<LocalCubit>().currentLanguage == "ar"){
+      selectedData = listData[3][0];
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +52,7 @@ class _ProfileLanguagePageState extends State<ProfileLanguagePage> {
       isBackInvert: false,
       isFrontAppBar: true,
       marginAppBar: 65,
-      title: "Language",
+      title: "language".trans(context),
       onBackButtonPressed: (){
         Get.back();
       },
@@ -53,22 +76,24 @@ class _ProfileLanguagePageState extends State<ProfileLanguagePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Choose Language",
+                        "choose_language".trans(context),
                         textAlign: TextAlign.start,
                         style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                       ),
                       SizedBox(height: 3),
                       Text(
-                        "Select language",
+                        "select_language".trans(context),
                         textAlign: TextAlign.start,
                         style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                       ),
                       SizedBox(height: 20),
                       Column(
-                        children: listData.map((e) => LanguageCard2(defaultWidth, e[0], e[1], isSelected: (selectedData == e[0]), onSelected: (value){
+                        children: listData.map((e) => LanguageCard2(defaultWidth, e[1], e[2], isSelected: (selectedData == e[0]), onSelected: (value){
                           setState((){
-                            selectedData = value;
+                            selectedData = e[0];
                           });
+
+
                         })).toList(),
                       ),
                       SizedBox(height: 40),
@@ -87,8 +112,9 @@ class _ProfileLanguagePageState extends State<ProfileLanguagePage> {
             color: Colors.white,
             boxShadow: boxShadow
         ),
-        child: ButtonCard("Save", defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
-
+        child: ButtonCard("save".trans(context), defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
+          await context.read<LocalCubit>().changeLanguage("${selectedData}");
+          Get.to(MainPage(token: widget.token, index_: 4,));
         }),
       ),
     );

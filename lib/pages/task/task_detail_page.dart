@@ -138,7 +138,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Due Date",
+                            "due_date".trans(context),
                             textAlign: TextAlign.start,
                             style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                           ),
@@ -161,7 +161,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Priority",
+                            "priority".trans(context),
                             textAlign: TextAlign.start,
                             style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                           ),
@@ -184,7 +184,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Assign To",
+                            "assign_to".trans(context),
                             textAlign: TextAlign.start,
                             style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                           ),
@@ -216,7 +216,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                       ),
                       SizedBox(height: 16),
                       FormWithLabelCard(
-                          outerLabelText: "Task Description",
+                          outerLabelText: "task_description".trans(context),
                           hintText: "",
                           controller: descriptionC,
                           readOnly: true,
@@ -238,13 +238,13 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Attachment",
+                                "attachment".trans(context),
                                 textAlign: TextAlign.start,
                                 style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                               ),
                               SizedBox(height: 3),
                               Text(
-                                "Download file attachment",
+                                "download_file".trans(context),
                                 textAlign: TextAlign.start,
                                 style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                               ),

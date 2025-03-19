@@ -3,17 +3,42 @@ part of 'widgets.dart';
 class WorkingCard extends StatefulWidget {
   final String token;
   final double width;
-  final bool isClockedIn;
+  final String? clockin;
+  final String? clockout;
 
-  WorkingCard(this.token, this.width, {this.isClockedIn = false});
+  WorkingCard(this.token, this.width, {this.clockin, this.clockout});
 
   @override
   State<WorkingCard> createState() => _WorkingCardState();
 }
 
 class _WorkingCardState extends State<WorkingCard> {
+
+  String? clockin;
+  String? clockout;
+
+
+  @override
+  void initState() {
+
+    if(widget.clockin != null && widget.clockin != ""){
+      clockin = widget.clockin!.substring(0, 5);
+    }
+
+    if(widget.clockout != null && widget.clockout != ""){
+      clockout = widget.clockout!.substring(0, 5);
+    }
+
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    DateTime now = DateTime.now();
+    String formattedDate = intl.DateFormat('MMMM yyyy').format(now);
+
     return Container(
       width: widget.width,
       decoration: BoxDecoration(
@@ -25,13 +50,13 @@ class _WorkingCardState extends State<WorkingCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Total Working Hour",
+            "total_working".trans(context),
             textAlign: TextAlign.start,
             style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
           ),
           SizedBox(height: 3),
           Text(
-            "Paid Period 25 Nov 2024 - 25 Dec 2024",
+            "${"paid_period".trans(context)} 01 ${formattedDate} - ${now.day} ${formattedDate}",
             textAlign: TextAlign.start,
             style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
           ),
@@ -39,16 +64,20 @@ class _WorkingCardState extends State<WorkingCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TimeCard((widget.width - 2*16)/2 - 5, "Clock In", "00:00"),
-              TimeCard((widget.width - 2*16)/2 - 5, "Clock Out", "00:00"),
+              TimeCard((widget.width - 2*16)/2 - 5, "clockin".trans(context), "${clockin ?? "--:--"}", color: (clockin != null) ? mainColor : greyColor),
+              TimeCard((widget.width - 2*16)/2 - 5, "clockout".trans(context), "${clockout ?? "--:--"}", color: (clockout != null) ? mainColor : greyColor),
             ],
           ),
           SizedBox(height: 12),
-          ButtonCard((widget.isClockedIn) ? "Clocked Out" : "Check In Now", widget.width - 2*16, mainColor, colorGradient: buttonGradient, onPressed: () async {
-            if(widget.isClockedIn){
-              modalBottomSheet(context, "");
+          ButtonCard((widget.clockin != null && widget.clockin != "") ? (widget.clockout != null && widget.clockout != "") ? "donefortoday".trans(context) : "clocked_out".trans(context) : "checkin_now".trans(context), widget.width - 2*16, (widget.clockout != null) ? greyColor : mainColor, colorGradient: buttonGradient, onPressed: () async {
+            if(widget.clockin != null){
+              if(widget.clockout != null){
+
+              } else {
+                modalBottomSheet(context, widget.token);
+              }
             } else {
-              Get.to(ClockInPage());
+              Get.to(ClockInPage(widget.token));
             }
 
           }),
@@ -77,8 +106,9 @@ class TimeCard extends StatelessWidget {
   final double width;
   final String title;
   final String time;
+  final Color? color;
 
-  TimeCard(this.width, this.title, this.time);
+  TimeCard(this.width, this.title, this.time, {this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +124,7 @@ class TimeCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TitleCard(title, iconData: Icons.access_time_filled,),
+          TitleCard(title, iconData: Icons.access_time_filled, color: color),
           SizedBox(height: 5),
           Text(
             "${time}",
@@ -111,8 +141,9 @@ class TitleCard extends StatelessWidget {
   final String title;
   final String? iconPath;
   final IconData? iconData;
+  final Color? color;
 
-  TitleCard(this.title, {this.iconPath, this.iconData});
+  TitleCard(this.title, {this.iconPath, this.iconData, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +152,7 @@ class TitleCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           (iconPath != null) ? SvgPicture.asset("${prefixIcons}${iconPath}", width: 16, height: 16) : SizedBox(),
-          (iconData != null) ? Icon(iconData, size: 16, color: greyColor) : SizedBox(),
+          (iconData != null) ? Icon(iconData, size: 16, color: color ?? greyColor) : SizedBox(),
           SizedBox(width: 4),
           Text(
             "${title}",
@@ -135,19 +166,21 @@ class TitleCard extends StatelessWidget {
 }
 
 class AttendantCard extends StatelessWidget {
+  final String token;
+  final AttendantRecords records;
   final double width;
   final String? date;
   final String? total_hours;
   final String? clock_in;
   final String? clock_out;
 
-  AttendantCard(this.width, {this.date, this.total_hours, this.clock_in, this.clock_out});
+  AttendantCard(this.token, this.records, this.width, {this.date, this.total_hours, this.clock_in, this.clock_out});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap:(){
-        Get.to(AttendantDetailPage());
+        Get.to(AttendantDetailPage(token, records));
       },
       child: Container(
           width: width,
@@ -187,12 +220,12 @@ class AttendantCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Total Hours",
+                                  "total_hours".trans(context),
                                   textAlign: TextAlign.start,
                                   style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                                 ),
                                 Text(
-                                  "${total_hours}",
+                                  "${total_hours ?? "-"} hrs",
                                   textAlign: TextAlign.start,
                                   style: blackFontStyle.copyWith(fontSize: 15, fontWeight: FontWeight.w600),
                                 ),
@@ -202,12 +235,12 @@ class AttendantCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Clock in & Out",
+                                  "clockin_out".trans(context),
                                   textAlign: TextAlign.start,
                                   style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                                 ),
                                 Text(
-                                  "${clock_in} -- ${clock_out}",
+                                  "${clock_in ?? "-"} -- ${clock_out ?? "-"}",
                                   textAlign: TextAlign.start,
                                   style: blackFontStyle.copyWith(fontSize: 15, fontWeight: FontWeight.w600),
                                 ),

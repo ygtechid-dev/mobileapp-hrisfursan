@@ -34,7 +34,7 @@ class _AppLocalDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalDelegate();
   @override
   bool isSupported(Locale locale) {
-    return ['en', 'id'].contains(locale.languageCode);
+    return ['en', 'id', 'ar', 'ms'].contains(locale.languageCode);
   }
 
   @override

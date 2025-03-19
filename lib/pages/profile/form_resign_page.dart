@@ -26,7 +26,7 @@ class _FormResignPageState extends State<FormResignPage> {
       isBackInvert: false,
       isFrontAppBar: true,
       marginAppBar: 65,
-      title: "Form Resign",
+      title: "form_resign".trans(context),
       onBackButtonPressed: (){
         Get.back();
       },
@@ -50,24 +50,24 @@ class _FormResignPageState extends State<FormResignPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Fill Information",
+                        "fill_info".trans(context),
                         textAlign: TextAlign.start,
                         style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                       ),
                       SizedBox(height: 3),
                       Text(
-                        "Information about details",
+                        "info_about".trans(context),
                         textAlign: TextAlign.start,
                         style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                       ),
                       SizedBox(height: 20),
-                      CommonDottedButtonWithImage2(title: "Upload Resign Document", subtitle: "Format should be in .pdf .jpeg .png less than 5MB", onPicked: (value){
+                      CommonDottedButtonWithImage2(title: "upload_resign".trans(context), subtitle: "format_should".trans(context), onPicked: (value){
 
                       }),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Date of resignation application",
-                          hintText: "Enter Date of resignation application",
+                          outerLabelText: "date_resign".trans(context),
+                          hintText: "enter_date_resign".trans(context),
                           controller: dateC,
                           prefixSvg: "${prefixIcons}ic_form_date.svg",
                           onSaved: (e) {
@@ -82,8 +82,8 @@ class _FormResignPageState extends State<FormResignPage> {
                           filled: true),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Resign Description",
-                          hintText: "Resign Description",
+                          outerLabelText: "resign_desc".trans(context),
+                          hintText: "resign_desc".trans(context),
                           controller: descriptionC,
                           inputType: TextInputType.multiline,
                           maxLines: 6,
@@ -111,7 +111,7 @@ class _FormResignPageState extends State<FormResignPage> {
             color: Colors.white,
             boxShadow: boxShadow
         ),
-        child: ButtonCard("Submit", defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
+        child: ButtonCard("submit".trans(context), defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
 
         }),
       ),

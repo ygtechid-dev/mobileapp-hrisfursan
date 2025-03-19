@@ -30,7 +30,7 @@ class _CalendarPageState extends State<CalendarPage> {
       isBackInvert: false,
       isFrontAppBar: true,
       marginAppBar: 65,
-      title: "Calendar",
+      title: "calendar".trans(context),
       onBackButtonPressed: (){
         Get.back();
       },
@@ -59,19 +59,19 @@ class _CalendarPageState extends State<CalendarPage> {
                   children: [
                     SizedBox(height: 20),
                     Text(
-                      "Events",
+                      "events".trans(context),
                       textAlign: TextAlign.start,
                       style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                     ),
                     SizedBox(height: 3),
                     Text(
-                      "Events day in December",
+                      "events_day".trans(context),
                       textAlign: TextAlign.start,
                       style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                     ),
                     SizedBox(height: 20),
-                    EventCard(defaultWidth, "Important Event", Colors.green, listData),
-                    EventCard(defaultWidth, "Monhtly Event", Colors.blue, []),
+                    EventCard(defaultWidth, "events_important".trans(context), Colors.green, listData),
+                    EventCard(defaultWidth, "events_monthly".trans(context), Colors.blue, []),
                   ]
               ),
             ),

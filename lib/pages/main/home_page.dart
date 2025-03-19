@@ -1,13 +1,30 @@
 part of '../pages.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final String token;
+
+
+  HomePage(this.token);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<List<String?>> getDataShared() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? clockin = await prefs.getString('clockin');
+    String? clockout = await prefs.getString('clockout');
+
+    return [clockin, clockout];
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -76,7 +93,16 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           SizedBox(height: 20),
-          WorkingCard("", defaultWidth),
+          FutureBuilder(
+              future: getDataShared(),
+              builder: (context, snapshot) {
+                if(snapshot.connectionState == ConnectionState.done){
+                  return WorkingCard(widget.token, defaultWidth, clockin: snapshot.data![0], clockout: snapshot.data![1],);
+                } else {
+                  return loadingIndicator;
+                }
+              }
+          ),
           SizedBox(height: 16),
           Container(
             width: defaultWidth,
@@ -91,14 +117,14 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MenuCard((defaultWidth - 2*12)/3, "Attendance\nLog", "ic_attendance.svg", onTap: (){
-                      Get.to(AttendantHistoryPage());
+                    MenuCard((defaultWidth - 2*12)/3, "attendance_log".trans(context), "ic_attendance.svg", onTap: (){
+                      Get.to(AttendantHistoryPage(widget.token));
                     }),
-                    MenuCard((defaultWidth - 2*12)/3, "Leave\nRequest", "ic_leave.svg", onTap: (){
-                      Get.to(LeavePage());
+                    MenuCard((defaultWidth - 2*12)/3, "leave_request_alt".trans(context), "ic_leave.svg", onTap: (){
+                      Get.to(LeavePage(widget.token));
                     }),
-                    MenuCard((defaultWidth - 2*12)/3, "Overtime Request", "ic_overtime.svg", onTap: (){
-                      Get.to(OvertimePage());
+                    MenuCard((defaultWidth - 2*12)/3, "overtime_request".trans(context), "ic_overtime.svg", onTap: (){
+                      Get.to(OvertimePage(widget.token));
                     }),
                   ],
                 ),
@@ -107,13 +133,13 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MenuCard((defaultWidth - 2*12)/3, "Reimbursement Request", "ic_reimbursement.svg", onTap: (){
+                    MenuCard((defaultWidth - 2*12)/3, "reimbursement_request".trans(context), "ic_reimbursement.svg", onTap: (){
                       Get.to(ReimbursePage());
                     },),
-                    MenuCard((defaultWidth - 2*12)/3, "Calendar", "ic_calendar_home.svg", onTap: (){
+                    MenuCard((defaultWidth - 2*12)/3, "calendar".trans(context), "ic_calendar_home.svg", onTap: (){
                       Get.to(CalendarPage());
                     },),
-                    MenuCard((defaultWidth - 2*12)/3, "Payslip", "ic_payslip.svg", onTap: (){
+                    MenuCard((defaultWidth - 2*12)/3, "payslip".trans(context), "ic_payslip.svg", onTap: (){
                       Get.to(PayslipHistoryPage());
                     },),
                   ],
@@ -144,4 +170,6 @@ class _HomePageState extends State<HomePage> {
           return ModalTerminationCard(token, fullWidth, 16);
         });
   }
+
+
 }

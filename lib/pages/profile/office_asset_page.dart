@@ -26,7 +26,7 @@ class _OfficeAssetPageState extends State<OfficeAssetPage> {
       isBackInvert: false,
       isFrontAppBar: true,
       marginAppBar: 65,
-      title: "Office Assets",
+      title: "office_assets".trans(context),
       onBackButtonPressed: (){
         Get.back();
       },
@@ -50,13 +50,13 @@ class _OfficeAssetPageState extends State<OfficeAssetPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Assets Information",
+                        "assets_information".trans(context),
                         textAlign: TextAlign.start,
                         style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                       ),
                       SizedBox(height: 3),
                       Text(
-                        "Your office assets information",
+                        "your_office".trans(context),
                         textAlign: TextAlign.start,
                         style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                       ),
@@ -72,8 +72,8 @@ class _OfficeAssetPageState extends State<OfficeAssetPage> {
                       ),
                       SizedBox(height: 15),
                       FormWithLabelCard(
-                          outerLabelText: "Assets Name",
-                          hintText: "Enter Assets Name",
+                          outerLabelText: "asset_name".trans(context),
+                          hintText: "Enter ${"asset_name".trans(context)}",
                           controller: assetsC,
                           prefixSvg: "${prefixIcons}ic_form_assets.svg",
                           onSaved: (e) {
@@ -85,8 +85,8 @@ class _OfficeAssetPageState extends State<OfficeAssetPage> {
                           filled: true),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Brand",
-                          hintText: "Enter Brand",
+                          outerLabelText: "brand".trans(context),
+                          hintText: "Enter ${"brand".trans(context)}",
                           controller: brandC,
                           prefixSvg: "${prefixIcons}ic_form_brand.svg",
                           onSaved: (e) {
@@ -98,8 +98,8 @@ class _OfficeAssetPageState extends State<OfficeAssetPage> {
                           filled: true),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Warranty Status",
-                          hintText: "Enter Warranty Status",
+                          outerLabelText: "warranty".trans(context),
+                          hintText: "Enter ${"warranty".trans(context)}",
                           controller: warrantyC,
                           prefixSvg: "${prefixIcons}ic_form_status.svg",
                           onSaved: (e) {
@@ -111,8 +111,8 @@ class _OfficeAssetPageState extends State<OfficeAssetPage> {
                           filled: true),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "Buying Date",
-                          hintText: "Enter Buying Date",
+                          outerLabelText: "buying".trans(context),
+                          hintText: "Enter ${"buying".trans(context)}",
                           controller: warrantyC,
                           prefixSvg: "${prefixIcons}ic_form_buying.svg",
                           onSaved: (e) {
@@ -138,7 +138,7 @@ class _OfficeAssetPageState extends State<OfficeAssetPage> {
             color: Colors.white,
             boxShadow: boxShadow
         ),
-        child: ButtonCard("Save", defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
+        child: ButtonCard("save".trans(context), defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
 
         }),
       ),

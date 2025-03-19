@@ -23,16 +23,16 @@ class _MainPageState extends State<MainPage> {
     return (kIsWeb) ? true : (await showDialog(
       context: context,
       builder: (context) => new AlertDialog(
-        title: new Text('Are you sure?'),
-        content: new Text('Do you want to exit an App'),
+        title: new Text('are_you_sure'.trans(context)),
+        content: new Text('doyouwantexit'.trans(context)),
         actions: <Widget>[
           new MaterialButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: new Text('No'),
+            child: new Text('no'.trans(context)),
           ),
           new MaterialButton(
             onPressed: () => SystemChannels.platform.invokeMethod('SystemNavigator.pop'),
-            child: new Text('Yes'),
+            child: new Text('yes'.trans(context)),
           ),
         ],
       ),
@@ -88,9 +88,9 @@ class _MainPageState extends State<MainPage> {
                       });
                     },
                     children: [
-                      HomePage(),
-                      ActivityPage(),
-                      AttendancePage(),
+                      HomePage(widget.token!),
+                      ActivityPage(widget.token!),
+                      AttendancePage(widget.token!),
                       (isTask) ? TaskPage() : AnalyticsPage(),
                       ProfilePage(widget.token ?? ""),
                     ],
@@ -135,7 +135,7 @@ class _MainPageState extends State<MainPage> {
                                   },
                                   items: [
                                     BottomNavigationBarItem(
-                                      label: "Home",
+                                      label: "home".trans(context),
                                       icon: (kIsWeb) ? Container(
                                           width: 24,
                                           height: 24,
@@ -166,7 +166,7 @@ class _MainPageState extends State<MainPage> {
                                       ),
                                     ),
                                     BottomNavigationBarItem(
-                                      label: "Activity",
+                                      label: "activity".trans(context),
                                       icon: (kIsWeb) ? Container(
                                           width: 24,
                                           height: 24,
@@ -197,7 +197,7 @@ class _MainPageState extends State<MainPage> {
                                       ),
                                     ),
                                     BottomNavigationBarItem(
-                                      label: "Attendance",
+                                      label: "attendance".trans(context),
                                       icon: (kIsWeb) ? Container(
                                           width: 24,
                                           height: 24,
@@ -228,7 +228,7 @@ class _MainPageState extends State<MainPage> {
                                       ),
                                     ),
                                     (isTask) ? BottomNavigationBarItem(
-                                      label: "Task",
+                                      label: "task".trans(context),
                                       icon: (kIsWeb) ? Container(
                                           width: 24,
                                           height: 24,
@@ -259,7 +259,7 @@ class _MainPageState extends State<MainPage> {
                                         child: SvgPicture.asset("assets/icons/ic_task_active.svg"),
                                       ),
                                     ) : BottomNavigationBarItem(
-                                      label: "Analytics",
+                                      label: "analytics".trans(context),
                                       icon: (kIsWeb) ? Container(
                                           width: 24,
                                           height: 24,
@@ -291,7 +291,7 @@ class _MainPageState extends State<MainPage> {
                                       ),
                                     ),
                                     BottomNavigationBarItem(
-                                      label: "Account",
+                                      label: "account".trans(context),
                                       icon: (kIsWeb) ? Container(
                                           width: 24,
                                           height: 24,

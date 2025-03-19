@@ -1,6 +1,10 @@
 part of '../pages.dart';
 
 class TaskCreatePage extends StatefulWidget {
+  final String token;
+  final String projects_id;
+
+  TaskCreatePage(this.token, this.projects_id);
 
   @override
   State<TaskCreatePage> createState() => _TaskCreatePageState();
@@ -12,8 +16,34 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
   TextEditingController assignToC = TextEditingController();
   TextEditingController descriptionC = TextEditingController();
   TextEditingController linkC = TextEditingController();
+  TextEditingController priorityC = TextEditingController();
 
   bool isAgree = false;
+
+  String selectedPriority = "low";
+  bool isLoading = false;
+
+  List<File> selectedFile = [];
+
+  DateTime selectedDate = DateTime.now();
+
+  Future<void> _selectDate(BuildContext context) async {
+
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1980, 8),
+        lastDate: DateTime(2040)
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+
+        String data = DateFormat('yyyy-MM-dd').format(selectedDate);
+        dueDateC.text = data;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +99,9 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
                           onSaved: (e) {
                             dueDateC.text = e ?? "";
                           },
+                          onTap: (){
+                            _selectDate(context);
+                          },
                           validator: (e) {
                             return simpleValidator(e, null);
                           },
@@ -86,6 +119,23 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
                             return simpleValidator(e, null);
                           },
                           filled: true),
+                      SizedBox(height: 20),
+                      FormDropdownCard(
+                          outerLabelText: "priority".trans(context),
+                          hintText: "priority".trans(context),
+                          prefixSvg: "${prefixIcons}ic_position.svg",
+                          listItem: [["low", "Low"], ["medium", "Medium"], ["high", "High"]],
+                          initialValue: ["low", "Low"],
+                          validator: (e) {
+                            return simpleValidator(e, null);
+                          },
+                          filled: true,
+                          onSaved: (String? newValue) async {
+                            setState((){
+                              selectedPriority = newValue!;
+                            });
+                          }
+                      ),
                       SizedBox(height: 20),
                       FormWithLabelCard(
                           outerLabelText: "task_description".trans(context),
@@ -128,17 +178,17 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
                         children: [
                           CommonDottedButtonWithImage((defaultWidth - 2*defaultMargin3)/3 - 10, onPicked: (value){
                             setState(() {
-
+                              selectedFile.add(value);
                             });
                           }, icon: "${prefixIcons}ic_add_picture.svg"),
                           CommonDottedButtonWithImage((defaultWidth - 2*defaultMargin3)/3 - 10, onPicked: (value){
                             setState(() {
-
+                              selectedFile.add(value);
                             });
                           }, icon: "${prefixIcons}ic_add_picture.svg"),
                           CommonDottedButtonWithImage((defaultWidth - 2*defaultMargin3)/3 - 10, onPicked: (value){
                             setState(() {
-
+                              selectedFile.add(value);
                             });
                           }, icon: "${prefixIcons}ic_add_picture.svg"),
                         ],
@@ -172,8 +222,51 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
             color: Colors.white,
             boxShadow: boxShadow
         ),
-        child: ButtonCard("create_task".trans(context), defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
-          Get.to(MainPage(index_: 3));
+        child: ButtonCard("create_task".trans(context), defaultWidth - 2*24, mainColor, isLoading: isLoading, colorGradient: buttonGradient, onPressed: () async {
+          if(taskTitleC.text.isNotEmpty && dueDateC.text.isNotEmpty){
+            setState(() {
+              isLoading = true;
+            });
+
+            await TaskServices.createTask(widget.token, "${widget.projects_id}", "${taskTitleC.text}", "${descriptionC.text}", "${selectedPriority}", "${dueDateC.text}", selectedFile).then((result) {
+
+              if(result != null && result.value != null){
+
+                setState(() {
+                  isLoading = false;
+                });
+
+                Fluttertoast.showToast(
+                    msg: "success_submit".trans(context),
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.green,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+
+                Get.to(MainPage(token: widget.token, index_: 3));
+
+              } else {
+                setState(() {
+                  isLoading = false;
+                });
+
+                Fluttertoast.showToast(
+                    msg: "${result.message}",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+              }
+
+
+            });
+          }
         }),
       ),
     );

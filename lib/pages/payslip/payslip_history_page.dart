@@ -1,7 +1,9 @@
 part of '../pages.dart';
 
 class PayslipHistoryPage extends StatefulWidget {
-  const PayslipHistoryPage({super.key});
+  final String token;
+
+  PayslipHistoryPage(this.token);
 
   @override
   State<PayslipHistoryPage> createState() => _PayslipHistoryPageState();
@@ -10,12 +12,12 @@ class PayslipHistoryPage extends StatefulWidget {
 class _PayslipHistoryPageState extends State<PayslipHistoryPage> {
   TextEditingController searchController = TextEditingController();
 
-  List<List<String>> listData = [
-    ["December 2024", "40:00:00", "Rp8.000.000", "25 Dec 2024"],
-    ["November 2024", "40:00:00", "Rp8.000.000", "25 Nov 2024"],
-    ["Oktober 2024", "40:00:00", "Rp8.000.000", "25 Okt 2024"],
-    ["September 2024", "40:00:00", "Rp8.000.000", "25 Sep 2024"],
-  ];
+  @override
+  void initState() {
+    context.read<PayslipCubit>().getPayslip(widget.token);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +48,29 @@ class _PayslipHistoryPageState extends State<PayslipHistoryPage> {
               child: searchWidget(defaultWidth)
           ),
           SizedBox(height: 20),
-          Column(
-              children: listData.map((e) => PayslipCard(defaultWidth, date: e[0], total_hours: e[1], received: e[2], paid_on: e[3])).toList()
+          BlocBuilder<PayslipCubit, PayslipState>(
+              builder: (context, state) {
+                if (state is PayslipLoaded) {
+                  if (state.data != null && state.data!.isNotEmpty) {
+                    return Column(
+                        children: state.data!.map((e) {
+
+                          DateTime appliedDate = new DateFormat("yyyy-MM-dd").parse(e.payment_date ?? "");
+                          String applied_date = DateFormat("dd MMMM yyyy").format(appliedDate);
+
+                          DateTime createdDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse(e.created_at ?? "");
+                          String created_date = DateFormat("dd MMMM yyyy").format(createdDate);
+
+                          return PayslipCard(widget.token, defaultWidth, e, date: created_date, total_hours: "40:00:00", received: (e.net_salary ?? "0")!.toDouble(), paid_on: applied_date);
+                        }).toList()
+                    );
+                  } else {
+                    return SizedBox();
+                  }
+                } else {
+                  return loadingIndicator;
+                }
+              }
           ),
         ],
       ),

@@ -20,6 +20,10 @@ class _LeaveSummaryCardState extends State<LeaveSummaryCard> {
 
   @override
   Widget build(BuildContext context) {
+
+    DateTime now = DateTime.now();
+    String formattedDate = intl.DateFormat('MMMM yyyy').format(now);
+
     return Container(
       width: widget.width,
       decoration: BoxDecoration(
@@ -37,7 +41,7 @@ class _LeaveSummaryCardState extends State<LeaveSummaryCard> {
             ),
             SizedBox(height: 3),
             Text(
-              "${"period".trans(context)} 1 Jan 2025 - 31 Dec 2025",
+              "${"paid_period".trans(context)} 01 ${formattedDate} - ${now.day} ${formattedDate}",
               textAlign: TextAlign.start,
               style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
             ),

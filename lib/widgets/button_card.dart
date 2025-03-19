@@ -213,9 +213,10 @@ class CommonDottedButtonWithImage extends StatefulWidget {
   final ValueChanged<File> onPicked;
   final String icon;
   final bool isCamera;
+  final bool isReset;
 
   CommonDottedButtonWithImage(this.width,
-      {required this.onPicked, required this.icon, this.isCamera = false});
+      {required this.onPicked, required this.icon, this.isCamera = false, this.isReset = false});
 
   @override
   State<CommonDottedButtonWithImage> createState() => _CommonDottedButtonWithImageState();
@@ -229,6 +230,10 @@ class _CommonDottedButtonWithImageState extends State<CommonDottedButtonWithImag
   Widget build(BuildContext context) {
 
     double defaultWidth = widget.width;
+
+    if(widget.isReset == true){
+      selectedFile = null;
+    }
 
     return InkWell(
       onTap: () async {

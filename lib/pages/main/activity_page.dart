@@ -70,13 +70,13 @@ class _ActivityPageState extends State<ActivityPage> {
                 Get.to(OvertimePage(widget.token));
               }),
               ActivityCard(defaultWidth, "reimbursement_request".trans(context), "sub_reimbursement_request".trans(context), onTap: (){
-                Get.to(ReimbursePage());
+                Get.to(ReimbursePage(widget.token));
               }),
               ActivityCard(defaultWidth, "calendar".trans(context), "sub_calendar".trans(context), onTap: (){
                 Get.to(CalendarPage());
               }),
               ActivityCard(defaultWidth, "payslip".trans(context), "sub_payslip".trans(context), onTap: (){
-                Get.to(PayslipHistoryPage());
+                Get.to(PayslipHistoryPage(widget.token));
               }),
             ]
           ),

@@ -290,6 +290,9 @@
     "to_do": "To Do",
     "in_progress": "Sedang Berjalan",
     "done": "Selesai",
-    "donefortoday": "Selesai untuk Hari Ini"
+    "donefortoday": "Selesai untuk Hari Ini",
+    "deduction": "Potongan",
+    "title": "Judul",
+    "comment": "Komentar"
 }
 

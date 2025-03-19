@@ -1,19 +1,21 @@
 part of "widgets.dart";
 
 class PayslipCard extends StatelessWidget {
+  final String token;
   final double width;
+  final Payslip payslip;
   final String? date;
   final String? total_hours;
-  final String? received;
+  final double? received;
   final String? paid_on;
 
-  PayslipCard(this.width, {this.date, this.total_hours, this.received, this.paid_on});
+  PayslipCard(this.token, this.width, this.payslip, {this.date, this.total_hours, this.received, this.paid_on});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
         onTap:(){
-          Get.to(PayslipDetailPage());
+          Get.to(PayslipDetailPage(token, payslip));
         },
         child: Container(
             width: width,
@@ -68,7 +70,11 @@ class PayslipCard extends StatelessWidget {
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                                   ),
                                   Text(
-                                    "${received}",
+                                    "${intl.NumberFormat.currency(
+                                      locale: 'id_ID',
+                                      decimalDigits: 0,
+                                      symbol: 'Rp',
+                                    ).format(received)}",
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                                   ),
@@ -101,8 +107,9 @@ class PayslipCard extends StatelessWidget {
 
 class PayslipResumeCard extends StatelessWidget {
   final double width;
+  final Payslip payslip;
 
-  PayslipResumeCard(this.width);
+  PayslipResumeCard(this.width, this.payslip);
 
   @override
   Widget build(BuildContext context) {
@@ -130,11 +137,12 @@ class PayslipResumeCard extends StatelessWidget {
             SizedBox(height: 6),
             Divider(thickness: 1, color: Colors.grey.shade100),
             SizedBox(height: 6),
-            itemRow("basic_salary".trans(context), "Rp 7.000.000"),
-            itemRow("tax".trans(context), "Rp 300.000", color: Colors.red),
-            itemRow("reimbursement".trans(context), "Rp 1.000.000", color: Colors.green),
-            itemRow("bonus".trans(context), "Rp 500.000", color: Colors.green),
-            itemRow("overtime".trans(context), "Rp 0"),
+            itemRow("basic_salary".trans(context), double.parse(payslip.basic_salary ?? "0")),
+            itemRow("deduction".trans(context), double.parse(payslip.total_deduction ?? "0"), color: Colors.red),
+            // itemRow("tax".trans(context), double.parse(payslip.basic_salary ?? "0"), color: Colors.red),
+            // itemRow("reimbursement".trans(context), double.parse(payslip.basic_salary ?? "0"), color: Colors.green),
+            itemRow("bonus".trans(context), double.parse(payslip.total_allowance ?? "0"), color: Colors.green),
+            itemRow("overtime".trans(context), double.parse(payslip.total_overtime ?? "0"), color: Colors.green),
             SizedBox(height: 6),
             Divider(thickness: 1, color: Colors.grey.shade100),
             SizedBox(height: 6),
@@ -147,7 +155,11 @@ class PayslipResumeCard extends StatelessWidget {
                   style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
                 Text(
-                  "Rp 8.200.000",
+                  "${intl.NumberFormat.currency(
+                    locale: 'id_ID',
+                    decimalDigits: 0,
+                    symbol: 'Rp',
+                  ).format(payslip.net_salary)}",
                   textAlign: TextAlign.start,
                   style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
@@ -158,7 +170,7 @@ class PayslipResumeCard extends StatelessWidget {
     );
   }
 
-  Widget itemRow(String title, String data, {Color? color = Colors.black}){
+  Widget itemRow(String title, double data, {Color? color = Colors.black}){
     return Container(
       margin: EdgeInsets.only(bottom: 12),
       child: Row(
@@ -170,7 +182,11 @@ class PayslipResumeCard extends StatelessWidget {
             style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
           ),
           Text(
-            "${data}",
+            "${intl.NumberFormat.currency(
+              locale: 'id_ID',
+              decimalDigits: 0,
+              symbol: 'Rp',
+            ).format(data)}",
             textAlign: TextAlign.start,
             style: blackFontStyle.copyWith(fontSize: 13, color: color, fontWeight: FontWeight.w600),
           ),
@@ -183,8 +199,10 @@ class PayslipResumeCard extends StatelessWidget {
 class PayslipSummaryCard extends StatefulWidget {
   final String token;
   final double width;
+  final String overtime_hours;
+  final String working_hours;
 
-  PayslipSummaryCard(this.token, this.width);
+  PayslipSummaryCard(this.token, this.width, this.overtime_hours, this.working_hours);
 
   @override
   State<PayslipSummaryCard> createState() => _PayslipSummaryCardState();
@@ -193,6 +211,10 @@ class PayslipSummaryCard extends StatefulWidget {
 class _PayslipSummaryCardState extends State<PayslipSummaryCard> {
   @override
   Widget build(BuildContext context) {
+
+    DateTime now = DateTime.now();
+    String formattedDate = intl.DateFormat('MMMM yyyy').format(now);
+
     return Container(
       width: widget.width,
       decoration: BoxDecoration(
@@ -210,7 +232,7 @@ class _PayslipSummaryCardState extends State<PayslipSummaryCard> {
             ),
             SizedBox(height: 3),
             Text(
-              "${"paid_period".trans(context)} 25 Nov 2024 - 25 Dec 2024",
+              "${"paid_period".trans(context)} 01 ${formattedDate} - ${now.day} ${formattedDate}",
               textAlign: TextAlign.start,
               style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
             ),
@@ -218,27 +240,13 @@ class _PayslipSummaryCardState extends State<PayslipSummaryCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TimeCard((widget.width - 2*16)/2 - 5, "overtime".trans(context), "00:00"),
-                TimeCard((widget.width - 2*16)/2 - 5, "this_pay".trans(context), "00:00"),
+                TimeCard((widget.width - 2*16)/2 - 5, "overtime".trans(context), "${widget.overtime_hours}"),
+                TimeCard((widget.width - 2*16)/2 - 5, "this_pay".trans(context), "${widget.working_hours}"),
               ],
             ),
           ]
       ),
     );
   }
-  void modalBottomSheet(contexts, String token){
-    double fullWidth = MediaQuery.of(context).size.width;
 
-    showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-        ),
-        context: contexts,
-        enableDrag: true,
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        builder: (bc){
-          return ModalClockOutCard(token, fullWidth, 16);
-        });
-  }
 }

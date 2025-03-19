@@ -1784,9 +1784,10 @@ class ModalReimburseCategoryCard extends StatefulWidget {
   final String token;
   final double width;
   final double padding;
-  final ValueChanged<String>? onSelected;
+  final List<ReimbursementCategory> category;
+  final ValueChanged<ReimbursementCategory>? onSelected;
 
-  ModalReimburseCategoryCard(this.token, this.width, this.padding, {this.onSelected});
+  ModalReimburseCategoryCard(this.token, this.width, this.padding, this.category, {this.onSelected});
 
   @override
   State<ModalReimburseCategoryCard> createState() => _ModalReimburseCategoryCardState();
@@ -1795,17 +1796,7 @@ class ModalReimburseCategoryCard extends StatefulWidget {
 class _ModalReimburseCategoryCardState extends State<ModalReimburseCategoryCard> {
   bool isLoading = false;
 
-  List<String> listData = [
-    "Businesss Trip",
-    "Office Supplies",
-    "Meals and Entertainment",
-    "Professional Development",
-    "Home Office Expenses",
-    "Mileage Reimbursement",
-    "Miscellaneous Expenses",
-  ];
-
-  String? selectedData;
+  ReimbursementCategory? selectedData;
 
   @override
   Widget build(BuildContext context) {
@@ -1837,7 +1828,7 @@ class _ModalReimburseCategoryCardState extends State<ModalReimburseCategoryCard>
                 ),
                 SizedBox(height: 15),
                 Column(
-                    children: listData.map((e) => itemCategory(e, (selectedData == e), onSelected: (){
+                    children: widget.category.map((e) => itemCategory(e, (selectedData == e), onSelected: (){
                       setState((){
                         selectedData = e;
                       });
@@ -1860,7 +1851,7 @@ class _ModalReimburseCategoryCardState extends State<ModalReimburseCategoryCard>
     );
   }
 
-  Widget itemCategory(String title, bool isSelected, {Function? onSelected}){
+  Widget itemCategory(ReimbursementCategory data, bool isSelected, {Function? onSelected}){
     return InkWell(
         onTap: (){
           onSelected!();
@@ -1878,7 +1869,7 @@ class _ModalReimburseCategoryCardState extends State<ModalReimburseCategoryCard>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "${title}",
+                  "${data.name}",
                   textAlign: TextAlign.start,
                   style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                 ),

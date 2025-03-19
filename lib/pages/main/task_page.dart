@@ -1,13 +1,22 @@
 part of '../pages.dart';
 
 class TaskPage extends StatefulWidget {
-  const TaskPage({super.key});
+  final String token;
+
+  TaskPage(this.token);
 
   @override
   State<TaskPage> createState() => _TaskPageState();
 }
 
 class _TaskPageState extends State<TaskPage> {
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<TaskCubit>().getTask(widget.token);
+  }
+
   @override
   Widget build(BuildContext context) {
     double defaultWidth = MediaQuery.of(context).size.width - 2*defaultMargin2;
@@ -56,7 +65,10 @@ class _TaskPageState extends State<TaskPage> {
             ),
           ),
           SizedBox(height: 15),
-          TaskSummaryCard('', defaultWidth),
+          BlocBuilder<TaskCubit, TaskState>(
+              builder: (context, state) => (state is TaskLoaded) ? (state.data != null && state.data!.project_counts != null) ? TaskSummaryCard(widget.token, defaultWidth, state.data!.project_counts!) : SizedBox() : loadingIndicator
+          ),
+
           SizedBox(height: 15),
           Container(
             child: SingleChildScrollView(
@@ -65,9 +77,11 @@ class _TaskPageState extends State<TaskPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children:[
                     SizedBox(width: 20),
-                    TaskGroupCard(defaultWidth*75/100, "To Do", "The tasks assigned to you for today"),
-                    TaskGroupCard(defaultWidth*75/100, "In Progress", "The tasks assigned to you for today"),
-                    TaskGroupCard(defaultWidth*75/100, "Done", "The tasks assigned to you for today"),
+                    BlocBuilder<TaskCubit, TaskState>(
+                        builder: (context, state) => (state is TaskLoaded) ? (state.data != null && state.data!.projects != null && state.data!.projects!.isNotEmpty) ? Row(
+                          children: state.data!.projects!.map((e) => TaskGroupCard(widget.token, defaultWidth*75/100, e)).toList()
+                        ) : SizedBox() : loadingIndicator
+                    ),
                   ]
               )
             ),

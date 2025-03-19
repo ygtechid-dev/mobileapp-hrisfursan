@@ -1,9 +1,10 @@
 part of '../pages.dart';
 
 class TaskDetailPage extends StatefulWidget {
-  final String title;
+  final String token;
+  final Tasks task;
 
-  TaskDetailPage(this.title);
+  TaskDetailPage(this.token, this.task);
 
   @override
   State<TaskDetailPage> createState() => _TaskDetailPageState();
@@ -27,6 +28,12 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
   String selectedMenu = "To Do";
 
   @override
+  void initState() {
+    super.initState();
+    context.read<TaskDetailCubit>().getTaskDetail(widget.token, "${widget.task.id}");
+  }
+
+  @override
   Widget build(BuildContext context) {
     double defaultWidth = MediaQuery.of(context).size.width - 2*defaultMargin2;
     double itemWidth = MediaQuery.of(context).size.width - 2*defaultMargin3;
@@ -37,247 +44,286 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
       isBackInvert: false,
       isFrontAppBar: true,
       marginAppBar: 65,
-      title: "${widget.title}",
+      title: "${widget.task.title}",
       onBackButtonPressed: (){
         Get.back();
       },
       appBarColor: Colors.white,
-      child: Container(
-          width: fullWidth,
-          padding: EdgeInsets.symmetric(vertical: 12, horizontal: defaultMargin2),
-          alignment: Alignment.center,
-          child: Column(
-            children: [
-              Container(
-                  width: defaultWidth,
-                  padding: EdgeInsets.symmetric(vertical: 24, horizontal: defaultMargin3),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8)
-                  ),
-                  alignment: Alignment.center,
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          PopupMenuButton<String>(
-                            padding: EdgeInsets.all(0),
-                            icon: statusCard(selectedMenu),
-                            onSelected: (String selected) async {
-                              setState(() {
-                                selectedMenu = selected;
-                              });
-                            },
-                            itemBuilder: (BuildContext context) {
-                              return menuEvents.map((String choice) {
-                                return PopupMenuItem<String>(
-                                  value: choice,
-                                  child: Text(choice),
-                                );
-                              }).toList();
-                            },
-                          ),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Icon(Icons.remove_red_eye_outlined, size: 20, color: mainColor),
-                                SizedBox(width: 12),
-                                Icon(Icons.more_vert_outlined, size: 20, color: mainColor),
-                              ]
-                          ),
-                        ]
+      child: BlocBuilder<TaskDetailCubit, TaskDetailState>(
+          builder: (context, state) => (state is TaskDetailLoaded) ? (state.data != null) ? Container(
+              width: fullWidth,
+              padding: EdgeInsets.symmetric(vertical: 12, horizontal: defaultMargin2),
+              alignment: Alignment.center,
+              child: Column(
+                children: [
+                  Container(
+                      width: defaultWidth,
+                      padding: EdgeInsets.symmetric(vertical: 24, horizontal: defaultMargin3),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8)
                       ),
-                      SizedBox(height: 16),
-                      Container(
-                          width: fullWidth - 2*15,
-                          padding: EdgeInsets.symmetric(vertical: 10.5, horizontal: 12),
-                          alignment: Alignment.centerLeft,
-                          decoration: BoxDecoration(
-                            color: "F9FAFB".toColor(),
-                            border: Border.all(color: "EAECF0".toColor()),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 52,
-                                height: 52,
-                                decoration: BoxDecoration(
-                                    color: CupertinoColors.systemGrey2,
-                                    borderRadius: BorderRadius.circular(16),
-                                    border: Border.all(color: mainColor),
-                                    image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: AssetImage("${prefixImages}img_avatar_dummy.png")
-                                    )
+                      alignment: Alignment.center,
+                      child: Column(
+                        children: [
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                PopupMenuButton<String>(
+                                  padding: EdgeInsets.all(0),
+                                  icon: statusCard(selectedMenu),
+                                  onSelected: (String selected) async {
+                                    setState(() {
+                                      selectedMenu = selected;
+                                    });
+
+                                    String? finalData;
+
+                                    if(selectedMenu == menuEvents[0]){
+                                      finalData = "todo";
+                                    }
+
+                                    if(selectedMenu == menuEvents[1]){
+                                      finalData = "in_progress";
+                                    }
+
+                                    if(selectedMenu == menuEvents[2]){
+                                      finalData = "done";
+                                    }
+
+                                    await TaskServices.updateStatus(widget.token, "${widget.task.id}", finalData!).then((result) async {
+
+                                      if(result != null && result.value != null){
+
+                                        Fluttertoast.showToast(
+                                            msg: "success_submit".trans(context),
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.green,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0
+                                        );
+
+                                        await context.read<TaskDetailCubit>().getTaskDetail(widget.token, "${widget.task.id}");
+
+                                      } else {
+                                        Fluttertoast.showToast(
+                                            msg: "${result.message}",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.red,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0
+                                        );
+                                      }
+
+
+                                    });
+                                  },
+                                  itemBuilder: (BuildContext context) {
+                                    return menuEvents.map((String choice) {
+                                      return PopupMenuItem<String>(
+                                        value: choice,
+                                        child: Text(choice),
+                                      );
+                                    }).toList();
+                                  },
                                 ),
-                              ),
-                              SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Adam Sudjana",
-                                    textAlign: TextAlign.start,
-                                    style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
-                                  ),
-                                  SizedBox(height: 2),
-                                  Text(
-                                    "Graphic Designer",
-                                    textAlign: TextAlign.start,
-                                    style: blackFontStyle.copyWith(fontSize: 12, color: mainColor, fontWeight: FontWeight.w400),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )
-                      ),
-                      SizedBox(height: 16),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "due_date".trans(context),
-                            textAlign: TextAlign.start,
-                            style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
-                          ),
-                          SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Icon(Icons.date_range, size: 18, color: mainColor ),
-                              SizedBox(width: 5),
-                              Text(
-                                "27 December 2024",
-                                textAlign: TextAlign.start,
-                                style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w600),
-                              ),
-                            ]
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 16),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "priority".trans(context),
-                            textAlign: TextAlign.start,
-                            style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
-                          ),
-                          SizedBox(height: 5),
-                          Row(
-                              children: [
-                                Icon(Icons.layers_outlined, size: 18, color: mainColor ),
-                                SizedBox(width: 5),
-                                Text(
-                                  "High",
-                                  textAlign: TextAlign.start,
-                                  style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w600),
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Icon(Icons.remove_red_eye_outlined, size: 20, color: mainColor),
+                                      SizedBox(width: 12),
+                                      Icon(Icons.more_vert_outlined, size: 20, color: mainColor),
+                                    ]
                                 ),
                               ]
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 16),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "assign_to".trans(context),
-                            textAlign: TextAlign.start,
-                            style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                           ),
-                          SizedBox(height: 5),
-                          Row(
-                              children: [
-                                Container(
-                                  width: 38,
-                                  height: 38,
+                          SizedBox(height: 16),
+                          BlocBuilder<UserCubit, UserState>(
+                              builder: (context, state) => (state is UserLoaded) ? (state.user != null) ? Container(
+                                  width: fullWidth - 2*15,
+                                  padding: EdgeInsets.symmetric(vertical: 10.5, horizontal: 12),
+                                  alignment: Alignment.centerLeft,
                                   decoration: BoxDecoration(
-                                      color: CupertinoColors.systemGrey2,
-                                      borderRadius: BorderRadius.circular(30),
-                                      border: Border.all(color: mainColor),
-                                      image: DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: AssetImage("${prefixImages}img_avatar_dummy.png")
-                                      )
+                                    color: "F9FAFB".toColor(),
+                                    border: Border.all(color: "EAECF0".toColor()),
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                ),
-                                SizedBox(width: 12),
-                                Text(
-                                  "Bima - Sr Graphic Design",
-                                  textAlign: TextAlign.start,
-                                  style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
-                                ),
-                              ]
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 16),
-                      FormWithLabelCard(
-                          outerLabelText: "task_description".trans(context),
-                          hintText: "",
-                          controller: descriptionC,
-                          readOnly: true,
-                          inputType: TextInputType.multiline,
-                          maxLines: 6,
-                          minLines: 6,
-                          onSaved: (e) {
-                            descriptionC.text = e ?? "";
-                          },
-                          validator: (e) {
-                            return simpleValidator(e, null);
-                          },
-                          filled: true),
-                      SizedBox(height: 16),
-                      Container(
-                        width: defaultWidth - 2*defaultMargin3,
-                        alignment: Alignment.centerLeft,
-                        child: Column(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 52,
+                                        height: 52,
+                                        decoration: BoxDecoration(
+                                            color: CupertinoColors.systemGrey2,
+                                            borderRadius: BorderRadius.circular(16),
+                                            border: Border.all(color: mainColor),
+                                            image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: CachedNetworkImageProvider("${state.user!.avatar!}")
+                                            )
+                                        ),
+                                      ),
+                                      SizedBox(width: 10),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "${state.user!.first_name} ${state.user!.last_name}",
+                                            textAlign: TextAlign.start,
+                                            style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                                          ),
+                                          SizedBox(height: 2),
+                                          Text(
+                                            "Graphic Designer",
+                                            textAlign: TextAlign.start,
+                                            style: blackFontStyle.copyWith(fontSize: 12, color: mainColor, fontWeight: FontWeight.w400),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                              ) : SizedBox() : loadingIndicator
+                          ),
+                          SizedBox(height: 16),
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "attachment".trans(context),
+                                "due_date".trans(context),
                                 textAlign: TextAlign.start,
-                                style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                                style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                               ),
-                              SizedBox(height: 3),
+                              SizedBox(height: 5),
+                              Row(
+                                  children: [
+                                    Icon(Icons.date_range, size: 18, color: mainColor ),
+                                    SizedBox(width: 5),
+                                    Text(
+                                      "${state.data!.due_date}",
+                                      textAlign: TextAlign.start,
+                                      style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w600),
+                                    ),
+                                  ]
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 16),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
                               Text(
-                                "download_file".trans(context),
+                                "priority".trans(context),
                                 textAlign: TextAlign.start,
-                                style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                                style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                               ),
-                            ]
-                        ),
-                      ),
-                      SizedBox(height: 15),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CommonDottedButtonWithImage((defaultWidth - 2*defaultMargin3)/3 - 10, onPicked: (value){
-                            setState(() {
-
-                            });
-                          }, icon: "${prefixIcons}ic_add_picture.svg"),
-                          CommonDottedButtonWithImage((defaultWidth - 2*defaultMargin3)/3 - 10, onPicked: (value){
-                            setState(() {
-
-                            });
-                          }, icon: "${prefixIcons}ic_add_picture.svg"),
-                          CommonDottedButtonWithImage((defaultWidth - 2*defaultMargin3)/3 - 10, onPicked: (value){
-                            setState(() {
-
-                            });
-                          }, icon: "${prefixIcons}ic_add_picture.svg"),
+                              SizedBox(height: 5),
+                              Row(
+                                  children: [
+                                    Icon(Icons.layers_outlined, size: 18, color: mainColor ),
+                                    SizedBox(width: 5),
+                                    Text(
+                                      "${state.data!.priority}",
+                                      textAlign: TextAlign.start,
+                                      style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w600),
+                                    ),
+                                  ]
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 16),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "assign_to".trans(context),
+                                textAlign: TextAlign.start,
+                                style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                              ),
+                              SizedBox(height: 5),
+                              Row(
+                                  children: [
+                                    Container(
+                                      width: 38,
+                                      height: 38,
+                                      decoration: BoxDecoration(
+                                          color: CupertinoColors.systemGrey2,
+                                          borderRadius: BorderRadius.circular(30),
+                                          border: Border.all(color: mainColor),
+                                          image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: CachedNetworkImageProvider("${state.data!.assignees!.avatar}")
+                                          )
+                                      ),
+                                    ),
+                                    SizedBox(width: 12),
+                                    Text(
+                                      "${state.data!.assignees!.name}",
+                                      textAlign: TextAlign.start,
+                                      style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                                    ),
+                                  ]
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 16),
+                          FormWithLabelCard(
+                              outerLabelText: "task_description".trans(context),
+                              hintText: "",
+                              initialText: "${state.data!.description}",
+                              readOnly: true,
+                              inputType: TextInputType.multiline,
+                              maxLines: 10,
+                              minLines: 6,
+                              filled: true),
+                          SizedBox(height: 16),
+                          Container(
+                            width: defaultWidth - 2*defaultMargin3,
+                            alignment: Alignment.centerLeft,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "attachment".trans(context),
+                                    textAlign: TextAlign.start,
+                                    style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                                  ),
+                                  SizedBox(height: 3),
+                                  Text(
+                                    "download_file".trans(context),
+                                    textAlign: TextAlign.start,
+                                    style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                                  ),
+                                ]
+                            ),
+                          ),
+                          SizedBox(height: 15),
+                          (state.data!.attachments != null) ? Wrap(
+                            alignment: WrapAlignment.spaceBetween,
+                            spacing: 15,
+                            runSpacing: 15,
+                            children: state.data!.attachments!.map((e) => Container(
+                              width: (defaultWidth - 2*defaultMargin3)/3 - 10,
+                              height: (defaultWidth - 2*defaultMargin3)/3 - 10,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: CachedNetworkImageProvider("${e.file_path}")
+                                  )
+                              ),
+                            )).toList(),
+                          ) : SizedBox(),
                         ],
-                      ),
-                    ],
-                  )
-              ),
-              SizedBox(height: 60),
-            ],
-          )
+                      )
+                  ),
+                  SizedBox(height: 60),
+                ],
+              )
+          ) : SizedBox() : loadingIndicator
       ),
     );
   }

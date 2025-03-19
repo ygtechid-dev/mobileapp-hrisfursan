@@ -1,18 +1,52 @@
 part of '../pages.dart';
 
 class ReimburseCreatePage extends StatefulWidget {
+  final String token;
+
+  ReimburseCreatePage(this.token);
 
   @override
   State<ReimburseCreatePage> createState() => _ReimburseCreatePageState();
 }
 
 class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
+  TextEditingController titleC = TextEditingController();
   TextEditingController categoryC = TextEditingController();
   TextEditingController dateC = TextEditingController();
   TextEditingController descriptionC = TextEditingController();
   TextEditingController amountC = TextEditingController();
 
   bool isAgree = false;
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ReimbursementCategoryCubit>().getReimbursementCategory(widget.token);
+  }
+
+  String? category_id;
+
+  DateTime selectedDate = DateTime.now();
+
+  Future<void> _selectDate(BuildContext context) async {
+
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1980, 8),
+        lastDate: DateTime(2040)
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+
+        String data = DateFormat('yyyy-MM-dd').format(selectedDate);
+        dateC.text = data;
+      });
+    }
+  }
+
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -65,20 +99,45 @@ class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
                       }),
                       SizedBox(height: 20),
                       FormWithLabelCard(
-                          outerLabelText: "expense_category".trans(context),
-                          hintText: "select_category".trans(context),
-                          controller: categoryC,
-                          prefixSvg: "${prefixIcons}ic_form_title.svg",
+                          outerLabelText: "title".trans(context),
+                          hintText: "Enter ${"title".trans(context)}",
+                          controller: amountC,
                           onSaved: (e) {
-                            categoryC.text = e ?? "";
-                          },
-                          onTap: (){
-                            modalBottomSheetCategory(context, "");
+                            titleC.text = e ?? "";
                           },
                           validator: (e) {
                             return simpleValidator(e, null);
                           },
                           filled: true),
+                      SizedBox(height: 20),
+                      BlocBuilder<ReimbursementCategoryCubit, ReimbursementCategoryState>(
+                          builder: (context, state) {
+                            if (state is ReimbursementCategoryLoaded){
+                              if (state.data != null) {
+
+                                return FormWithLabelCard(
+                                    outerLabelText: "expense_category".trans(context),
+                                    hintText: "select_category".trans(context),
+                                    controller: categoryC,
+                                    prefixSvg: "${prefixIcons}ic_form_title.svg",
+                                    onSaved: (e) {
+                                      categoryC.text = e ?? "";
+                                    },
+                                    onTap: (){
+                                      modalBottomSheetCategory(context, widget.token, state.data ?? []);
+                                    },
+                                    validator: (e) {
+                                      return simpleValidator(e, null);
+                                    },
+                                    filled: true);
+                              } else {
+                                return SizedBox();
+                              }
+                            } else {
+                              return loadingIndicator;
+                            }
+                          }
+                      ),
                       SizedBox(height: 20),
                       FormWithLabelCard(
                           outerLabelText: "transaction_date".trans(context),
@@ -89,7 +148,7 @@ class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
                             dateC.text = e ?? "";
                           },
                           onTap: (){
-                            // modalBottomSheetCalendar(context, "");
+                            _selectDate(context);
                           },
                           validator: (e) {
                             return simpleValidator(e, null);
@@ -141,7 +200,7 @@ class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
             boxShadow: boxShadow
         ),
         child: ButtonCard("submit".trans(context), defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
-          modalBottomSheet(context, "");
+          modalBottomSheet(context, widget.token);
         }),
       ),
     );
@@ -159,13 +218,56 @@ class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (bc){
-          return ModalDefaultSubmitCard(token, fullWidth, 16, "ready_submit".trans(context), "double_check_form".trans(context), "img_leave.png", onSubmit: (){
+          return ModalDefaultSubmitCard(token, fullWidth, 16, "ready_submit".trans(context), "double_check_form".trans(context), "img_leave.png", onSubmit: () async {
+            if(titleC.text.isNotEmpty && dateC.text.isNotEmpty && amountC.text.isNotEmpty && category_id != null){
+              setState(() {
+                isLoading = true;
+              });
 
+              await ReimbursementServices.createReimbursement(widget.token, "${titleC.text}", "${descriptionC.text}", "${category_id}", "${amountC.text}", "${dateC.text}").then((result) {
+
+                if(result != null && result.value != null){
+
+                  setState(() {
+                    isLoading = false;
+                  });
+
+                  Fluttertoast.showToast(
+                      msg: "success_submit".trans(context),
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.green,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+
+                  Get.to(ReimbursePage(widget.token));
+
+                } else {
+                  setState(() {
+                    isLoading = false;
+                  });
+
+                  Fluttertoast.showToast(
+                      msg: "${result.message}",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+                }
+
+
+              });
+            }
           });
         });
   }
 
-  void modalBottomSheetCategory(contexts, String token){
+  void modalBottomSheetCategory(contexts, String token, List<ReimbursementCategory> listData){
     double fullWidth = MediaQuery.of(context).size.width;
 
     showModalBottomSheet(
@@ -177,7 +279,12 @@ class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (bc){
-          return ModalReimburseCategoryCard(token, fullWidth, 16);
+          return ModalReimburseCategoryCard(token, fullWidth, 16, listData, onSelected: (value) {
+            setState((){
+              category_id = "${value.id}";
+              categoryC.text = "${value.name}";
+            });
+          });
         });
   }
 

@@ -1,7 +1,9 @@
 part of '../pages.dart';
 
 class ReimbursePage extends StatefulWidget {
-  const ReimbursePage({super.key});
+  final String token;
+
+  ReimbursePage(this.token);
 
   @override
   State<ReimbursePage> createState() => _ReimbursePageState();
@@ -9,30 +11,32 @@ class ReimbursePage extends StatefulWidget {
 
 class _ReimbursePageState extends State<ReimbursePage> {
 
-  List<List<String>> listData = [
-    ["22 December 2024", "Kacamata", "Rp1.200.000", "Waiting Approval", "request"],
-  ];
-
-  List<List<String>> listData2 = [
-    ["22 December 2024", "Kacamata", "Rp1.200.000", "Approved at 19 Sept 2024", "approved"],
-    ["22 December 2024", "Kacamata", "Rp1.200.000", "Rejected at 22 Sept 2024", "rejected"],
-  ];
-
   String selectedTab = "Request";
   String selectedMenu = "All Status";
 
   List<String> menuEvents = [
     "All Status",
-    "Approve",
+    "Paid",
     "Reject",
   ];
+
+  @override
+  void initState() {
+    context.read<ReimbursementCubit>().getReimbursement(widget.token);
+    super.initState();
+  }
+
+  Future<bool> _onWillPop() async {
+    Get.to(MainPage(token: widget.token));
+    return (kIsWeb) ? true : false;
+  }
 
   @override
   Widget build(BuildContext context) {
     double defaultWidth = MediaQuery.of(context).size.width - 2*defaultMargin2;
     double fullWidth = MediaQuery.of(context).size.width;
 
-    return GeneralPage(
+    return WillPopScope(child: GeneralPage(
       appBarColor: mainColor,
       appBarColorGradient: backgroundGradient,
       isAppBarCircular: true,
@@ -68,7 +72,19 @@ class _ReimbursePageState extends State<ReimbursePage> {
             ),
           ),
           SizedBox(height: 20),
-          ReimburseSummaryCard("", defaultWidth),
+          BlocBuilder<ReimbursementCubit, ReimbursementState>(
+              builder: (context, state) {
+                if (state is ReimbursementLoaded) {
+                  if (state.data != null) {
+                    return ReimburseSummaryCard(widget.token, defaultWidth, double.parse(state.data!.total_requested_month ?? "0"), double.parse(state.data!.total_approved_month ?? "0"));
+                  } else {
+                    return SizedBox();
+                  }
+                } else {
+                  return loadingIndicator;
+                }
+              }
+          ),
           SizedBox(height: 16),
           Container(
             width: defaultWidth,
@@ -154,73 +170,63 @@ class _ReimbursePageState extends State<ReimbursePage> {
             ),
           ),
           SizedBox(height: 16),
-          Column(
-              children: [
-                (selectedTab == "Request") ? (listData.isEmpty) ? Container(
-                  width: defaultWidth,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          "no_reimbursement".trans(context),
-                          textAlign: TextAlign.start,
-                          style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          "ready_reimbursement".trans(context),
-                          textAlign: TextAlign.start,
-                          style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
-                        ),
-                        SizedBox(height: 140),
-                      ]
-                  ),
-                ) : Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Column(
-                          children: listData.map((e) => ReimburseItemCard(defaultWidth, date: e[0], typeData: e[1], value: e[2], status: e[3], type: e[4])).toList()
-                      ),
-                    ]
-                ) : SizedBox(),
-                (selectedTab == "Status") ? (listData2.isEmpty) ? Container(
-                  width: defaultWidth,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          "no_reimbursement".trans(context),
-                          textAlign: TextAlign.start,
-                          style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          "ready_reimbursement".trans(context),
-                          textAlign: TextAlign.start,
-                          style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
-                        ),
-                        SizedBox(height: 140),
-                      ]
-                  ),
-                ) : Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Column(
-                          children: listData2.map((e) => ReimburseItemCard(defaultWidth, date: e[0], typeData: e[1], value: e[2], status: e[3], type: e[4])).toList()
-                      ),
-                    ]
-                ) : SizedBox(),
-              ]
+          BlocBuilder<ReimbursementCubit, ReimbursementState>(
+              builder: (context, state) {
+                if (state is ReimbursementLoaded) {
+                  if (state.data != null) {
+                    return Column(
+                        children: [
+                          (selectedTab == "Request") ? (state.data!.reimbursement!.where((e) => e.status == "pending").isEmpty) ? emptyBox(defaultWidth) : Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Column(
+                                    children: state.data!.reimbursement!.where((e) => e.status == "pending").map((e) {
+                                      DateTime appliedDate = new DateFormat("yyyy-MM-dd").parse(e.requested_at ?? "");
+                                      String applied_date = DateFormat("dd MMMM yyyy").format(appliedDate);
+
+                                      return ReimburseItemCard(widget.token, defaultWidth, date: applied_date, typeData: e.category!.name ?? "", value: e.amount, status: e.status);
+                                    }).toList()
+                                ),
+                              ]
+                          ) : SizedBox(),
+                          (selectedTab == "Status") ? (state.data!.reimbursement!.where((e) => e.status != "pending").isEmpty) ? emptyBox(defaultWidth) : Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                (selectedMenu == "All Status") ? ((state.data!.reimbursement!.where((e) => e.status != "pending").isEmpty) ? emptyBox(defaultWidth) : Column(
+                                    children: state.data!.reimbursement!.where((e) => e.status != "pending").map((e) {
+                                      DateTime appliedDate = new DateFormat("yyyy-MM-dd").parse(e.requested_at ?? "");
+                                      String applied_date = DateFormat("dd MMMM yyyy").format(appliedDate);
+
+                                      return ReimburseItemCard(widget.token, defaultWidth, date: applied_date, typeData: e.category!.name ?? "", value: e.amount, status: e.status);
+                                    }).toList()
+                                )) : SizedBox(),
+                                (selectedMenu == "Paid") ? ((state.data!.reimbursement!.where((e) => e.status == "paid").isEmpty) ? emptyBox(defaultWidth) : Column(
+                                    children: state.data!.reimbursement!.where((e) => e.status == "paid").map((e) {
+                                      DateTime appliedDate = new DateFormat("yyyy-MM-dd").parse(e.requested_at ?? "");
+                                      String applied_date = DateFormat("dd MMMM yyyy").format(appliedDate);
+
+                                      return ReimburseItemCard(widget.token, defaultWidth, date: applied_date, typeData: e.category!.name ?? "", value: e.amount, status: e.status);
+                                    }).toList()
+                                )) : SizedBox(),
+                                (selectedMenu == "Reject") ? ((state.data!.reimbursement!.where((e) => e.status == "rejected").isEmpty) ? emptyBox(defaultWidth) : Column(
+                                    children: state.data!.reimbursement!.where((e) => e.status == "rejected").map((e) {
+                                      DateTime appliedDate = new DateFormat("yyyy-MM-dd").parse(e.requested_at ?? "");
+                                      String applied_date = DateFormat("dd MMMM yyyy").format(appliedDate);
+
+                                      return ReimburseItemCard(widget.token, defaultWidth, date: applied_date, typeData: e.category!.name ?? "", value: e.amount, status: e.status);
+                                    }).toList()
+                                )) : SizedBox(),
+                              ]
+                          ) : SizedBox(),
+                        ]
+                    );
+                  } else {
+                    return SizedBox();
+                  }
+                } else {
+                  return loadingIndicator;
+                }
+              }
           ),
           SizedBox(height: 50),
         ],
@@ -234,8 +240,36 @@ class _ReimbursePageState extends State<ReimbursePage> {
             boxShadow: boxShadow
         ),
         child: ButtonCard("reimbursement_request".trans(context), defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
-          Get.to(ReimburseCreatePage());
+          Get.to(ReimburseCreatePage(widget.token));
         }),
+      ),
+    ), onWillPop: _onWillPop);
+  }
+
+  Widget emptyBox(width){
+    return Container(
+      width: width,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "no_reimbursement".trans(context),
+              textAlign: TextAlign.start,
+              style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+            ),
+            SizedBox(height: 5),
+            Text(
+              "ready_reimbursement".trans(context),
+              textAlign: TextAlign.start,
+              style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+            ),
+            SizedBox(height: 140),
+          ]
       ),
     );
   }

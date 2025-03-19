@@ -3,8 +3,10 @@ part of "widgets.dart";
 class ReimburseSummaryCard extends StatefulWidget {
   final String token;
   final double width;
+  final double total;
+  final double approved;
 
-  ReimburseSummaryCard(this.token, this.width);
+  ReimburseSummaryCard(this.token, this.width, this.total, this.approved);
 
   @override
   State<ReimburseSummaryCard> createState() => _ReimburseSummaryCardState();
@@ -13,6 +15,9 @@ class ReimburseSummaryCard extends StatefulWidget {
 class _ReimburseSummaryCardState extends State<ReimburseSummaryCard> {
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    String formattedDate = intl.DateFormat('MMMM yyyy').format(now);
+
     return Container(
       width: widget.width,
       decoration: BoxDecoration(
@@ -30,7 +35,7 @@ class _ReimburseSummaryCardState extends State<ReimburseSummaryCard> {
             ),
             SizedBox(height: 3),
             Text(
-              "${"period".trans(context)} 1 Jan 2024 - 30 Dec 2024",
+              "${"paid_period".trans(context)} 01 ${formattedDate} - ${now.day} ${formattedDate}",
               textAlign: TextAlign.start,
               style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
             ),
@@ -38,8 +43,16 @@ class _ReimburseSummaryCardState extends State<ReimburseSummaryCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                itemReimburse((widget.width - 2*16)/2 - 5, "total".trans(context), Colors.green, "Rp8.888.000"),
-                itemReimburse((widget.width - 2*16)/2 - 5, "approved".trans(context), Colors.blue, "Rp0"),
+                itemReimburse((widget.width - 2*16)/2 - 5, "total".trans(context), Colors.green, "${intl.NumberFormat.currency(
+                  locale: 'id_ID',
+                  decimalDigits: 0,
+                  symbol: 'Rp',
+                ).format(widget.total)}"),
+                itemReimburse((widget.width - 2*16)/2 - 5, "approved".trans(context), Colors.blue, "${intl.NumberFormat.currency(
+                  locale: 'id_ID',
+                  decimalDigits: 0,
+                  symbol: 'Rp',
+                ).format(widget.approved)}"),
               ],
             ),
           ]
@@ -91,44 +104,50 @@ class _ReimburseSummaryCardState extends State<ReimburseSummaryCard> {
 }
 
 class ReimburseItemCard extends StatelessWidget {
+  final String? token;
   final double width;
   final String? date;
   final String? typeData;
   final String? value;
   final String? status;
-  final String? type;
+  final String? approved_at;
+  final String? rejected_at;
 
-  ReimburseItemCard(this.width, {this.date, this.typeData, this.value, this.status, this.type});
+  ReimburseItemCard(this.token, this.width, {this.date, this.typeData, this.value, this.status, this.approved_at, this.rejected_at});
 
   Color? colorStatus;
   IconData? iconStatus;
+  String? textStatus;
 
   @override
   Widget build(BuildContext context) {
 
-    if(type == "request"){
+    if(status == "pending"){
       colorStatus = Colors.orange;
       iconStatus = Icons.access_time;
+      textStatus = "waiting_approval".trans(context);
     }
 
-    if(type == "approved"){
+    if(status == "paid"){
       colorStatus = Colors.green;
       iconStatus = Icons.check_circle;
+      textStatus = "${"approved_at".trans(context)}${approved_at}";
     }
 
-    if(type == "rejected"){
+    if(status == "rejected"){
       colorStatus = Colors.red;
       iconStatus = Icons.cancel;
+      textStatus = "${"rejected_at".trans(context)}${rejected_at}";
     }
 
     return InkWell(
         onTap:(){
-          if(type == "rejected"){
-            modalBottomSheetRefusal(context, "");
+          if(status == "rejected"){
+            modalBottomSheetRefusal(context, token ?? "");
           }
 
-          if(type == "approved"){
-            modalBottomSheetApproved(context, "");
+          if(status == "approved"){
+            modalBottomSheetApproved(context, token ?? "");
           }
         },
         child: Container(
@@ -189,7 +208,11 @@ class ReimburseItemCard extends StatelessWidget {
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                                   ),
                                   Text(
-                                    "${value}",
+                                    "${intl.NumberFormat.currency(
+                                      locale: 'id_ID',
+                                      decimalDigits: 0,
+                                      symbol: 'Rp',
+                                    ).format(double.parse(value ?? "0"))}",
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                                   ),
@@ -204,7 +227,7 @@ class ReimburseItemCard extends StatelessWidget {
                         Icon(iconStatus, size: 12, color: colorStatus),
                         SizedBox(width: 6),
                         Text(
-                          "${status}",
+                          "${textStatus}",
                           textAlign: TextAlign.start,
                           style: blackFontStyle.copyWith(fontSize: 12, color: colorStatus, fontWeight: FontWeight.w400),
                         ),

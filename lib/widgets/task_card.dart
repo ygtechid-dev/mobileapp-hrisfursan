@@ -3,8 +3,9 @@ part of "widgets.dart";
 class TaskSummaryCard extends StatefulWidget {
   final String token;
   final double width;
+  final ProjectsCounts count;
 
-  TaskSummaryCard(this.token, this.width);
+  TaskSummaryCard(this.token, this.width, this.count);
 
   @override
   State<TaskSummaryCard> createState() => _TaskSummaryCardState();
@@ -38,9 +39,9 @@ class _TaskSummaryCardState extends State<TaskSummaryCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                itemTodo((widget.width - 2*16)/3 - 5, "to_do".trans(context), "ic_task_todo.svg", 3),
-                itemTodo((widget.width - 2*16)/3 - 5, "in_progress".trans(context), "ic_task_progress.svg", 1),
-                itemTodo((widget.width - 2*16)/3 - 5, "done".trans(context), "ic_task_done.svg", 2),
+                itemTodo((widget.width - 2*16)/3 - 5, "to_do".trans(context), "ic_task_todo.svg", widget.count.on_hold ?? 0),
+                itemTodo((widget.width - 2*16)/3 - 5, "in_progress".trans(context), "ic_task_progress.svg", widget.count.active ?? 0),
+                itemTodo((widget.width - 2*16)/3 - 5, "done".trans(context), "ic_task_done.svg", widget.count.completed ?? 0),
               ],
             ),
           ]
@@ -85,11 +86,11 @@ class _TaskSummaryCardState extends State<TaskSummaryCard> {
 }
 
 class TaskGroupCard extends StatelessWidget {
+  final String token;
   final double width;
-  final String title;
-  final String subtitle;
+  final Projects projects;
 
-  TaskGroupCard(this.width, this.title, this.subtitle);
+  TaskGroupCard(this.token, this.width, this.projects);
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +109,7 @@ class TaskGroupCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "${title}",
+                  "${projects.name}",
                   textAlign: TextAlign.start,
                   style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
@@ -118,20 +119,17 @@ class TaskGroupCard extends StatelessWidget {
             ),
             SizedBox(height: 3),
             Text(
-              "${subtitle}",
+              "${projects.description}",
               textAlign: TextAlign.start,
               style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
             ),
             SizedBox(height: 15),
-            Column(
-              children: [
-                TaskItemCard(width, "Design 1"),
-                TaskItemCard(width, "Design 1"),
-              ]
-            ),
+            (projects.tasks != null) ? Column(
+              children: projects.tasks!.map((e) => TaskItemCard(token, width, e)).toList()
+            ) : SizedBox(),
             SizedBox(height: 15),
             ButtonHorizontalCard(width, "Create New Task", Icons.add_box_rounded, mainColor, onTap: (){
-              Get.to(TaskCreatePage());
+              Get.to(TaskCreatePage(token, "${projects.id}"));
             })
           ],
         )
@@ -140,10 +138,11 @@ class TaskGroupCard extends StatelessWidget {
 }
 
 class TaskItemCard extends StatefulWidget {
+  final String token;
   final double width;
-  final String title;
+  final Tasks task;
 
-  TaskItemCard(this.width, this.title);
+  TaskItemCard(this.token, this.width, this.task);
 
   @override
   State<TaskItemCard> createState() => _TaskItemCardState();
@@ -152,12 +151,17 @@ class TaskItemCard extends StatefulWidget {
 class _TaskItemCardState extends State<TaskItemCard> {
   bool isShow = false;
   bool isShowImage = false;
+  bool isShowComment = false;
+
+  TextEditingController commentC = TextEditingController();
+
+  File? fileImage;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        Get.to(TaskDetailPage("Design Banner"));
+        Get.to(TaskDetailPage(widget.token, widget.task));
       },
       child: Container(
           width: widget.width,
@@ -176,13 +180,12 @@ class _TaskItemCardState extends State<TaskItemCard> {
                   // setState((){
                   //   isShow = !isShow;
                   // });
-
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "${widget.title}",
+                      "${widget.task.title}",
                       textAlign: TextAlign.start,
                       style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                     ),
@@ -191,17 +194,120 @@ class _TaskItemCardState extends State<TaskItemCard> {
                   ],
                 ),
               ),
-              (isShow) ? Column(
+              Column(
                   children: [
                     SizedBox(height: 10),
                     (isShowImage) ? Column(
                         children: [
                           SizedBox(height: 5),
-                          CommonDottedButtonWithImage(widget.width - 2*16, onPicked: (value){
+                          CommonDottedButtonWithImage(widget.width - 2*16, isReset: (fileImage != null), onPicked: (value) async {
                             setState(() {
-
+                              fileImage = value;
                             });
+
+                            if(fileImage != null){
+                              await TaskServices.addAttachment(widget.token, "${widget.task.id}", fileImage!).then((result) async {
+
+                                if(result != null && result.value != null){
+
+                                  setState(() {
+                                    fileImage = null;
+                                    isShowImage = false;
+                                  });
+
+                                  Fluttertoast.showToast(
+                                      msg: "success_submit".trans(context),
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.green,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0
+                                  );
+
+                                  await context.read<TaskCubit>().getTask(widget.token);
+
+
+                                } else {
+
+                                  setState(() {
+                                    fileImage = null;
+                                    isShowImage = false;
+                                  });
+
+                                  Fluttertoast.showToast(
+                                      msg: "${result.message}",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.red,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0
+                                  );
+                                }
+
+
+                              });
+                            }
+
                           }, icon: "${prefixIcons}ic_add_picture.svg"),
+                          SizedBox(height: 5),
+                        ]
+                    ) : SizedBox(),
+                    (isShowComment) ? Column(
+                        children: [
+                          SizedBox(height: 5),
+                          FormWithLabelCard(
+                              outerLabelText: "comment".trans(context),
+                              hintText: "Enter ${"comment".trans(context)}",
+                              controller: commentC,
+                              inputType: TextInputType.text,
+                              textInputAction: TextInputAction.send,
+                              onSaved: (e) {
+                                commentC.text = e ?? "";
+                              },
+                              onFieldSubmit: (e) async {
+                                await TaskServices.addComments(widget.token, "${widget.task.id}", e!).then((result) async {
+
+                                  if(result != null && result.value != null){
+
+                                    Fluttertoast.showToast(
+                                        msg: "success_submit".trans(context),
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.green,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0
+                                    );
+
+                                    await context.read<TaskCubit>().getTask(widget.token);
+
+                                  } else {
+
+                                    setState(() {
+                                      fileImage = null;
+                                      isShowImage = false;
+                                    });
+
+                                    Fluttertoast.showToast(
+                                        msg: "${result.message}",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0
+                                    );
+                                  }
+
+
+                                });
+                              },
+                              validator: (e) {
+                                return simpleValidator(e, null);
+                              },
+                              filled: true),
                           SizedBox(height: 5),
                         ]
                     ) : SizedBox(),
@@ -209,42 +315,55 @@ class _TaskItemCardState extends State<TaskItemCard> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        InkWell(
-                            onTap: (){},
-                            child: Container(
-                              width: 20, height: 20,
-                              child: SvgPicture.asset("${prefixIcons}ic_text.svg", width: 20, height: 20),
-                            )
+                        Row(
+                            children: [
+                              InkWell(
+                                  onTap: (){
+                                    setState((){
+                                      isShowComment = !isShowComment;
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 20, height: 20,
+                                    child: SvgPicture.asset("${prefixIcons}ic_text.svg", width: 20, height: 20),
+                                  )
+                              ),
+                              SizedBox(width: 6),
+                              ((widget.task.comments_count ?? 0) > 0) ? Text(
+                                "${widget.task.comments_count}",
+                                textAlign: TextAlign.start,
+                                style: blackFontStyle.copyWith(fontSize: 11, fontWeight: FontWeight.w600),
+                              ) : SizedBox(),
+                            ]
                         ),
                         SizedBox(width: 10),
-                        InkWell(
-                            onTap: (){
-                              setState((){
-                                isShowImage = !isShowImage;
-                              });
-                            },
-                            child: Container(
-                              width: 20, height: 20,
-                              child: SvgPicture.asset("${prefixIcons}ic_paperclip.svg", width: 20, height: 20),
-                            )
+                        Row(
+                          children: [
+                            InkWell(
+                                onTap: (){
+                                  setState((){
+                                    isShowImage = !isShowImage;
+                                  });
+                                },
+                                child: Container(
+                                  width: 20, height: 20,
+                                  child: SvgPicture.asset("${prefixIcons}ic_paperclip.svg", width: 20, height: 20),
+                                )
+                            ),
+                            SizedBox(width: 6),
+                            ((widget.task.attachments_count ?? 0) > 0) ? Text(
+                              "${widget.task.attachments_count}",
+                              textAlign: TextAlign.start,
+                              style: blackFontStyle.copyWith(fontSize: 11, fontWeight: FontWeight.w600),
+                            ) : SizedBox(),
+                          ]
                         ),
-                        SizedBox(width: 6),
-                        Text(
-                          "1",
-                          textAlign: TextAlign.start,
-                          style: blackFontStyle.copyWith(fontSize: 11, fontWeight: FontWeight.w600),
-                        ),
+
                       ],
                     ),
-                    Column(
-                        children: [
-
-                        ]
-                    ),
                     SizedBox(height: 15),
-                    ButtonHorizontalCard(widget.width, "Create New Task", Icons.add_box_rounded, mainColor)
                   ]
-              ) : SizedBox()
+              )
             ],
           )
       )

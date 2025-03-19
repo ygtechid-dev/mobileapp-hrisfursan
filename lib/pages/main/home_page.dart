@@ -134,13 +134,13 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     MenuCard((defaultWidth - 2*12)/3, "reimbursement_request".trans(context), "ic_reimbursement.svg", onTap: (){
-                      Get.to(ReimbursePage());
+                      Get.to(ReimbursePage(widget.token));
                     },),
                     MenuCard((defaultWidth - 2*12)/3, "calendar".trans(context), "ic_calendar_home.svg", onTap: (){
                       Get.to(CalendarPage());
                     },),
                     MenuCard((defaultWidth - 2*12)/3, "payslip".trans(context), "ic_payslip.svg", onTap: (){
-                      Get.to(PayslipHistoryPage());
+                      Get.to(PayslipHistoryPage(widget.token));
                     },),
                   ],
                 ),

@@ -18,11 +18,12 @@ class Payslip extends Equatable {
   final String? payment_date;
   final String? note;
   final String? file_url;
+  final String? created_at;
 
   Payslip({this.id, this.payslip_number, this.month, this.month_name, this.year,
     this.period, this.salary_type, this.basic_salary, this.total_allowance,
     this.total_deduction, this.total_overtime, this.net_salary,
-    this.payment_status, this.payment_method, this.payment_date, this.note,
+    this.payment_status, this.payment_method, this.payment_date, this.note, this.created_at,
     this.file_url});
 
   factory Payslip.fromJson(Map<String, dynamic> data) =>
@@ -34,6 +35,7 @@ class Payslip extends Equatable {
         year: data['year'] ?? null,
         period: data['period'],
         salary_type: data['salary_type'] ?? null,
+        created_at: data['created_at'] ?? null,
         basic_salary: data['basic_salary'] ?? null,
         total_allowance: data['total_allowance'] ?? null,
         total_deduction: data['total_deduction'] ?? null,
@@ -52,6 +54,7 @@ class Payslip extends Equatable {
         id,
         payslip_number,
         month,
+        created_at,
         month_name,
         year,
         period,

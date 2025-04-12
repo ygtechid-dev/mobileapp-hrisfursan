@@ -546,8 +546,8 @@ class Salary extends Equatable {
         employee_id: data['employee_id'] ?? null,
         start_date: data['start_date'] ?? "",
         end_date: data['end_date'] ?? "",
-        salary: data['salary'] ?? "",
-        performance_status: data['performance_status'] ?? "",
+        salary: data['user']['employee']['salary'] ?? 0,
+        performance_status: data['performance_status'] ?? "Good",
       );
 
   @override

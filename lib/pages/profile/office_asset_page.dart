@@ -78,7 +78,7 @@ class _OfficeAssetPageState extends State<OfficeAssetPage> {
 
                                 assetsC.text = state.data!.name ?? "";
                                 brandC.text = state.data!.brand ?? "";
-                                warrantyC.text = state.data!.warranty ?? "";
+                                warrantyC.text = state.data!.warranty_status ?? "";
                                 dateC.text = state.data!.buying_date ?? "";
 
                                 return Column(
@@ -89,7 +89,7 @@ class _OfficeAssetPageState extends State<OfficeAssetPage> {
                                       decoration: BoxDecoration(
                                           image: DecorationImage(
                                               fit: BoxFit.cover,
-                                              image: AssetImage("${prefixImages}img_laptop.png"))
+                                              image: CachedNetworkImageProvider("${state.data!.image}"))
                                       ),
                                     ),
                                     SizedBox(height: 15),

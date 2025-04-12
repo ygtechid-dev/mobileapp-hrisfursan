@@ -218,7 +218,7 @@ class AttendanceServices {
       client = http.Client();
     }
 
-    String url = baseUrl + 'mobile/salary';
+    String url = baseUrl + 'mobile/profile';
 
     var response = await client.get(Uri.parse(url),
         headers: {

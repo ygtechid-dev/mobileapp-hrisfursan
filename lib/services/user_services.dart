@@ -294,7 +294,7 @@ class UserServices {
   static Future<ApiReturnValue<Resign>> submitResign(String token, Resign resignData, File file, {http.MultipartRequest? request}) async {
 
 
-    String url = baseUrl + 'mobile/reset-password';
+    String url = baseUrl + 'mobile/resign';
 
 
     if (request == null) {
@@ -305,7 +305,7 @@ class UserServices {
     }
 
     Map<String, String> fieldData = {
-      'date': resignData.resign_date ?? "",
+      'resignation_date': resignData.resign_date ?? "",
       'description': resignData.description ?? "",
     };
 
@@ -342,7 +342,7 @@ class UserServices {
       client = http.Client();
     }
 
-    String url = baseUrl + 'mobile/office';
+    String url = baseUrl + 'mobile/office-assets';
 
     var response = await client.get(Uri.parse(url),
         headers: {
@@ -359,8 +359,7 @@ class UserServices {
     var data = jsonDecode(response.body);
 
 
-
-    OfficeAssets value = OfficeAssets.fromJson(data["data"]);
+    OfficeAssets value = OfficeAssets.fromJson(data["data"][0]);
 
     return ApiReturnValue(value: value);
   }

@@ -175,21 +175,22 @@ class MemberUser extends Equatable {
 class OfficeAssets extends Equatable {
   final String? name;
   final String? brand;
-  final String? warranty;
+  final String? warranty_status;
   final String? buying_date;
+  final String? image;
 
-  OfficeAssets({this.name, this.brand, this.warranty, this.buying_date});
+  OfficeAssets({this.name, this.brand, this.warranty_status, this.buying_date, this.image});
 
   factory OfficeAssets.fromJson(Map<String, dynamic> data) => OfficeAssets(
     name: data['name'] ?? "",
     brand: data['brand'] ?? "",
-    warranty: data['warranty'] ?? "",
+    warranty_status: data['warranty_status'] ?? "",
     buying_date: data['buying_date'] ?? "",
   );
 
   @override
   // TODO: implement props
-  List<Object?> get props => [buying_date, warranty, brand, name];
+  List<Object?> get props => [buying_date, warranty_status, brand, name];
 }
 
 class Resign extends Equatable {
@@ -200,7 +201,7 @@ class Resign extends Equatable {
   Resign({this.resign_date, this.description, this.attachment});
 
   factory Resign.fromJson(Map<String, dynamic> data) => Resign(
-    resign_date: data['resign_date'] ?? "",
+    resign_date: data['resignation_date'] ?? "",
     description: data['description'] ?? "",
     attachment: data['attachment'] ?? "",
   );

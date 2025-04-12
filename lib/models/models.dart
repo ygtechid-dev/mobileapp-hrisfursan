@@ -10,3 +10,4 @@ part 'attendant.dart';
 part 'projects.dart';
 part 'reimbursement.dart';
 part 'payslip.dart';
+part 'notifications.dart';

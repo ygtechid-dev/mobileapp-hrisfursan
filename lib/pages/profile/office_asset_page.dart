@@ -1,6 +1,9 @@
 part of "../pages.dart";
 
 class OfficeAssetPage extends StatefulWidget {
+  final String token;
+
+  OfficeAssetPage(this.token);
 
   @override
   State<OfficeAssetPage> createState() => _OfficeAssetPageState();
@@ -10,10 +13,17 @@ class _OfficeAssetPageState extends State<OfficeAssetPage> {
   TextEditingController assetsC = TextEditingController();
   TextEditingController brandC = TextEditingController();
   TextEditingController warrantyC = TextEditingController();
-  TextEditingController descriptionC = TextEditingController();
+  TextEditingController dateC = TextEditingController();
   TextEditingController phoneC = TextEditingController();
 
   bool isAgree = false;
+
+  @override
+  void initState() {
+    context.read<OfficeAssetsCubit>().getOfficeAssets(widget.token);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,67 +71,93 @@ class _OfficeAssetPageState extends State<OfficeAssetPage> {
                         style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                       ),
                       SizedBox(height: 15),
-                      Container(
-                        width: defaultWidth - 2*defaultMargin3,
-                        height: defaultWidth - 2*defaultMargin3 - 75,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                              image: AssetImage("${prefixImages}img_laptop.png"))
-                        ),
+                      BlocBuilder<OfficeAssetsCubit, OfficeAssetsState>(
+                          builder: (context, state) {
+                            if (state is OfficeAssetsLoaded) {
+                              if (state.data != null) {
+
+                                assetsC.text = state.data!.name ?? "";
+                                brandC.text = state.data!.brand ?? "";
+                                warrantyC.text = state.data!.warranty ?? "";
+                                dateC.text = state.data!.buying_date ?? "";
+
+                                return Column(
+                                  children: [
+                                    Container(
+                                      width: defaultWidth - 2*defaultMargin3,
+                                      height: defaultWidth - 2*defaultMargin3 - 75,
+                                      decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: AssetImage("${prefixImages}img_laptop.png"))
+                                      ),
+                                    ),
+                                    SizedBox(height: 15),
+                                    FormWithLabelCard(
+                                        outerLabelText: "asset_name".trans(context),
+                                        hintText: "Enter ${"asset_name".trans(context)}",
+                                        controller: assetsC,
+                                        prefixSvg: "${prefixIcons}ic_form_assets.svg",
+                                        readOnly: true,
+                                        onSaved: (e) {
+                                          assetsC.text = e ?? "";
+                                        },
+                                        validator: (e) {
+                                          return simpleValidator(e, null);
+                                        },
+                                        filled: true),
+                                    SizedBox(height: 20),
+                                    FormWithLabelCard(
+                                        outerLabelText: "brand".trans(context),
+                                        hintText: "Enter ${"brand".trans(context)}",
+                                        controller: brandC,
+                                        prefixSvg: "${prefixIcons}ic_form_brand.svg",
+                                        readOnly: true,
+                                        onSaved: (e) {
+                                          brandC.text = e ?? "";
+                                        },
+                                        validator: (e) {
+                                          return simpleValidator(e, null);
+                                        },
+                                        filled: true),
+                                    SizedBox(height: 20),
+                                    FormWithLabelCard(
+                                        outerLabelText: "warranty".trans(context),
+                                        hintText: "Enter ${"warranty".trans(context)}",
+                                        controller: warrantyC,
+                                        prefixSvg: "${prefixIcons}ic_form_status.svg",
+                                        readOnly: true,
+                                        onSaved: (e) {
+                                          warrantyC.text = e ?? "";
+                                        },
+                                        validator: (e) {
+                                          return simpleValidator(e, null);
+                                        },
+                                        filled: true),
+                                    SizedBox(height: 20),
+                                    FormWithLabelCard(
+                                        outerLabelText: "buying".trans(context),
+                                        hintText: "Enter ${"buying".trans(context)}",
+                                        controller: dateC,
+                                        prefixSvg: "${prefixIcons}ic_form_buying.svg",
+                                        readOnly: true,
+                                        onSaved: (e) {
+                                          dateC.text = e ?? "";
+                                        },
+                                        validator: (e) {
+                                          return simpleValidator(e, null);
+                                        },
+                                        filled: true),
+                                  ]
+                                );
+                              } else {
+                                return SizedBox();
+                              }
+                            } else {
+                              return loadingIndicator;
+                            }
+                          }
                       ),
-                      SizedBox(height: 15),
-                      FormWithLabelCard(
-                          outerLabelText: "asset_name".trans(context),
-                          hintText: "Enter ${"asset_name".trans(context)}",
-                          controller: assetsC,
-                          prefixSvg: "${prefixIcons}ic_form_assets.svg",
-                          onSaved: (e) {
-                            assetsC.text = e ?? "";
-                          },
-                          validator: (e) {
-                            return simpleValidator(e, null);
-                          },
-                          filled: true),
-                      SizedBox(height: 20),
-                      FormWithLabelCard(
-                          outerLabelText: "brand".trans(context),
-                          hintText: "Enter ${"brand".trans(context)}",
-                          controller: brandC,
-                          prefixSvg: "${prefixIcons}ic_form_brand.svg",
-                          onSaved: (e) {
-                            brandC.text = e ?? "";
-                          },
-                          validator: (e) {
-                            return simpleValidator(e, null);
-                          },
-                          filled: true),
-                      SizedBox(height: 20),
-                      FormWithLabelCard(
-                          outerLabelText: "warranty".trans(context),
-                          hintText: "Enter ${"warranty".trans(context)}",
-                          controller: warrantyC,
-                          prefixSvg: "${prefixIcons}ic_form_status.svg",
-                          onSaved: (e) {
-                            warrantyC.text = e ?? "";
-                          },
-                          validator: (e) {
-                            return simpleValidator(e, null);
-                          },
-                          filled: true),
-                      SizedBox(height: 20),
-                      FormWithLabelCard(
-                          outerLabelText: "buying".trans(context),
-                          hintText: "Enter ${"buying".trans(context)}",
-                          controller: warrantyC,
-                          prefixSvg: "${prefixIcons}ic_form_buying.svg",
-                          onSaved: (e) {
-                            warrantyC.text = e ?? "";
-                          },
-                          validator: (e) {
-                            return simpleValidator(e, null);
-                          },
-                          filled: true),
                       SizedBox(height: 40),
                     ],
                   )

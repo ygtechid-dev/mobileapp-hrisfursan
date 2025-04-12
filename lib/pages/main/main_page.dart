@@ -91,7 +91,7 @@ class _MainPageState extends State<MainPage> {
                       HomePage(widget.token!),
                       ActivityPage(widget.token!),
                       AttendancePage(widget.token!),
-                      (isTask) ? TaskPage(widget.token!) : AnalyticsPage(),
+                      (isTask) ? TaskPage(widget.token!) : AnalyticsPage(widget.token!),
                       ProfilePage(widget.token ?? ""),
                     ],
                   ),

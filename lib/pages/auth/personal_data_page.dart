@@ -21,12 +21,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
   TextEditingController countryC = TextEditingController();
   TextEditingController cityC = TextEditingController();
 
-  bool isAgree = false;
-  bool isLoading = false;
 
-  bool initDesignation = false;
-
-  List<List<String>> listData = [];
 
   @override
   void initState() {
@@ -54,6 +49,13 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
       });
     }
   }
+
+  bool isAgree = false;
+  bool isLoading = false;
+
+  bool initDesignation = false;
+
+  List<List<String>> listData = [];
 
   String? selectedDesignation;
 

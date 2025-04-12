@@ -79,6 +79,7 @@ class _TaskPageState extends State<TaskPage> {
                     SizedBox(width: 20),
                     BlocBuilder<TaskCubit, TaskState>(
                         builder: (context, state) => (state is TaskLoaded) ? (state.data != null && state.data!.projects != null && state.data!.projects!.isNotEmpty) ? Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: state.data!.projects!.map((e) => TaskGroupCard(widget.token, defaultWidth*75/100, e)).toList()
                         ) : SizedBox() : loadingIndicator
                     ),

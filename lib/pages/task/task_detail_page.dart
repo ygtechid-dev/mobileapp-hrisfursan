@@ -31,6 +31,19 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
   void initState() {
     super.initState();
     context.read<TaskDetailCubit>().getTaskDetail(widget.token, "${widget.task.id}");
+
+    if(widget.task.status == "todo"){
+      selectedMenu = menuEvents[0];
+    }
+
+    if(widget.task.status == "in_progress"){
+      selectedMenu = menuEvents[1];
+    }
+
+    if(widget.task.status == "done"){
+      selectedMenu = menuEvents[2];
+    }
+
   }
 
   @override
@@ -72,6 +85,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                                 PopupMenuButton<String>(
                                   padding: EdgeInsets.all(0),
                                   icon: statusCard(selectedMenu),
+                                  initialValue: selectedMenu,
                                   onSelected: (String selected) async {
                                     setState(() {
                                       selectedMenu = selected;
@@ -255,13 +269,13 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                                           border: Border.all(color: mainColor),
                                           image: DecorationImage(
                                               fit: BoxFit.cover,
-                                              image: CachedNetworkImageProvider("${state.data!.assignees!.avatar}")
+                                              image: CachedNetworkImageProvider("${state.data!.assignees![0].avatar}")
                                           )
                                       ),
                                     ),
                                     SizedBox(width: 12),
                                     Text(
-                                      "${state.data!.assignees!.name}",
+                                      "${state.data!.assignees![0].name} - ${state.data!.assignees![0].designation}",
                                       textAlign: TextAlign.start,
                                       style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                                     ),

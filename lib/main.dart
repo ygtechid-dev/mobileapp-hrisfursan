@@ -28,17 +28,23 @@ import 'package:flutter_localizations/src/cupertino_localizations.dart';
 
 import 'cubits/attendance/detail/attendance_detail_cubit.dart';
 import 'cubits/attendance/history/attendance_history_cubit.dart';
+import 'cubits/attendance/salary/salary_cubit.dart';
+import 'cubits/attendance/working/working_period_cubit.dart';
 import 'cubits/designation/designation_cubit.dart';
+import 'cubits/event/events_cubit.dart';
 import 'cubits/language/language_cubit.dart';
 import 'cubits/language/language_state.dart';
 import 'cubits/leaves/leaves_cubit.dart';
 import 'cubits/leaves/remaining/leaves_remaining_cubit.dart';
 import 'cubits/leaves/types/leaves_types_cubit.dart';
+import 'cubits/notifications/notifications_cubit.dart';
 import 'cubits/overtimes/overtimes_cubit.dart';
 import 'cubits/payslip/detail/payslip_detail_cubit.dart';
 import 'cubits/reimbursement/category/reimbursement_category_cubit.dart';
+import 'cubits/task/assignee/assignee_cubit.dart';
 import 'cubits/task/detail/task_detail_cubit.dart';
 import 'cubits/task/task_cubit.dart';
+import 'cubits/user/office_assets/office_assets_cubit.dart';
 import 'cubits/user/user_cubit.dart';
 
 
@@ -112,6 +118,12 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(create: (_) => ReimbursementCategoryCubit()),
           BlocProvider(create: (_) => TaskCubit()),
           BlocProvider(create: (_) => TaskDetailCubit()),
+          BlocProvider(create: (_) => AssigneeCubit()),
+          BlocProvider(create: (_) => EventsCubit()),
+          BlocProvider(create: (_) => WorkingPeriodCubit()),
+          BlocProvider(create: (_) => SalaryCubit()),
+          BlocProvider(create: (_) => OfficeAssetsCubit()),
+          BlocProvider(create: (_) => NotificationsCubit()),
         ],
         child: BlocBuilder<LocalCubit, LocalState>(builder: (_, state) {
           if (state is ChangeLocalState) {

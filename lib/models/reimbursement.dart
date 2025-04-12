@@ -14,7 +14,7 @@ class ReimbursementSummary extends Equatable {
 
   factory ReimbursementSummary.fromJson(Map<String, dynamic> data) =>
       ReimbursementSummary(
-        reimbursement: (data['reimbursement'] != null) ? (data['reimbursement'] as Iterable)
+        reimbursement: (data['reimbursements'] != null) ? (data['reimbursements'] as Iterable)
             .map((e) => Reimbursement.fromJson(e))
             .toList() : [],
         period: (data['period'] != null) ? ReimbursementPeriod.fromJson(data['period']) : null,

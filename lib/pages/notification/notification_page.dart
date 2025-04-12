@@ -1,7 +1,9 @@
 part of '../pages.dart';
 
 class NotificationPage extends StatefulWidget {
-  const NotificationPage({super.key});
+  final String token;
+
+  NotificationPage(this.token);
 
   @override
   State<NotificationPage> createState() => _NotificationPageState();
@@ -10,9 +12,12 @@ class NotificationPage extends StatefulWidget {
 class _NotificationPageState extends State<NotificationPage> {
   TextEditingController searchController = TextEditingController();
 
-  List<List<String>> listData = [
-    ["Expense has been approved!", "Your expense has been been approved by HR, view expense report here", "img_notification.png", "05:00"],
-  ];
+  @override
+  void initState() {
+    context.read<NotificationsCubit>().getNotifications(widget.token);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +47,22 @@ class _NotificationPageState extends State<NotificationPage> {
               child: searchWidget(defaultWidth)
           ),
           SizedBox(height: 20),
-          Column(
-              children: listData.map((e) => NotificationCard(defaultWidth, e[0],  e[1], e[2],  e[3])).toList()
+          BlocBuilder<NotificationsCubit, NotificationsState>(
+              builder: (context, state) {
+                if (state is NotificationsLoaded) {
+                  if (state.data != null && state.data!.isNotEmpty) {
+                    return Column(
+                        children: state.data!.map((e) {
+                          return NotificationCard(defaultWidth, "${e.title}", "${e.description}", "img_notification.png", "${e.time}");
+                        }).toList()
+                    );
+                  } else {
+                    return SizedBox();
+                  }
+                } else {
+                  return loadingIndicator;
+                }
+              }
           ),
         ],
       ),

@@ -435,3 +435,122 @@ class AttendantResultDetail extends Equatable {
         timezone,
       ];
 }
+
+class WorkingPeriod extends Equatable {
+  final int? employee_id;
+  final String? year;
+  final String? month;
+  final String? month_name;
+  final String? year_month;
+  final int? total_working_days;
+  final int? total_working_hours;
+
+  WorkingPeriod(
+      {this.employee_id,
+      this.year,
+      this.month,
+      this.month_name,
+      this.year_month,
+      this.total_working_days,
+      this.total_working_hours});
+
+  factory WorkingPeriod.fromJson(Map<String, dynamic> data) =>
+      WorkingPeriod(
+        employee_id: data['employee_id'] ?? null,
+        year: data['year'] ?? "",
+        month: data['month'] ?? "",
+        month_name: data['month_name'] ?? "",
+        year_month: data['year_month'] ?? "",
+        total_working_days: data['total_working_days'] ?? 0,
+        total_working_hours: data['total_working_hours'] ?? 0,
+
+      );
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [employee_id, year, month, month_name, year_month, total_working_days, total_working_hours];
+}
+
+class WorkingPeriodSummary extends Equatable {
+  final String? start_year_month;
+  final String? end_year_month;
+  final int? total_months;
+  final int? total_working_days;
+  final int? total_days_present;
+  final int? total_days_absent;
+  final int? total_working_hours;
+
+  WorkingPeriodSummary(
+      {
+      this.start_year_month,
+      this.end_year_month,
+      this.total_months,
+      this.total_working_days,
+      this.total_days_present,
+      this.total_days_absent,
+      this.total_working_hours});
+
+  factory WorkingPeriodSummary.fromJson(Map<String, dynamic> data) =>
+      WorkingPeriodSummary(
+        start_year_month: data['start_year_month'] ?? null,
+        end_year_month: data['end_year_month'] ?? "",
+        total_months: data['total_months'] ?? "",
+        total_working_days: data['total_working_days'] ?? "",
+        total_days_present: data['total_days_present'] ?? "",
+        total_days_absent: data['total_days_absent'] ?? 0,
+        total_working_hours: data['total_working_hours'] ?? 0,
+
+      );
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [start_year_month, end_year_month, total_months, total_working_days, total_days_present, total_working_days, total_working_hours];
+}
+
+class WorkingPeriodAll extends Equatable {
+  final WorkingPeriodSummary? summary;
+  final List<WorkingPeriod>? monthly_data;
+
+  WorkingPeriodAll(
+      {this.summary,
+        this.monthly_data
+      });
+
+  factory WorkingPeriodAll.fromJson(Map<String, dynamic> data) =>
+      WorkingPeriodAll(
+        summary: (data['summary'] != null) ?  WorkingPeriodSummary.fromJson(data['summary']) : null,
+        monthly_data: (data['monthly_data'] != null) ? (data['monthly_data'] as Iterable)
+            .map((e) => WorkingPeriod.fromJson(e))
+            .toList() : [],
+      );
+
+  @override
+  List<Object?> get props =>
+      [
+        summary,
+        monthly_data
+      ];
+}
+
+class Salary extends Equatable {
+  final int? employee_id;
+  final String? start_date;
+  final String? end_date;
+  final int? salary;
+  final String? performance_status;
+
+  Salary({this.employee_id, this.start_date, this.end_date, this.salary, this.performance_status});
+
+  factory Salary.fromJson(Map<String, dynamic> data) =>
+      Salary(
+        employee_id: data['employee_id'] ?? null,
+        start_date: data['start_date'] ?? "",
+        end_date: data['end_date'] ?? "",
+        salary: data['salary'] ?? "",
+        performance_status: data['performance_status'] ?? "",
+      );
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [employee_id, start_date, end_date, salary, performance_status];
+}

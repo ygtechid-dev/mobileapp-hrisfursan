@@ -19,12 +19,34 @@ class Payslip extends Equatable {
   final String? note;
   final String? file_url;
   final String? created_at;
+  final int? total_working_hours;
+  final int? total_working_minutes;
+  final int? total_overtime_hours;
+  final int? total_overtime_minutes;
 
-  Payslip({this.id, this.payslip_number, this.month, this.month_name, this.year,
-    this.period, this.salary_type, this.basic_salary, this.total_allowance,
-    this.total_deduction, this.total_overtime, this.net_salary,
-    this.payment_status, this.payment_method, this.payment_date, this.note, this.created_at,
-    this.file_url});
+  Payslip(
+      {this.id,
+      this.payslip_number,
+      this.month,
+      this.month_name,
+      this.year,
+      this.period,
+      this.salary_type,
+      this.basic_salary,
+      this.total_allowance,
+      this.total_deduction,
+      this.total_overtime,
+      this.net_salary,
+      this.payment_status,
+      this.payment_method,
+      this.payment_date,
+      this.note,
+      this.file_url,
+      this.created_at,
+      this.total_working_hours,
+      this.total_working_minutes,
+      this.total_overtime_hours,
+      this.total_overtime_minutes});
 
   factory Payslip.fromJson(Map<String, dynamic> data) =>
       Payslip(
@@ -38,6 +60,10 @@ class Payslip extends Equatable {
         created_at: data['created_at'] ?? null,
         basic_salary: data['basic_salary'] ?? null,
         total_allowance: data['total_allowance'] ?? null,
+        total_working_hours: data['total_working_hours'] ?? null,
+        total_working_minutes: data['total_working_minutes'] ?? null,
+        total_overtime_hours: data['total_overtime_hours'] ?? null,
+        total_overtime_minutes: data['total_overtime_minutes'] ?? null,
         total_deduction: data['total_deduction'] ?? null,
         total_overtime: data['total_overtime'] ?? null,
         net_salary: data['net_salary'] ?? null,
@@ -55,6 +81,10 @@ class Payslip extends Equatable {
         payslip_number,
         month,
         created_at,
+        total_working_hours,
+        total_working_minutes,
+        total_overtime_hours,
+        total_overtime_minutes,
         month_name,
         year,
         period,

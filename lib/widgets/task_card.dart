@@ -66,11 +66,16 @@ class _TaskSummaryCardState extends State<TaskSummaryCard> {
               children: [
                 SvgPicture.asset("${prefixIcons}${iconPath}", width: 16, height: 16,),
                 SizedBox(width: 4),
-                Text(
-                  "${title}",
-                  textAlign: TextAlign.start,
-                  style: blackFontStyle.copyWith(fontSize: 11, fontWeight: FontWeight.w600),
-                ),
+                Container(
+                  width: width - 2*8 - 4 - 16 - 2,
+                  child: Text(
+                    "${title}",
+                    textAlign: TextAlign.start,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: blackFontStyle.copyWith(fontSize: 11, fontWeight: FontWeight.w600),
+                  ),
+                )
               ],
             ),
             SizedBox(height: 4),
@@ -184,12 +189,15 @@ class _TaskItemCardState extends State<TaskItemCard> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "${widget.task.title}",
-                      textAlign: TextAlign.start,
-                      style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                    Container(
+                      width: widget.width - 2*16 - 34,
+                      child: Text(
+                        "${widget.task.title}",
+                        textAlign: TextAlign.start,
+                        style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w600),
+                      ),
                     ),
-                    SizedBox(width: 5),
+                    // SizedBox(width: 5),
                     // Icon(Icons.more_vert, color: mainColor, size: 16,)
                   ],
                 ),

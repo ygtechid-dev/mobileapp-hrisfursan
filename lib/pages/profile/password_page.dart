@@ -1,7 +1,9 @@
 part of "../pages.dart";
 
 class PasswordPage extends StatefulWidget {
-  const PasswordPage({super.key});
+  final String token;
+
+  PasswordPage(this.token);
 
   @override
   State<PasswordPage> createState() => _PasswordPageState();
@@ -118,7 +120,7 @@ class _PasswordPageState extends State<PasswordPage> {
             boxShadow: boxShadow
         ),
         child: ButtonCard("save".trans(context), defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
-          modalBottomSheet(context, "");
+          modalBottomSheet(context, widget.token);
         }),
       ),
     );

@@ -224,7 +224,7 @@ class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
                 isLoading = true;
               });
 
-              await ReimbursementServices.createReimbursement(widget.token, "${titleC.text}", "${descriptionC.text}", "${category_id}", "${amountC.text}", "${dateC.text}").then((result) {
+              await ReimbursementServices.createReimbursement(widget.token, "${titleC.text}", "${descriptionC.text}", "${category_id}", "${amountC.text}", "${dateC.text}").then((result) async {
 
                 if(result != null && result.value != null){
 
@@ -241,6 +241,8 @@ class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
                       textColor: Colors.white,
                       fontSize: 16.0
                   );
+
+                  await context.read<ReimbursementCubit>().getReimbursement(widget.token);
 
                   Get.to(ReimbursePage(widget.token));
 

@@ -333,7 +333,7 @@ class _ModalForgotPasswordPinCardState extends State<ModalForgotPasswordPinCard>
                               SizedBox(height: 20),
                               ButtonCard("submit".trans(context), widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
 
-                                await UserServices.check_token(widget.email).then((result) async {
+                                await UserServices.check_token(widget.email, pinController.text).then((result) async {
 
                                   if(result != null && result.value != null && result.value == true){
                                     setState(() {
@@ -351,7 +351,7 @@ class _ModalForgotPasswordPinCardState extends State<ModalForgotPasswordPinCard>
                                     );
 
                                     Navigator.of(context).pop(false);
-                                    modalBottomSheetForgot(context, widget.token);
+                                    modalBottomSheetForgot(context, widget.token, pinController.text);
 
                                   } else {
                                     setState(() {
@@ -406,7 +406,7 @@ class _ModalForgotPasswordPinCardState extends State<ModalForgotPasswordPinCard>
     );
   }
 
-  void modalBottomSheetForgot(contexts, String token){
+  void modalBottomSheetForgot(contexts, String token, String pin){
     double fullWidth = MediaQuery.of(context).size.width;
 
     showModalBottomSheet(
@@ -418,7 +418,7 @@ class _ModalForgotPasswordPinCardState extends State<ModalForgotPasswordPinCard>
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (bc){
-          return ModalForgotPasswordNewCard(token, widget.email, fullWidth, 16);
+          return ModalForgotPasswordNewCard(token, widget.email, fullWidth, 16, pin);
         });
   }
 
@@ -429,8 +429,9 @@ class ModalForgotPasswordNewCard extends StatefulWidget {
   final String email;
   final double width;
   final double padding;
+  final String pin;
 
-  ModalForgotPasswordNewCard(this.token, this.email, this.width, this.padding);
+  ModalForgotPasswordNewCard(this.token, this.email, this.width, this.padding, this.pin);
 
   @override
   State<ModalForgotPasswordNewCard> createState() => _ModalForgotPasswordNewCardState();
@@ -523,7 +524,7 @@ class _ModalForgotPasswordNewCardState extends State<ModalForgotPasswordNewCard>
                               ButtonCard("submit".trans(context), widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
                                 if(passwordC.text.isNotEmpty && passwordConfirmC.text.isNotEmpty){
                                   if(passwordC.text == passwordConfirmC.text){
-                                    await UserServices.reset_password( widget.email, passwordC.text, passwordConfirmC.text).then((result) async {
+                                    await UserServices.reset_password( widget.email, passwordC.text, passwordConfirmC.text, widget.pin).then((result) async {
 
                                       if(result != null && result.value != null && result.value == true){
                                         setState(() {

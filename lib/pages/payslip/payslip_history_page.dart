@@ -61,7 +61,7 @@ class _PayslipHistoryPageState extends State<PayslipHistoryPage> {
                           DateTime createdDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse(e.created_at ?? "");
                           String created_date = DateFormat("dd MMMM yyyy").format(createdDate);
 
-                          return PayslipCard(widget.token, defaultWidth, e, date: created_date, total_hours: "40:00:00", received: (e.net_salary ?? "0")!.toDouble(), paid_on: applied_date);
+                          return PayslipCard(widget.token, defaultWidth, e, date: created_date, total_hours: "${e.total_working_hours}:${e.total_working_minutes}", received: (e.net_salary ?? "0")!.toDouble(), paid_on: applied_date);
                         }).toList()
                     );
                   } else {

@@ -422,10 +422,6 @@ class _AttendantDetailPageState extends State<AttendantDetailPage> {
     }
 
     if (Platform.isAndroid) {
-      // final info = await DeviceInfoPlugin().androidInfo;
-      // if (info.version.sdkInt > 28) {
-      //   return true;
-      // }
 
       final status = await Permission.storage.status;
       if (status == PermissionStatus.granted) {

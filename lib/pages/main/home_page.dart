@@ -14,6 +14,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    context.read<WorkingPeriodCubit>().getWorkingPeriod(widget.token);
+
     super.initState();
   }
 
@@ -85,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 InkWell(
                   onTap: (){
-                    Get.to(NotificationPage());
+                    Get.to(NotificationPage(widget.token));
                   },
                   child: SvgPicture.asset("${prefixIcons}ic_notification.svg", height: 36, width: 36),
                 )
@@ -137,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                       Get.to(ReimbursePage(widget.token));
                     },),
                     MenuCard((defaultWidth - 2*12)/3, "calendar".trans(context), "ic_calendar_home.svg", onTap: (){
-                      Get.to(CalendarPage());
+                      Get.to(CalendarPage(widget.token));
                     },),
                     MenuCard((defaultWidth - 2*12)/3, "payslip".trans(context), "ic_payslip.svg", onTap: (){
                       Get.to(PayslipHistoryPage(widget.token));
@@ -148,7 +150,9 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           SizedBox(height: 16),
-          GraphCard(defaultWidth),
+          BlocBuilder<WorkingPeriodCubit, WorkingPeriodState>(
+              builder: (context, state) => (state is WorkingPeriodLoaded) ? (state.data != null) ? GraphCard(defaultWidth, state.data!.monthly_data ?? []) : SizedBox() : loadingIndicator
+          ),
           SizedBox(height: 50),
         ],
       ),

@@ -1,7 +1,9 @@
 part of "widgets.dart";
 
 class GraphItemCard extends StatefulWidget {
-  const GraphItemCard({super.key});
+  final List<WorkingPeriod> listData;
+
+  GraphItemCard(this.listData);
 
   @override
   State<GraphItemCard> createState() => _GraphItemCardState();
@@ -15,44 +17,57 @@ class _GraphItemCardState extends State<GraphItemCard> {
 
   bool showAvg = false;
 
+  List<List<double>> listTemp = [];
+
   @override
   Widget build(BuildContext context) {
+
+    widget.listData.forEach((item) {
+      double monthData = double.parse(item.month ?? "1");
+      List<double> temp = [
+        (monthData-1),
+        ((item.total_working_hours!.toDouble() == 0) ? 0 : item.total_working_hours!.toDouble()/10)
+      ];
+
+      listTemp.add(temp);
+    });
+
     return Stack(
       children: <Widget>[
         AspectRatio(
-          aspectRatio: 1.70,
+          aspectRatio: 1.65,
           child: Padding(
             padding: const EdgeInsets.only(
-              right: 18,
-              left: 12,
+              right: 12,
+              left: 8,
               top: 24,
               bottom: 12,
             ),
             child: LineChart(
-              showAvg ? avgData() : mainData(),
+              showAvg ? avgData() : mainData(listTemp),
             ),
           ),
         ),
-        SizedBox(
-          width: 60,
-          height: 34,
-          child: TextButton(
-            onPressed: () {
-              setState(() {
-                showAvg = !showAvg;
-              });
-            },
-            child: Text(
-              'avg',
-              style: TextStyle(
-                fontSize: 12,
-                color: showAvg
-                    ? Colors.white.withOpacity(0.5)
-                    : Colors.white,
-              ),
-            ),
-          ),
-        ),
+        // SizedBox(
+        //   width: 60,
+        //   height: 34,
+        //   child: TextButton(
+        //     onPressed: () {
+        //       setState(() {
+        //         showAvg = !showAvg;
+        //       });
+        //     },
+        //     child: Text(
+        //       'avg',
+        //       style: TextStyle(
+        //         fontSize: 12,
+        //         color: showAvg
+        //             ? Colors.white.withOpacity(0.5)
+        //             : Colors.white,
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }
@@ -65,21 +80,42 @@ class _GraphItemCardState extends State<GraphItemCard> {
     );
     Widget text;
     switch (value.toInt()) {
+      case 0:
+        text =  Text('Jan', style: style);
+        break;
+      // case 2:
+      //   text =  Text('Feb', style: style);
+      //   break;
       case 2:
+        text =  Text('Mar', style: style);
+        break;
+      // case 4:
+      //   text =  Text('Apr', style: style);
+      //   break;
+      case 4:
         text =  Text('May', style: style);
         break;
-      case 4:
-        text =  Text('Jun', style: style);
-        break;
+      // case 6:
+      //   text =  Text('Jun', style: style);
+      //   break;
       case 6:
         text =  Text('Jul', style: style);
         break;
+      // case 8:
+      //   text =  Text('Aug', style: style);
+      //   break;
       case 8:
-        text =  Text('Aug', style: style);
-        break;
-      case 10:
         text =  Text('Sep', style: style);
         break;
+      // case 10:
+      //   text =  Text('Oct', style: style);
+      //   break;
+      case 10:
+        text =  Text('Nov', style: style);
+        break;
+      // case 12:
+      //   text =  Text('Dec', style: style);
+      //   break;
       default:
         text =  Text('', style: style);
         break;
@@ -100,19 +136,22 @@ class _GraphItemCardState extends State<GraphItemCard> {
     String text;
     switch (value.toInt()) {
       case 1:
-        text = '20K';
+        text = '10h';
         break;
       case 2:
-        text = '30k';
+        text = '20h';
         break;
       case 3:
-        text = '40k';
+        text = '30h';
         break;
       case 4:
-        text = '50K';
+        text = '40h';
         break;
       case 5:
-        text = '60k';
+        text = '50h';
+        break;
+      case 6:
+        text = '60h';
         break;
       default:
         return Container();
@@ -121,7 +160,7 @@ class _GraphItemCardState extends State<GraphItemCard> {
     return Text(text, style: style, textAlign: TextAlign.left);
   }
 
-  LineChartData mainData() {
+  LineChartData mainData(List<List<double>> listValue) {
     return LineChartData(
       gridData: FlGridData(
         show: true,
@@ -153,11 +192,12 @@ class _GraphItemCardState extends State<GraphItemCard> {
           ),
         ),
         leftTitles: AxisTitles(
+          axisNameSize: 25,
           sideTitles: SideTitles(
             showTitles: true,
             interval: 1,
             getTitlesWidget: leftTitleWidgets,
-            reservedSize: 42,
+            reservedSize: 30,
           ),
         ),
       ),
@@ -168,18 +208,10 @@ class _GraphItemCardState extends State<GraphItemCard> {
       minX: 0,
       maxX: 11,
       minY: 0,
-      maxY: 5,
+      maxY: 6,
       lineBarsData: [
         LineChartBarData(
-          spots: const [
-            FlSpot(0, 3),
-            FlSpot(2.6, 2),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            FlSpot(9.5, 3),
-            FlSpot(11, 4),
-          ],
+          spots: listValue.map((e) => (e[1] == 0) ? FlSpot(0, 0) : FlSpot(e[0], e[1])).toList(),
           isCurved: false,
           // gradient: LinearGradient(
           //   colors: mainColor,

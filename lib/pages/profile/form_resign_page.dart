@@ -1,7 +1,9 @@
 part of "../pages.dart";
 
 class FormResignPage extends StatefulWidget {
-  const FormResignPage({super.key});
+  final String token;
+
+  FormResignPage(this.token);
 
   @override
   State<FormResignPage> createState() => _FormResignPageState();
@@ -11,9 +13,32 @@ class _FormResignPageState extends State<FormResignPage> {
   TextEditingController categoryC = TextEditingController();
   TextEditingController dateC = TextEditingController();
   TextEditingController descriptionC = TextEditingController();
-  TextEditingController amountC = TextEditingController();
 
   bool isAgree = false;
+
+  File? selectedFile;
+
+  DateTime selectedDate = DateTime.now();
+
+  Future<void> _selectDate(BuildContext context) async {
+
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1980, 8),
+        lastDate: DateTime(2040)
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+
+        String data = DateFormat('yyyy-MM-dd').format(selectedDate);
+        dateC.text = data;
+      });
+    }
+  }
+
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +87,9 @@ class _FormResignPageState extends State<FormResignPage> {
                       ),
                       SizedBox(height: 20),
                       CommonDottedButtonWithImage2(title: "upload_resign".trans(context), subtitle: "format_should".trans(context), onPicked: (value){
-
+                        setState((){
+                          selectedFile = value;
+                        });
                       }),
                       SizedBox(height: 20),
                       FormWithLabelCard(
@@ -74,7 +101,7 @@ class _FormResignPageState extends State<FormResignPage> {
                             dateC.text = e ?? "";
                           },
                           onTap: (){
-                            // modalBottomSheetCalendar(context, "");
+                            _selectDate(context);
                           },
                           validator: (e) {
                             return simpleValidator(e, null);
@@ -111,8 +138,58 @@ class _FormResignPageState extends State<FormResignPage> {
             color: Colors.white,
             boxShadow: boxShadow
         ),
-        child: ButtonCard("submit".trans(context), defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
+        child: ButtonCard("submit".trans(context), defaultWidth - 2*24, mainColor, isLoading: isLoading, colorGradient: buttonGradient, onPressed: () async {
+          if(descriptionC.text.isNotEmpty && dateC.text.isNotEmpty && selectedFile != null){
+            setState(() {
+              isLoading = true;
+            });
 
+            Resign resign = Resign(
+              description: descriptionC.text,
+              resign_date: dateC.text,
+            );
+
+            await UserServices.submitResign(widget.token, resign, selectedFile!).then((result) {
+
+              if(result != null && result.value != null){
+
+                setState(() {
+                  isLoading = false;
+                });
+
+                Fluttertoast.showToast(
+                    msg: "success_update".trans(context),
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.green,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+
+                Get.to(MainPage(token: widget.token));
+
+              } else {
+                setState(() {
+                  isLoading = false;
+                });
+
+                Fluttertoast.showToast(
+                    msg: "${result.message}",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+              }
+
+
+            });
+
+
+          }
         }),
       ),
     );

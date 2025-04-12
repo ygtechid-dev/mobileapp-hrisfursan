@@ -156,7 +156,7 @@ class Tasks extends Equatable {
   final int? comments_count;
   final String? created_at;
   final String? updated_at;
-  final TaskAssignees? assignees;
+  final List<TaskAssignees>? assignees;
   final List<TaskAttachment>? attachments;
   final List<TaskComment>? comments;
 
@@ -195,7 +195,9 @@ class Tasks extends Equatable {
         comments_count: data['comments_count'],
         created_at: data['created_at'],
         updated_at: data['updated_at'],
-          assignees: (data['assignees'] != null) ? TaskAssignees.fromJson(data['assignees']) : null,
+          assignees: (data['assignees'] != null) ? (data['assignees'] as Iterable)
+              .map((e) => TaskAssignees.fromJson(e))
+              .toList() : [],
         attachments: (data['attachments'] != null) ? (data['attachments'] as Iterable)
             .map((e) => TaskAttachment.fromJson(e))
             .toList() : [],
@@ -227,14 +229,17 @@ class TaskAssignees extends Equatable {
   final int? id;
   final String? name;
   final String? avatar;
+  final String? designation;
 
-  TaskAssignees({this.id, this.name, this.avatar});
+
+  TaskAssignees({this.id, this.name, this.avatar, this.designation});
 
 
   factory TaskAssignees.fromJson(Map<String, dynamic> data) =>
       TaskAssignees(
         id: data['id'] ?? null,
         name: data['name'],
+        designation: data['designation'],
         avatar: data['avatar'],
       );
 
@@ -244,6 +249,7 @@ class TaskAssignees extends Equatable {
         id,
         name,
         avatar,
+        designation
       ];
 }
 

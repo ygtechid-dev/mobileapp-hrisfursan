@@ -61,7 +61,7 @@ class _ActivityPageState extends State<ActivityPage> {
           Column(
             children: [
               ActivityCard(defaultWidth, "analytics".trans(context), "sub_analytics".trans(context), onTap: (){
-                Get.to(AnalyticsPage());
+                Get.to(AnalyticsPage(widget.token));
               }),
               ActivityCard(defaultWidth, "leave_request".trans(context), "sub_leave_request".trans(context), onTap: (){
                 Get.to(LeavePage(widget.token));
@@ -73,7 +73,7 @@ class _ActivityPageState extends State<ActivityPage> {
                 Get.to(ReimbursePage(widget.token));
               }),
               ActivityCard(defaultWidth, "calendar".trans(context), "sub_calendar".trans(context), onTap: (){
-                Get.to(CalendarPage());
+                Get.to(CalendarPage(widget.token));
               }),
               ActivityCard(defaultWidth, "payslip".trans(context), "sub_payslip".trans(context), onTap: (){
                 Get.to(PayslipHistoryPage(widget.token));

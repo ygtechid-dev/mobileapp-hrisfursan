@@ -2,8 +2,9 @@ part of "../pages.dart";
 
 class ProfileEditPage extends StatefulWidget {
   final String token;
+  final User user;
 
-  ProfileEditPage(this.token);
+  ProfileEditPage(this.token, this.user);
 
   @override
   State<ProfileEditPage> createState() => _ProfileEditPageState();
@@ -30,8 +31,41 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   void initState() {
     super.initState();
     context.read<DesignationCubit>().getDesignations(widget.token);
+
+    firstNameC.text = widget.user.first_name ?? "";
+    lastNameC.text = widget.user.last_name ?? "";
+    dateC.text = widget.user.dob ?? "";
+    phoneC.text = widget.user.phone ?? "";
+    positionC.text = widget.user.first_name ?? "";
+    addressC.text = widget.user.address ?? "";
+
   }
+
+  DateTime selectedDate = DateTime.now();
+
+  Future<void> _selectDate(BuildContext context) async {
+
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1980, 8),
+        lastDate: DateTime(2040)
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+
+        String data = DateFormat('yyyy-MM-dd').format(selectedDate);
+        dateC.text = data;
+      });
+    }
+  }
+
+  bool isLoading = false;
+
   String? selectedDesignation;
+
+
   @override
   Widget build(BuildContext context) {
     double defaultWidth = MediaQuery.of(context).size.width - 2*defaultMargin2;
@@ -174,6 +208,9 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                           hintText: "date_of_birth".trans(context),
                           controller: dateC,
                           prefixSvg: "${prefixIcons}ic_calendar.svg",
+                          onTap: (){
+                            _selectDate(context);
+                          },
                           onSaved: (e) {
                             dateC.text = e ?? "";
                           },
@@ -254,45 +291,45 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                           style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                         ),
                       ),
-                      SizedBox(height: 20),
-                      FormWithLabelCard(
-                          controller: countryC,
-                          outerLabelText: "country".trans(context),
-                          hintText: "enter_country".trans(context),
-                          prefixSvg: "${prefixIcons}ic_location.svg",
-                          onSaved: (e) {
-
-                          },
-                          validator: (e) {
-                            return simpleValidator(e, null);
-                          },
-                          filled: true),
-                      SizedBox(height: 20),
-                      FormWithLabelCard(
-                          controller: stateC,
-                          outerLabelText: "state".trans(context),
-                          hintText: "Enter State".trans(context),
-                          prefixSvg: "${prefixIcons}ic_location.svg",
-                          onSaved: (e) {
-
-                          },
-                          validator: (e) {
-                            return simpleValidator(e, null);
-                          },
-                          filled: true),
-                      SizedBox(height: 20),
-                      FormWithLabelCard(
-                          controller: cityC,
-                          outerLabelText: "city".trans(context),
-                          hintText: "enter_city".trans(context),
-                          prefixSvg: "${prefixIcons}ic_location.svg",
-                          onSaved: (e) {
-
-                          },
-                          validator: (e) {
-                            return simpleValidator(e, null);
-                          },
-                          filled: true),
+                      // SizedBox(height: 20),
+                      // FormWithLabelCard(
+                      //     controller: countryC,
+                      //     outerLabelText: "country".trans(context),
+                      //     hintText: "enter_country".trans(context),
+                      //     prefixSvg: "${prefixIcons}ic_location.svg",
+                      //     onSaved: (e) {
+                      //
+                      //     },
+                      //     validator: (e) {
+                      //       return simpleValidator(e, null);
+                      //     },
+                      //     filled: true),
+                      // SizedBox(height: 20),
+                      // FormWithLabelCard(
+                      //     controller: stateC,
+                      //     outerLabelText: "state".trans(context),
+                      //     hintText: "Enter State".trans(context),
+                      //     prefixSvg: "${prefixIcons}ic_location.svg",
+                      //     onSaved: (e) {
+                      //
+                      //     },
+                      //     validator: (e) {
+                      //       return simpleValidator(e, null);
+                      //     },
+                      //     filled: true),
+                      // SizedBox(height: 20),
+                      // FormWithLabelCard(
+                      //     controller: cityC,
+                      //     outerLabelText: "city".trans(context),
+                      //     hintText: "enter_city".trans(context),
+                      //     prefixSvg: "${prefixIcons}ic_location.svg",
+                      //     onSaved: (e) {
+                      //
+                      //     },
+                      //     validator: (e) {
+                      //       return simpleValidator(e, null);
+                      //     },
+                      //     filled: true),
                       SizedBox(height: 20),
                       FormWithLabelCard(
                           outerLabelText: "full_address".trans(context),
@@ -323,7 +360,61 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
             boxShadow: boxShadow
         ),
         child: ButtonCard("Save", defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
-          Get.to(MainPage(index_: 4));
+          if(firstNameC.text.isNotEmpty && phoneC.text.isNotEmpty && lastNameC.text.isNotEmpty && dateC.text.isNotEmpty){
+            setState(() {
+              isLoading = true;
+            });
+
+            User user = User(
+              phone: phoneC.text,
+              dob: dateC.text,
+              first_name: firstNameC.text,
+              last_name: lastNameC.text,
+              designation_id: selectedDesignation,
+              address: "${addressC.text}, ${cityC.text}, ${stateC.text}, ${countryC.text}",
+            );
+
+            await UserServices.update(widget.token, user).then((result) {
+
+              if(result != null && result.value != null){
+
+                setState(() {
+                  isLoading = false;
+                });
+
+                Fluttertoast.showToast(
+                    msg: "success_update".trans(context),
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.green,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+
+                Get.to(MainPage(token: widget.token));
+
+              } else {
+                setState(() {
+                  isLoading = false;
+                });
+
+                Fluttertoast.showToast(
+                    msg: "${result.message}",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+              }
+
+
+            });
+
+
+          }
         }),
       ),
     );

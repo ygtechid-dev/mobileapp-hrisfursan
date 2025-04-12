@@ -3,10 +3,8 @@ part of 'widgets.dart';
 class SalaryCard extends StatefulWidget {
   final double width;
   final int amount;
-  final String dateToday;
-  final String datePayday;
 
-  SalaryCard(this.width, this.amount, this.dateToday, this.datePayday);
+  SalaryCard(this.width, this.amount);
 
   @override
   State<SalaryCard> createState() => _SalaryCardState();
@@ -39,6 +37,7 @@ class _SalaryCardState extends State<SalaryCard> {
       List<String> totalStars = [];
       int temp = "${widget.amount}".length;
       for(int i=1; i<=temp; i++){
+
         totalStars.add("*");
       }
       dataAmount = "Rp ${totalStars.join("")}";
@@ -49,6 +48,14 @@ class _SalaryCardState extends State<SalaryCard> {
         symbol: 'Rp',
       ).format(widget.amount);
     }
+
+    DateTime now = DateTime.now();
+    String formattedDate = intl.DateFormat('MMMM').format(now);
+
+    String formattedDate2 = intl.DateFormat('d').format(now);
+
+    int dayUntil = now.day - int.parse(formattedDate2);
+
 
     return Container(
       width: widget.width,
@@ -95,17 +102,17 @@ class _SalaryCardState extends State<SalaryCard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "${widget.dateToday}",
+                  "01 ${formattedDate}",
                   textAlign: TextAlign.start,
                   style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w600),
                 ),
                 Text(
-                  "3 ${"days_until".trans(context)}",
+                  "${dayUntil} ${"days_until".trans(context)}",
                   textAlign: TextAlign.start,
                   style: greyFontStyle.copyWith(fontSize: 11, fontWeight: FontWeight.w400),
                 ),
                 Text(
-                  "${widget.datePayday}",
+                  "${now.day} ${formattedDate}",
                   textAlign: TextAlign.start,
                   style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w600),
                 ),
@@ -196,8 +203,9 @@ class PerformanceStatsCard extends StatelessWidget {
 
 class GraphCard extends StatelessWidget {
   final double width;
+  final List<WorkingPeriod> listData;
 
-  GraphCard(this.width);
+  GraphCard(this.width, this.listData);
 
   @override
   Widget build(BuildContext context) {
@@ -230,7 +238,7 @@ class GraphCard extends StatelessWidget {
               style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
             ),
             SizedBox(height: 12),
-            GraphItemCard()
+            GraphItemCard(listData)
           ],
         )
     );

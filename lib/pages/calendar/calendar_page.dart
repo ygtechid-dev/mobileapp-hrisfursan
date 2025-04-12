@@ -1,7 +1,9 @@
 part of '../pages.dart';
 
 class CalendarPage extends StatefulWidget {
-  const CalendarPage({super.key});
+  final String token;
+
+  CalendarPage(this.token);
 
   @override
   State<CalendarPage> createState() => _CalendarPageState();
@@ -9,15 +11,15 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPageState extends State<CalendarPage> {
 
-  List<EventData> listData = [
-    EventData(
-        state: "PayDay",
-        title: "Happy PayDay!",
-        desc: "all information about this you can ask HR Staff",
-        date: "25 Des 2024",
-        credit: "By Staff HR"
-    )
-  ];
+  String? startDate;
+  String? endDate;
+
+  @override
+  void initState() {
+    context.read<EventsCubit>().getEvents(widget.token);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,12 @@ class _CalendarPageState extends State<CalendarPage> {
             width: double.infinity,
             padding: EdgeInsets.only(top: 20, left: defaultMargin2, right: defaultMargin2),
             color: bcgPrimaryBlackColor,
-            child: CalendarCard(),
+            child: CalendarCard(onSelected: (value){
+              setState((){
+                startDate = value[0];
+                endDate = value[1];
+              });
+            },),
           ),
           Container(
             color: bcgPrimaryBlackColor,
@@ -55,24 +62,26 @@ class _CalendarPageState extends State<CalendarPage> {
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
               alignment: Alignment.center,
-              child: Column(
-                  children: [
-                    SizedBox(height: 20),
-                    Text(
-                      "events".trans(context),
-                      textAlign: TextAlign.start,
-                      style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
-                    ),
-                    SizedBox(height: 3),
-                    Text(
-                      "events_day".trans(context),
-                      textAlign: TextAlign.start,
-                      style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
-                    ),
-                    SizedBox(height: 20),
-                    EventCard(defaultWidth, "events_important".trans(context), Colors.green, listData),
-                    EventCard(defaultWidth, "events_monthly".trans(context), Colors.blue, []),
-                  ]
+              child: BlocBuilder<EventsCubit, EventsState>(
+                  builder: (context, state) => (state is EventsLoaded) ? (state.data != null && state.data!.isNotEmpty) ? Column(
+                      children: [
+                        SizedBox(height: 20),
+                        Text(
+                          "events".trans(context),
+                          textAlign: TextAlign.start,
+                          style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                        ),
+                        SizedBox(height: 3),
+                        Text(
+                          "events_day".trans(context),
+                          textAlign: TextAlign.start,
+                          style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                        ),
+                        SizedBox(height: 20),
+                        EventCard(defaultWidth, "events_important".trans(context), Colors.green, (startDate != null && endDate != null) ? state.data!.where((e) => e.priority == "high").where((e) => e.start == "${startDate}" || e.end == "${endDate}").toList() : state.data!.where((e) => e.priority == "high").toList()),
+                        EventCard(defaultWidth, "events_monthly".trans(context), Colors.blue, (startDate != null && endDate != null) ? state.data!.where((e) => e.priority == "medium").where((e) => e.start == "${startDate}" || e.end == "${endDate}").toList() : state.data!.where((e) => e.priority == "medium").toList()),
+                      ]
+                  ) : SizedBox() : loadingIndicator
               ),
             ),
           )

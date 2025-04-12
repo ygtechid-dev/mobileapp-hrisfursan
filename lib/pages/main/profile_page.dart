@@ -138,36 +138,39 @@ class _ProfilePageState extends State<ProfilePage> {
                                   style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w600),
                                 ),
                                 SizedBox(height: 10),
-                                Container(
-                                  width: defaultWidth,
-                                  padding: EdgeInsets.symmetric(vertical: 14, horizontal: defaultMargin2),
-                                  decoration: BoxDecoration(
-                                    color: "F6F6F6".toColor(),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "personal_data".trans(context), "ic_user_fill.svg", mainColor, onTap: (){
-                                        Get.to(ProfileEditPage(widget.token));
-                                      }),
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "office_assets".trans(context), "ic_folder_fill.svg", mainColor, onTap: (){
-                                        Get.to(OfficeAssetPage());
-                                      }),
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "payroll_tax".trans(context), "ic_payroll_fill.svg", mainColor, onTap: (){
-                                        // Get.to(ProfileEditPage());
-                                      }),
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "resign".trans(context), "ic_resign.svg", mainColor, onTap: (){
-                                        Get.to(FormResignPage());
-                                      }),
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "language".trans(context), "ic_language.svg", mainColor, onTap: (){
-                                        Get.to(ProfileLanguagePage(widget.token));
-                                      }),
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "change_password".trans(context), "ic_setting_fill.svg", mainColor, onTap: (){
-                                        Get.to(PasswordPage());
-                                      }),
-                                    ],
-                                  ),
+                                BlocBuilder<UserCubit, UserState>(
+                                    builder: (context, state) => (state is UserLoaded) ? (state.user != null) ? Container(
+                                      width: defaultWidth,
+                                      padding: EdgeInsets.symmetric(vertical: 14, horizontal: defaultMargin2),
+                                      decoration: BoxDecoration(
+                                        color: "F6F6F6".toColor(),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "personal_data".trans(context), "ic_user_fill.svg", mainColor, onTap: (){
+                                            Get.to(ProfileEditPage(widget.token, state.user!));
+                                          }),
+                                          ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "office_assets".trans(context), "ic_folder_fill.svg", mainColor, onTap: (){
+                                            Get.to(OfficeAssetPage(widget.token));
+                                          }),
+                                          ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "payroll_tax".trans(context), "ic_payroll_fill.svg", mainColor, onTap: (){
+                                            // Get.to(ProfileEditPage());
+                                          }),
+                                          ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "resign".trans(context), "ic_resign.svg", mainColor, onTap: (){
+                                            Get.to(FormResignPage(widget.token));
+                                          }),
+                                          ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "language".trans(context), "ic_language.svg", mainColor, onTap: (){
+                                            Get.to(ProfileLanguagePage(widget.token));
+                                          }),
+                                          ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "change_password".trans(context), "ic_setting_fill.svg", mainColor, onTap: (){
+                                            Get.to(PasswordPage(widget.token));
+                                          }),
+                                        ],
+                                      ),
+                                    ) : SizedBox() : loadingIndicator
                                 ),
+
                               ],
                             ),
                             SizedBox(height: 20),

@@ -324,6 +324,25 @@ class _CommonDottedButtonWithImage2State extends State<CommonDottedButtonWithIma
 
   File? selectedFile;
 
+  Future<bool> _checkPermission() async {
+    if (Platform.isIOS) {
+      return true;
+    }
+
+    if (Platform.isAndroid) {
+
+      final status = await Permission.storage.status;
+      if (status == PermissionStatus.granted) {
+        return true;
+      }
+
+      final result = await Permission.storage.request();
+      return result == PermissionStatus.granted;
+    }
+
+    throw StateError('unknown platform');
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -331,29 +350,47 @@ class _CommonDottedButtonWithImage2State extends State<CommonDottedButtonWithIma
 
     return InkWell(
       onTap: () async {
-        if(widget.isCamera == true){
-          XFile? pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
-          if (pickedFile != null) {
-            setState(() {
-              selectedFile = File(pickedFile.path);
-            });
 
-            widget.onPicked(selectedFile!);
-          }
-        } else {
-          FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image, );
+        _checkPermission().then((value) async {
 
-          if (result != null) {
+          if(value == true){
+            if(widget.isCamera == true){
+              XFile? pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+              if (pickedFile != null) {
+                setState(() {
+                  selectedFile = File(pickedFile.path);
+                });
 
-            setState(() {
-              selectedFile = File(result.files.single.path!);
-            });
+                widget.onPicked(selectedFile!);
+              }
+            } else {
+              FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image, );
 
-            widget.onPicked(selectedFile!);
+              if (result != null) {
+
+                setState(() {
+                  selectedFile = File(result.files.single.path!);
+                });
+
+                widget.onPicked(selectedFile!);
+              } else {
+                // User canceled the picker
+              }
+            }
           } else {
-            // User canceled the picker
+            Fluttertoast.showToast(
+                msg: "Please grant permission for storage access",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0
+            );
           }
-        }
+        });
+
+
 
       },
       child: DottedBorder(
@@ -364,32 +401,38 @@ class _CommonDottedButtonWithImage2State extends State<CommonDottedButtonWithIma
         child: Container(
             alignment: Alignment.center,
             width: defaultWidth,
-            padding: EdgeInsets.all(30),
             decoration: BoxDecoration(
                 color: mainColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8)
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.attach_file, size: 32, color: mainColor),
-                SizedBox(height: 6),
-                Text(
-                  (selectedFile == null) ? "${widget.title}" : "${path.basename(selectedFile!.path)}",
-                  textAlign: TextAlign.center,
-                  style: blackFontStyle.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: (selectedFile == null) ? mainColor : blackColor),
-                ),
-                SizedBox(height: 6),
-                Text(
-                  "${widget.subtitle}",
-                  textAlign: TextAlign.center,
-                  style: blackFontStyle.copyWith(
-                      fontWeight: FontWeight.w400,
-                      color: blackColor),
-                ),
-              ],
+            child: (selectedFile != null) ? Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(image: FileImage(selectedFile!))
+              ),
+            ) : Container(
+                padding: EdgeInsets.all(30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.attach_file, size: 32, color: mainColor),
+                  SizedBox(height: 6),
+                  Text(
+                    (selectedFile == null) ? "${widget.title}" : "${path.basename(selectedFile!.path)}",
+                    textAlign: TextAlign.center,
+                    style: blackFontStyle.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: (selectedFile == null) ? mainColor : blackColor),
+                  ),
+                  SizedBox(height: 6),
+                  Text(
+                    "${widget.subtitle}",
+                    textAlign: TextAlign.center,
+                    style: blackFontStyle.copyWith(
+                        fontWeight: FontWeight.w400,
+                        color: blackColor),
+                  ),
+                ],
+              )
             )
         ),
       ),

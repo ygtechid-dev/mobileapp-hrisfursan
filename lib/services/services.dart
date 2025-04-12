@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:crypto/crypto.dart';
 
 import 'package:flutter/foundation.dart';
@@ -26,6 +27,8 @@ part "attendance_services.dart";
 part "task_services.dart";
 part "reimbursement_services.dart";
 part "payslip_services.dart";
+part "notification_services.dart";
+part "events_services.dart";
 
 
 // String baseUrl = 'https://grahasahid.yuvan.dev/api/';

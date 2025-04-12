@@ -187,5 +187,57 @@ class AttendanceServices {
   }
 
 
+  static Future<ApiReturnValue<WorkingPeriodAll>> getWorkingPeriodAll(String token, {http.Client? client}) async {
+    if (client == null) {
+      client = http.Client();
+    }
+
+    String url = baseUrl + 'mobile/get-employee-working-period';
+
+    var response = await client.get(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        });
+
+    if (response.statusCode != 200) {
+      return ApiReturnValue(message: 'Please Try Again');
+    }
+
+    var data = jsonDecode(response.body);
+
+    print(response.body.toString());
+
+    WorkingPeriodAll value = WorkingPeriodAll.fromJson(data["data"]);
+
+    return ApiReturnValue(value: value);
+  }
+
+  static Future<ApiReturnValue<Salary>> getSalary(String token, {http.Client? client}) async {
+    if (client == null) {
+      client = http.Client();
+    }
+
+    String url = baseUrl + 'mobile/salary';
+
+    var response = await client.get(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        });
+
+    if (response.statusCode != 200) {
+      return ApiReturnValue(message: 'Please Try Again');
+    }
+
+    var data = jsonDecode(response.body);
+
+    print(response.body.toString());
+
+    Salary value = Salary.fromJson(data["data"]);
+
+    return ApiReturnValue(value: value);
+  }
+
 
 }

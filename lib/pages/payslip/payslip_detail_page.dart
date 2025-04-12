@@ -92,7 +92,7 @@ class _PayslipDetailPageState extends State<PayslipDetailPage> {
                     alignment: Alignment.center,
                     child: Column(
                       children: [
-                        PayslipSummaryCard(widget.token, defaultWidth, "00:00", "40:00"),
+                        PayslipSummaryCard(widget.token, defaultWidth, "${state.data!.total_working_hours ?? 0}:${state.data!.total_working_minutes ?? 0}", "${state.data!.total_overtime_hours ?? 0}:${state.data!.total_overtime_minutes ?? 0}"),
                         SizedBox(height: 20),
                         PayslipResumeCard(defaultWidth, state.data!),
                         SizedBox(height: 20),

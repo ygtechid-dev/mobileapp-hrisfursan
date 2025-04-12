@@ -23,7 +23,7 @@ class PayslipServices {
 
     print("List Category " + response.body.toString());
 
-    List<Payslip> value = (data['data']['payslip'] as Iterable)
+    List<Payslip> value = (data['data']['payslips'] as Iterable)
         .map((e) => Payslip.fromJson(e))
         .toList();
 

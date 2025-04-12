@@ -33,20 +33,24 @@ class TaskServices {
 
     await getListTask(token).then((dataTask) async {
       if(dataTask.value != null){
-        taskTemp = dataTask.value!;
+        taskTemp.addAll(dataTask.value!);
       }
     });
 
-    projects.forEach((item){
+    print("${taskTemp}");
 
-      if(taskTemp.where((e) => e.project_id == item.id).isNotEmpty){
+    List<Projects> listData = [];
+
+    projects.forEach((item) async {
+
+      if(taskTemp.where((e) => e.project_id == item.id).isNotEmpty) {
         List<Tasks> tempTasks = taskTemp.where((e) => e.project_id == item.id).toList();
-        item.copyWith(tasks: tempTasks);
+        listData.add(item.copyWith(tasks: tempTasks));
       }
 
     });
 
-    ProjectsSummary value = ProjectsSummary(projects: projects, project_counts: project_counts,);
+    ProjectsSummary value = ProjectsSummary(projects: listData, project_counts: project_counts,);
 
     return ApiReturnValue(value: value);
   }
@@ -56,7 +60,7 @@ class TaskServices {
       client = http.Client();
     }
 
-    String url = baseUrl + 'mobile/all-task';
+    String url = baseUrl + 'mobile/projects/all-task';
 
     var response = await client.get(Uri.parse(url),
         headers: {
@@ -64,16 +68,44 @@ class TaskServices {
           "Authorization": "Bearer $token"
         });
 
+    print("List Task " + response.body.toString());
+
+    var data = jsonDecode(response.body);
+
     if (response.statusCode != 200) {
       return ApiReturnValue(message: 'Please Try Again');
     }
 
+    List<Tasks> value = (data['data']["tasks"] as Iterable)
+        .map((e) => Tasks.fromJson(e))
+        .toList();
+
+    return ApiReturnValue(value: value);
+  }
+
+  static Future<ApiReturnValue<List<Employee>>> getAssignee(String token, {http.Client? client}) async {
+    if (client == null) {
+      client = http.Client();
+    }
+
+    String url = baseUrl + 'mobile/projects/tasks/get-employees';
+
+    var response = await client.get(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        });
+
+    print("List Employee " + response.body.toString());
+
     var data = jsonDecode(response.body);
 
-    print("List Task " + response.body.toString());
+    if (response.statusCode != 200) {
+      return ApiReturnValue(message: 'Please Try Again');
+    }
 
-    List<Tasks> value = (data['data'] as Iterable)
-        .map((e) => Tasks.fromJson(e))
+    List<Employee> value = (data['data'] as Iterable)
+        .map((e) => Employee.fromJson(e))
         .toList();
 
     return ApiReturnValue(value: value);
@@ -234,6 +266,8 @@ class TaskServices {
       String description,
       String priority,
       String due_date,
+      String linkUrl,
+      String assignee_id,
       List<File> attachments,
       {http.MultipartRequest? request}) async {
 
@@ -253,10 +287,12 @@ class TaskServices {
       'description': description,
       'priority': priority,
       'due_date': due_date,
+      'attachments[0][url]': linkUrl,
+      'assigned[][id]': assignee_id
     };
 
-    attachments.forEach((e) async {
-      var multiPartFile = await http.MultipartFile.fromPath('attachments[]', e.path);
+    attachments.forEachIndexed((index, e) async {
+      var multiPartFile = await http.MultipartFile.fromPath('attachments[${index}][file]', e.path);
 
       request!.files.add(multiPartFile);
     });

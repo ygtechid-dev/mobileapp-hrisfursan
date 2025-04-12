@@ -1,13 +1,24 @@
 part of '../pages.dart';
 
 class AnalyticsPage extends StatefulWidget {
-  const AnalyticsPage({super.key});
+  final String token;
+
+  AnalyticsPage(this.token);
 
   @override
   State<AnalyticsPage> createState() => _AnalyticsPageState();
 }
 
 class _AnalyticsPageState extends State<AnalyticsPage> {
+
+  @override
+  void initState() {
+    context.read<WorkingPeriodCubit>().getWorkingPeriod(widget.token);
+    context.read<SalaryCubit>().getSalary(widget.token);
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     double defaultWidth = MediaQuery.of(context).size.width - 2*defaultMargin2;
@@ -55,13 +66,28 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
               ],
             ),
           ),
-          SizedBox(height: 10),
-          SalaryCard(defaultWidth, 5000000, "25 Nov", "25 Des"),
-          SizedBox(height: 20),
-          PerformanceStatsCard(defaultWidth, "Good", "ic_emoji_good.svg"),
-          SizedBox(height: 20),
-          GraphCard(defaultWidth),
-          SizedBox(height: 50),
+          BlocBuilder<SalaryCubit, SalaryState>(
+              builder: (context, state) => (state is SalaryLoaded) ? (state.data != null) ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 10),
+                    SalaryCard(defaultWidth, state.data!.salary ?? 0),
+                    SizedBox(height: 20),
+                    PerformanceStatsCard(defaultWidth, "${state.data!.performance_status}", "ic_emoji_good.svg"),
+                  ]
+              ) : SizedBox() : loadingIndicator
+          ),
+          BlocBuilder<WorkingPeriodCubit, WorkingPeriodState>(
+              builder: (context, state) => (state is WorkingPeriodLoaded) ? (state.data != null) ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 20),
+                    GraphCard(defaultWidth, state.data!.monthly_data ?? []),
+                    SizedBox(height: 50),
+                  ]
+              ) : SizedBox() : loadingIndicator
+          ),
+
         ],
       ),
     );

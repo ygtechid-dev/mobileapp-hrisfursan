@@ -3,7 +3,7 @@ part of 'services.dart';
 
 class UserServices {
   static Future<ApiReturnValue<User>> login(
-      String email, String password, {http.MultipartRequest? request}) async {
+      String email, String password, {String? login_type, http.MultipartRequest? request}) async {
 
     String url = baseUrl + 'login';
 
@@ -16,7 +16,7 @@ class UserServices {
     Map<String, String> fieldData = {
       'login': email,
       'password': password,
-      'login_type': "email",
+      'login_type': "${login_type}",
       'platform': "mobile",
     };
 
@@ -70,6 +70,33 @@ class UserServices {
     var data = jsonDecode(response.body);
 
     String value = data['message'];
+
+    return ApiReturnValue(value: value);
+  }
+
+  static Future<ApiReturnValue<User>> getProfile(String token, {http.Client? client}) async {
+    if (client == null) {
+      client = http.Client();
+    }
+
+    String url = baseUrl + 'mobile/profile';
+
+    var response = await client.get(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        });
+
+    print("User " + response.body.toString());
+
+    if (response.statusCode != 200) {
+      return ApiReturnValue(message: 'Please Try Again');
+    }
+
+    var data = jsonDecode(response.body);
+
+
+    User value = User.fromJson(data["data"]['user']);
 
     return ApiReturnValue(value: value);
   }
@@ -169,6 +196,46 @@ class UserServices {
       return ApiReturnValue(message: '${data['message']}');
     }
 
+  }
+
+  static Future<ApiReturnValue<User>> updatePhoto(String token, File file, {http.MultipartRequest? request}) async {
+
+
+    String url = baseUrl + 'mobile/update-photo-profile';
+
+
+    if (request == null) {
+      request = http.MultipartRequest('POST', Uri.parse(url))
+        ..headers["Content-Type"] = "multipart/form-data"
+        ..headers["Authorization"] = "Bearer $token"
+        ..headers["Accept"] = "application/json";
+    }
+
+    var multiPartFile =
+    await http.MultipartFile.fromPath('avatar', file.path);
+
+    request.files.add(multiPartFile);
+
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+      String responseBody = await response.stream.bytesToString();
+      print("RESPONSE ${responseBody}");
+
+      var data = jsonDecode(responseBody);
+
+
+      User value = User.fromJson(data['data']['user']);
+
+      return ApiReturnValue(value: value, message: '${data['message']}');
+    } else {
+      String responseBody = await response.stream.bytesToString();
+      print("RESPONSE ${responseBody}");
+
+      var data = jsonDecode(responseBody);
+
+      return ApiReturnValue(message: '${data['message']}', value: data);
+    }
   }
 
   static Future<ApiReturnValue<bool>> forgot_password(String email, {http.MultipartRequest? request}) async {
@@ -324,16 +391,18 @@ class UserServices {
       var data = jsonDecode(responseBody);
 
 
-      Resign value = data['data'];
+      Resign value = Resign.fromJson(data["data"]);
 
-      return ApiReturnValue(value: value, message: '${data['message']}');
+      return ApiReturnValue(value: value, message: '${data['message']}', status: data["status"]);
     } else {
       String responseBody = await response.stream.bytesToString();
       print("RESPONSE ${responseBody}");
 
       var data = jsonDecode(responseBody);
 
-      return ApiReturnValue(message: '${data['message']}', value: data);
+      Resign value = Resign.fromJson(data["data"]);
+
+      return ApiReturnValue(message: '${data['message']}', value: value, status: data["status"]);
     }
   }
 
@@ -359,7 +428,8 @@ class UserServices {
     var data = jsonDecode(response.body);
 
 
-    OfficeAssets value = OfficeAssets.fromJson(data["data"][0]);
+
+    OfficeAssets? value = (data["data"].isNotEmpty && data["data"][0] != null) ? OfficeAssets.fromJson(data["data"][0]) : null;
 
     return ApiReturnValue(value: value);
   }

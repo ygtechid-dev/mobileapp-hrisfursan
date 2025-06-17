@@ -140,7 +140,7 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
                                     hintText: "Input ${"assign_to".trans(context)}".trans(context),
                                     prefixSvg: "${prefixIcons}ic_form_assign.svg",
                                     listItem: listData,
-                                    initialValue: listData.isEmpty ? null : listData[0],
+                                    // initialValue: listData.isEmpty ? null : listData[0],
                                     validator: (e) {
                                       return simpleValidator(e, null);
                                     },

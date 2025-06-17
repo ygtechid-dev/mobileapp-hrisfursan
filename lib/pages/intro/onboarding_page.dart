@@ -52,12 +52,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           textAlign: TextAlign.center,
                           style: blackFontStyle.copyWith(fontSize: 24, fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(height: 3),
-                        Text(
-                          "lorem ipsum",
-                          textAlign: TextAlign.start,
-                          style: greyFontStyle.copyWith(fontSize: 13, fontWeight: FontWeight.w400),
-                        ),
+                        // SizedBox(height: 3),
+                        // Text(
+                        //   "lorem ipsum",
+                        //   textAlign: TextAlign.start,
+                        //   style: greyFontStyle.copyWith(fontSize: 13, fontWeight: FontWeight.w400),
+                        // ),
                       ]
                   ),
                   ButtonCard("next".trans(context), defaultWidth, mainColor, colorGradient: buttonGradient, onPressed: () async {

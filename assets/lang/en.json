@@ -82,7 +82,7 @@
     "signin_here": "Sign In Here",
     "calendar": "Calendar",
     "events": "Events",
-    "events_day": "Events day in December",
+    "events_day": "Events day in This Month",
     "events_important": "Important Event",
     "events_monthly": "Monhtly Event",
     "submit_leave": "Submit Leave",
@@ -217,7 +217,8 @@
     "approve_leave_desc": "Congrats your Leave application is approved! 'Selamat Healing yaaa - HRD Staff'",
     "a_verification_code": "A verification code will be sent to your email to reset your password.",
     "send_verification": "Send Verification Code",
-    "a_reset_code": "A reset code has been sent to Adam@work.com, check your email to continue the password reset process.",
+    "a_reset_code": "A reset code has been sent to ",
+    "check_email": "check your email to continue the password reset process.",
     "havent_received": "Haven't received the verification code? ",
     "resend_it": " Resend it.",
     "please_set_password": "Please set a new password to secure your Work Mate account.",
@@ -293,5 +294,7 @@
     "donefortoday": "Done for Today",
     "deduction": "Deduction",
     "title": "Title",
-    "comment": "Comment"
+    "comment": "Comment",
+    "employeeid": "Employee ID",
+    "data_not_found" : "Data Not Found"
 }

@@ -39,9 +39,9 @@ class _TaskSummaryCardState extends State<TaskSummaryCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                itemTodo((widget.width - 2*16)/3 - 5, "to_do".trans(context), "ic_task_todo.svg", widget.count.on_hold ?? 0),
-                itemTodo((widget.width - 2*16)/3 - 5, "in_progress".trans(context), "ic_task_progress.svg", widget.count.active ?? 0),
-                itemTodo((widget.width - 2*16)/3 - 5, "done".trans(context), "ic_task_done.svg", widget.count.completed ?? 0),
+                itemTodo((widget.width - 2*16)/3 - 5, "to_do".trans(context), "ic_task_todo.svg", widget.count.todo ?? 0),
+                itemTodo((widget.width - 2*16)/3 - 5, "in_progress".trans(context), "ic_task_progress.svg", widget.count.in_progress ?? 0),
+                itemTodo((widget.width - 2*16)/3 - 5, "done".trans(context), "ic_task_done.svg", widget.count.done ?? 0),
               ],
             ),
           ]

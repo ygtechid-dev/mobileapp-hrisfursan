@@ -33,11 +33,19 @@ class _WorkingCardState extends State<WorkingCard> {
     super.initState();
   }
 
+  bool isDone = false;
+
   @override
   Widget build(BuildContext context) {
 
     DateTime now = DateTime.now();
     String formattedDate = intl.DateFormat('MMMM yyyy').format(now);
+
+    if(widget.clockin != null && widget.clockin != "") {
+      if (widget.clockout != null && widget.clockout != "") {
+        isDone = true;
+      }
+    }
 
     return Container(
       width: widget.width,
@@ -69,7 +77,7 @@ class _WorkingCardState extends State<WorkingCard> {
             ],
           ),
           SizedBox(height: 12),
-          ButtonCard((widget.clockin != null && widget.clockin != "") ? (widget.clockout != null && widget.clockout != "") ? "donefortoday".trans(context) : "clocked_out".trans(context) : "checkin_now".trans(context), widget.width - 2*16, (widget.clockout != null) ? greyColor : mainColor, colorGradient: buttonGradient, onPressed: () async {
+          ButtonCard((widget.clockin != null && widget.clockin != "") ? (widget.clockout != null && widget.clockout != "") ? "donefortoday".trans(context) : "clocked_out".trans(context) : "checkin_now".trans(context), widget.width - 2*16, (widget.clockout != null) ? greyColor : mainColor, colorGradient: (isDone == true) ? buttonGradientGrey : buttonGradient, isReadable: !isDone, onPressed: () async {
             if(widget.clockin != null){
               if(widget.clockout != null){
 
@@ -240,7 +248,7 @@ class AttendantCard extends StatelessWidget {
                                   style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                                 ),
                                 Text(
-                                  "${clock_in ?? "-"} -- ${clock_out ?? "-"}",
+                                  "${((clock_in != null) ? clock_in!.substring(0, 5) : "No Data")} -- ${((clock_out != null) ? clock_out!.substring(0, 5) : "No Data")}",
                                   textAlign: TextAlign.start,
                                   style: blackFontStyle.copyWith(fontSize: 15, fontWeight: FontWeight.w600),
                                 ),

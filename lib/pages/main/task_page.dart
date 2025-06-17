@@ -29,6 +29,9 @@ class _TaskPageState extends State<TaskPage> {
       appBarColorGradient: backgroundGradient,
       backColor: "F1F3F8".toColor(),
       isAppBarCircular: true,
+      refresh: () async {
+        await context.read<TaskCubit>().getTask(widget.token);
+      },
       child: Column(
         children: [
           Container(

@@ -5,7 +5,9 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:face_camera/face_camera.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -64,6 +66,8 @@ import '../widgets/widgets.dart';
 part "general_page.dart";
 part "intro/splash_page.dart";
 part "auth/signin_page.dart";
+part "auth/signin_phone_page.dart";
+part "auth/signin_employee_page.dart";
 part "auth/signup_page.dart";
 part "auth/personal_data_page.dart";
 part "main/main_page.dart";

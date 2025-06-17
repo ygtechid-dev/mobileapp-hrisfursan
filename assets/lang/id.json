@@ -82,7 +82,7 @@
     "signin_here": "Masuk di Sini",
     "calendar": "Kalender",
     "events": "Acara",
-    "events_day": "Acara di bulan Desember",
+    "events_day": "Acara di bulan ini",
     "events_important": "Acara Penting",
     "events_monthly": "Acara Bulanan",
     "submit_leave": "Ajukan Cuti",
@@ -217,7 +217,8 @@
     "approve_leave_desc": "Selamat, pengajuan cuti Anda disetujui! 'Selamat Healing yaaa - HRD Staff'",
     "a_verification_code": "Kode verifikasi akan dikirim ke email Anda untuk mengatur ulang kata sandi.",
     "send_verification": "Kirim Kode Verifikasi",
-    "a_reset_code": "Kode reset telah dikirim ke Adam@work.com, periksa email Anda untuk melanjutkan proses pengaturan ulang kata sandi.",
+    "a_reset_code": "Kode reset telah dikirim ke ",
+    "check_email": "periksa email Anda untuk melanjutkan proses pengaturan ulang kata sandi.",
     "havent_received": "Belum menerima kode verifikasi?",
     "resend_it": " Kirim ulang.",
     "please_set_password": "Silakan atur kata sandi baru untuk mengamankan akun Work Mate Anda.",
@@ -293,6 +294,8 @@
     "donefortoday": "Selesai untuk Hari Ini",
     "deduction": "Potongan",
     "title": "Judul",
-    "comment": "Komentar"
+    "comment": "Komentar",
+    "employeeid": "ID Karyawan",
+    "data_not_found" : "Data Tidak Ditemukan"
 }
 

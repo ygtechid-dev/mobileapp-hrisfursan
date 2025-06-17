@@ -163,23 +163,33 @@ class AttendantDetail extends Equatable {
 class Employee extends Equatable {
   final int? id;
   final String? name;
+  final String? employee_id;
+  final String? address;
+  final Designation? designation;
 
   Employee(
       {this.id,
-        this.name
+        this.name,
+        this.employee_id,
+        this.designation,
+        this.address,
       });
 
   factory Employee.fromJson(Map<String, dynamic> data) =>
       Employee(
         id: data['id'] ?? null,
         name: data['name'],
+        employee_id: data['employee_id'],
+        address: data['address'],
+        designation: (data['designation'] != null) ?  Designation.fromJson(data['designation']) : null,
       );
 
   @override
   List<Object?> get props =>
       [
         id,
-        name
+        name,
+        employee_id
       ];
 }
 
@@ -442,8 +452,8 @@ class WorkingPeriod extends Equatable {
   final String? month;
   final String? month_name;
   final String? year_month;
-  final int? total_working_days;
-  final int? total_working_hours;
+  final double? total_working_days;
+  final double? total_working_hours;
 
   WorkingPeriod(
       {this.employee_id,
@@ -461,8 +471,8 @@ class WorkingPeriod extends Equatable {
         month: data['month'] ?? "",
         month_name: data['month_name'] ?? "",
         year_month: data['year_month'] ?? "",
-        total_working_days: data['total_working_days'] ?? 0,
-        total_working_hours: data['total_working_hours'] ?? 0,
+        total_working_days: double.parse("${data['total_working_days']}") ?? 0,
+        total_working_hours: double.parse("${data['total_working_hours']}") ?? 0,
 
       );
 
@@ -474,11 +484,11 @@ class WorkingPeriod extends Equatable {
 class WorkingPeriodSummary extends Equatable {
   final String? start_year_month;
   final String? end_year_month;
-  final int? total_months;
-  final int? total_working_days;
-  final int? total_days_present;
-  final int? total_days_absent;
-  final int? total_working_hours;
+  final double? total_months;
+  final double? total_working_days;
+  final double? total_days_present;
+  final double? total_days_absent;
+  final double? total_working_hours;
 
   WorkingPeriodSummary(
       {
@@ -493,12 +503,12 @@ class WorkingPeriodSummary extends Equatable {
   factory WorkingPeriodSummary.fromJson(Map<String, dynamic> data) =>
       WorkingPeriodSummary(
         start_year_month: data['start_year_month'] ?? null,
-        end_year_month: data['end_year_month'] ?? "",
-        total_months: data['total_months'] ?? "",
-        total_working_days: data['total_working_days'] ?? "",
-        total_days_present: data['total_days_present'] ?? "",
-        total_days_absent: data['total_days_absent'] ?? 0,
-        total_working_hours: data['total_working_hours'] ?? 0,
+        end_year_month: data['end_year_month'] ?? 0.0,
+        total_months: double.parse("${data['total_months']}") ?? 0.0,
+        total_working_days: double.parse("${data['total_working_days']}") ?? 0.0,
+        total_days_present: double.parse("${data['total_days_present']}") ?? 0.0,
+        total_days_absent: double.parse("${data['total_days_absent']}") ?? 0.0,
+        total_working_hours: double.parse("${data['total_working_hours']}") ?? 0.0,
 
       );
 

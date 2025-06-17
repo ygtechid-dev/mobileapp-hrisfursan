@@ -15,6 +15,7 @@ class _PasswordPageState extends State<PasswordPage> {
   TextEditingController passwordNewConfirmC = TextEditingController();
 
   bool isAgree = false;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -119,14 +120,19 @@ class _PasswordPageState extends State<PasswordPage> {
             color: Colors.white,
             boxShadow: boxShadow
         ),
-        child: ButtonCard("save".trans(context), defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
-          modalBottomSheet(context, widget.token);
-        }),
+        child: BlocBuilder<UserCubit, UserState>(
+            builder: (context, state) => (state is UserLoaded) ? (state.user != null)
+                ? ButtonCard("save".trans(context), defaultWidth - 2*24, mainColor, isLoading: isLoading, colorGradient: buttonGradient, onPressed: () async {
+
+              modalBottomSheet(context, widget.token, state.user!.email!);
+
+            }) : SizedBox() : loadingIndicator
+        ),
       ),
     );
   }
 
-  void modalBottomSheet(contexts, String token){
+  void modalBottomSheet(contexts, String token, String email){
     double fullWidth = MediaQuery.of(context).size.width;
 
     showModalBottomSheet(
@@ -138,8 +144,82 @@ class _PasswordPageState extends State<PasswordPage> {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (bc){
-          return ModalUpdatePasswordCard(token, fullWidth, 16, onSubmit: (){
-            modalBottomSheetSuccess(contexts, token);
+          return ModalUpdatePasswordCard(token, fullWidth, 16, onSubmit: () async {
+            if(passwordC.text.isNotEmpty && passwordNewC.text.isNotEmpty && passwordNewConfirmC.text.isNotEmpty){
+              if(passwordNewC.text == passwordNewConfirmC.text){
+
+                await UserServices.forgot_password(email!).then((result) async {
+
+                  if(result != null && result.value != null && result.value == true){
+
+                    await UserServices.reset_password( "token", email!, passwordNewC.text, passwordNewConfirmC.text).then((result2) async {
+
+                      if(result2 != null && result2.value != null && result2.value == true){
+                        setState(() {
+                          isLoading = false;
+                        });
+
+                        Fluttertoast.showToast(
+                            msg: "${result2.message}",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.green,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                        );
+
+                        modalBottomSheetSuccess(contexts, token);
+
+                      } else {
+                        setState(() {
+                          isLoading = false;
+                        });
+
+                        Fluttertoast.showToast(
+                            msg: "${result2.message}",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                        );
+                      }
+                    });
+                  } else {
+                    setState(() {
+                      isLoading = false;
+                    });
+
+                    Fluttertoast.showToast(
+                        msg: "${result.message}",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0
+                    );
+                  }
+
+
+                });
+
+
+              } else {
+                Fluttertoast.showToast(
+                    msg: "confirm_pass_match".trans(context),
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+              }
+            }
+
           },);
         });
   }

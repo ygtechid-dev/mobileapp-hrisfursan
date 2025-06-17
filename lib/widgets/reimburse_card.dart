@@ -131,13 +131,13 @@ class ReimburseItemCard extends StatelessWidget {
     if(status == "paid"){
       colorStatus = Colors.green;
       iconStatus = Icons.check_circle;
-      textStatus = "${"approved_at".trans(context)}${approved_at}";
+      textStatus = "${"approved_at".trans(context)} ${approved_at}";
     }
 
     if(status == "rejected"){
       colorStatus = Colors.red;
       iconStatus = Icons.cancel;
-      textStatus = "${"rejected_at".trans(context)}${rejected_at}";
+      textStatus = "${"rejected_at".trans(context)} ${rejected_at}";
     }
 
     return InkWell(

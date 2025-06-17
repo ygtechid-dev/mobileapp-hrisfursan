@@ -119,7 +119,7 @@ class _AttendantDetailPageState extends State<AttendantDetailPage> {
       double fixMinutes = minutes_ - minutes;
       double fixSeconds = seconds_ - seconds;
 
-      _hoursString = "${fixHours}:${fixMinutes}:${fixSeconds}";
+      _hoursString = "${(fixHours > 9) ? fixHours.toStringAsFixed(0) : "0${fixHours.toStringAsFixed(0)}"}:${(fixMinutes < 0) ? "00" : ((fixMinutes > 9) ? fixMinutes.toStringAsFixed(0) : "0${fixMinutes.toStringAsFixed(0)}")}:${(fixSeconds < 0) ? "00" : ((fixSeconds > 9) ? fixSeconds.toStringAsFixed(0) : "0${fixSeconds.toStringAsFixed(0)}")}";
     }
 
     return GeneralPage(
@@ -173,121 +173,134 @@ class _AttendantDetailPageState extends State<AttendantDetailPage> {
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Column(
+
                               children: [
-                                Text(
-                                  "selfie_clockin".trans(context),
-                                  textAlign: TextAlign.center,
-                                  style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
-                                ),
-                                SizedBox(height: 10),
-                                Container(
-                                    width: 225,
-                                    height: 240,
-                                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 12),
-                                    alignment: Alignment.bottomCenter,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            colorFilter: ColorFilter.mode(
-                                              Colors.black.withOpacity(0.3),
-                                              BlendMode.srcOver,
-                                            ),
-                                            image: CachedNetworkImageProvider("${baseUrl2}${widget.records.clock_in_photo}")
+                                Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "selfie_clockin".trans(context),
+                                      textAlign: TextAlign.center,
+                                      style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Container(
+                                        width: 225,
+                                        height: 250,
+                                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 12),
+                                        alignment: Alignment.bottomCenter,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(6),
+                                            image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                colorFilter: ColorFilter.mode(
+                                                  Colors.black.withOpacity(0.3),
+                                                  BlendMode.srcOver,
+                                                ),
+                                                image: CachedNetworkImageProvider("${widget.records.clock_in_photo}")
+                                            )
+                                        ),
+                                        child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              Container(
+                                                width: (defaultWidth - 2*defaultMargin3) - 2*12,
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  "Lat : ${widget.records.clock_in_latitude}",
+                                                  textAlign: TextAlign.start,
+                                                  style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
+                                                ),
+                                              ),
+                                              SizedBox(height: 3),
+                                              Container(
+                                                width: (defaultWidth - 2*defaultMargin3) - 2*12,
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  "Long : ${widget.records.clock_in_longitude}",
+                                                  textAlign: TextAlign.start,
+                                                  style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
+                                                ),
+                                              ),
+                                              SizedBox(height: 3),
+                                              Container(
+                                                width: (defaultWidth - 2*defaultMargin3) - 2*12,
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  "${widget.records.clock_in_formatted}",
+                                                  textAlign: TextAlign.start,
+                                                  style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
+                                                ),
+                                              ),
+                                            ]
                                         )
                                     ),
-                                    child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          Container(
-                                            width: (defaultWidth - 2*defaultMargin3) - 2*12,
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              "Lat : ${widget.records.clock_in_latitude}",
-                                              textAlign: TextAlign.start,
-                                              style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
-                                            ),
-                                          ),
-                                          SizedBox(height: 3),
-                                          Container(
-                                            width: (defaultWidth - 2*defaultMargin3) - 2*12,
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              "Long : ${widget.records.clock_in_longitude}",
-                                              textAlign: TextAlign.start,
-                                              style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
-                                            ),
-                                          ),
-                                          SizedBox(height: 3),
-                                          Container(
-                                            width: (defaultWidth - 2*defaultMargin3) - 2*12,
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              "${widget.records.clock_in_formatted} GMT ${DateTime.now().toUtc()}",
-                                              textAlign: TextAlign.start,
-                                              style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
-                                            ),
-                                          ),
-                                        ]
-                                    )
+                                    SizedBox(height: 20),
+                                  ]
                                 ),
-                                SizedBox(height: 20),
-                                Text(
-                                  "selfie_clockout".trans(context),
-                                  textAlign: TextAlign.center,
-                                  style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                                Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "selfie_clockout".trans(context),
+                                        textAlign: TextAlign.center,
+                                        style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                                      ),
+                                      SizedBox(height: 10),
+                                      Container(
+                                          width: 225,
+                                          height: 250,
+                                          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 12),
+                                          alignment: Alignment.bottomCenter,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(6),
+                                              image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  colorFilter: ColorFilter.mode(
+                                                    Colors.black.withOpacity(0.3),
+                                                    BlendMode.srcOver,
+                                                  ),
+                                                  image: CachedNetworkImageProvider("${widget.records.clock_out_photo}")
+                                              )
+                                          ),
+                                          child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                Container(
+                                                  width: (defaultWidth - 2*defaultMargin3) - 2*12,
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Text(
+                                                    "Lat : ${widget.records.clock_out_latitude}",
+                                                    textAlign: TextAlign.start,
+                                                    style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 3),
+                                                Container(
+                                                  width: (defaultWidth - 2*defaultMargin3) - 2*12,
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Text(
+                                                    "Long : ${widget.records.clock_out_longitude}",
+                                                    textAlign: TextAlign.start,
+                                                    style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 3),
+                                                Container(
+                                                  width: (defaultWidth - 2*defaultMargin3) - 2*12,
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Text(
+                                                    "${widget.records.clock_out_formatted}",
+                                                    textAlign: TextAlign.start,
+                                                    style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
+                                                  ),
+                                                ),
+                                              ]
+                                          )
+                                      ),
+                                      SizedBox(height: 20),
+                                    ]
                                 ),
-                                SizedBox(height: 10),
-                                Container(
-                                    width: 225,
-                                    height: 240,
-                                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 12),
-                                    alignment: Alignment.bottomCenter,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            colorFilter: ColorFilter.mode(
-                                              Colors.black.withOpacity(0.3),
-                                              BlendMode.srcOver,
-                                            ),
-                                            image: CachedNetworkImageProvider("${baseUrl2}${widget.records.clock_out_photo}")
-                                        )
-                                    ),
-                                    child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          Container(
-                                            width: (defaultWidth - 2*defaultMargin3) - 2*12,
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              "Lat : ${widget.records.clock_out_latitude}",
-                                              textAlign: TextAlign.start,
-                                              style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
-                                            ),
-                                          ),
-                                          SizedBox(height: 3),
-                                          Container(
-                                            width: (defaultWidth - 2*defaultMargin3) - 2*12,
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              "Long : ${widget.records.clock_out_longitude}",
-                                              textAlign: TextAlign.start,
-                                              style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
-                                            ),
-                                          ),
-                                          SizedBox(height: 3),
-                                          Container(
-                                            width: (defaultWidth - 2*defaultMargin3) - 2*12,
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              "${widget.records.clock_out_formatted} GMT +07:00",
-                                              textAlign: TextAlign.start,
-                                              style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
-                                            ),
-                                          ),
-                                        ]
-                                    )
-                                ),
-                                SizedBox(height: 20),
                                 Container(
                                     width: (defaultWidth - 2*defaultMargin3) - 2*12,
                                   alignment: Alignment.centerLeft,
@@ -380,16 +393,6 @@ class _AttendantDetailPageState extends State<AttendantDetailPage> {
               );
 
               await _requestDownload(task);
-
-              Fluttertoast.showToast(
-                  msg: "${result.message}",
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: Colors.green,
-                  textColor: Colors.white,
-                  fontSize: 16.0
-              );
 
               modalBottomSheet(context, widget.token);
 
@@ -491,10 +494,38 @@ class _AttendantDetailPageState extends State<AttendantDetailPage> {
   }
 
   Future<void> _requestDownload(TaskInfo task) async {
+
+    var status = await Permission.storage.status;
+
+    if (status.isDenied) {
+      Fluttertoast.showToast(
+          msg: "Error when saving file",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+    }
+    if (await Permission.storage.isRestricted) {
+      Fluttertoast.showToast(
+          msg: "Error when saving file",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+    }
+
+    var directory = Directory('/storage/emulated/0/Download');
+
     task.taskId = await FlutterDownloader.enqueue(
       url: task.link!,
       headers: {'Authorization': 'Bearer ${widget.token}'},
-      savedDir: _localPath,
+      savedDir: directory.path,
       saveInPublicStorage: _saveInPublicStorage,
     );
   }

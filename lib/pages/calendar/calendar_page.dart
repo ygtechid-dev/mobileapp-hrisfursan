@@ -64,6 +64,7 @@ class _CalendarPageState extends State<CalendarPage> {
               alignment: Alignment.center,
               child: BlocBuilder<EventsCubit, EventsState>(
                   builder: (context, state) => (state is EventsLoaded) ? (state.data != null && state.data!.isNotEmpty) ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 20),
                         Text(
@@ -78,8 +79,12 @@ class _CalendarPageState extends State<CalendarPage> {
                           style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                         ),
                         SizedBox(height: 20),
-                        EventCard(defaultWidth, "events_important".trans(context), Colors.green, (startDate != null && endDate != null) ? state.data!.where((e) => e.priority == "high").where((e) => e.start == "${startDate}" || e.end == "${endDate}").toList() : state.data!.where((e) => e.priority == "high").toList()),
-                        EventCard(defaultWidth, "events_monthly".trans(context), Colors.blue, (startDate != null && endDate != null) ? state.data!.where((e) => e.priority == "medium").where((e) => e.start == "${startDate}" || e.end == "${endDate}").toList() : state.data!.where((e) => e.priority == "medium").toList()),
+                        EventCard(defaultWidth, "events_important".trans(context), Colors.green, (startDate != null && endDate != null)
+                            ? state.data!.where((e) => e.priority == "high").where((e) => e.start == "${startDate}" || e.end == "${endDate}").toList()
+                            : state.data!.where((e) => e.priority == "high").toList()),
+                        EventCard(defaultWidth, "events_monthly".trans(context), Colors.blue, (startDate != null && endDate != null)
+                            ? state.data!.where((e) => e.priority != "high").where((e) => e.start == "${startDate}" || e.end == "${endDate}").toList()
+                            : state.data!.where((e) => e.priority != "high").toList()),
                       ]
                   ) : SizedBox() : loadingIndicator
               ),

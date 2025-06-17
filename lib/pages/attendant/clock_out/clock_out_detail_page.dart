@@ -162,7 +162,7 @@ class _ClockOutDetailPageState extends State<ClockOutDetailPage> {
               color: Colors.white,
               boxShadow: boxShadow
           ),
-          child: ButtonCard("clock_out", defaultWidth - 2*24, mainColor, isLoading: isLoading, colorGradient: buttonGradient, onPressed: () async {
+          child: ButtonCard("clock_out".trans(context), defaultWidth - 2*24, mainColor, isLoading: isLoading, colorGradient: buttonGradient, onPressed: () async {
             setState(() {
               isLoading = true;
             });

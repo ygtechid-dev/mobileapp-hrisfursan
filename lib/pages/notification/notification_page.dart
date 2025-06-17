@@ -46,21 +46,30 @@ class _NotificationPageState extends State<NotificationPage> {
               alignment: Alignment.center,
               child: searchWidget(defaultWidth)
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 10),
           BlocBuilder<NotificationsCubit, NotificationsState>(
               builder: (context, state) {
                 if (state is NotificationsLoaded) {
                   if (state.data != null && state.data!.isNotEmpty) {
-                    return Column(
-                        children: state.data!.map((e) {
-                          return NotificationCard(defaultWidth, "${e.title}", "${e.description}", "img_notification.png", "${e.time}");
-                        }).toList()
-                    );
+                    if(searchController.text.isNotEmpty){
+                      return Column(
+                          children: state.data!.where((data) => data.title!.contains(searchController.text) || data.description!.contains(searchController.text)).map((e) {
+                            return NotificationCard(fullWidth, "${e.title}", "${e.description}", "img_notification.png", "${e.time}");
+                          }).toList()
+                      );
+                    } else {
+                      return Column(
+                          children: state.data!.map((e) {
+                            return NotificationCard(fullWidth, "${e.title}", "${e.description}", "img_notification.png", "${e.time}");
+                          }).toList()
+                      );
+                    }
+
                   } else {
                     return SizedBox();
                   }
                 } else {
-                  return loadingIndicator;
+                  return SizedBox();
                 }
               }
           ),

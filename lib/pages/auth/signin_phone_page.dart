@@ -1,14 +1,14 @@
 part of '../pages.dart';
 
-class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+class SignInPhonePage extends StatefulWidget {
+  const SignInPhonePage({super.key});
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<SignInPhonePage> createState() => _SignInPhonePageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
-  TextEditingController emailC = TextEditingController();
+class _SignInPhonePageState extends State<SignInPhonePage> {
+  TextEditingController phoneC = TextEditingController();
   TextEditingController passwordC = TextEditingController();
 
   bool isRemember = false;
@@ -67,16 +67,16 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                     SizedBox(height: 20),
                     FormWithLabelCard(
-                        outerLabelText: "email".trans(context),
-                        hintText: "my_mail".trans(context),
-                        controller: emailC,
-                        inputType: TextInputType.emailAddress,
-                        prefixSvg: "${prefixIcons}ic_email.svg",
+                        outerLabelText: "phone_number".trans(context),
+                        hintText: "${"phone_number".trans(context)}",
+                        controller: phoneC,
+                        inputType: TextInputType.name,
+                        prefixSvg: "${prefixIcons}ic_phone.svg",
                         onSaved: (e) {
-                          emailC.text = e ?? "";
+                          phoneC.text = e ?? "";
                         },
                         validator: (e) {
-                          return emailValidator(e, null);
+                          return simpleValidator(e, null);
                         },
                         filled: true),
                     SizedBox(height: 20),
@@ -133,15 +133,15 @@ class _SignInPageState extends State<SignInPage> {
                     ButtonCard("signin".trans(context), defaultWidth, mainColor, isLoading: isLoading, colorGradient: buttonGradient, onPressed: () async {
                       String? uid;
 
-                      if (emailC.text.isNotEmpty && passwordC.text.isNotEmpty){
+                      if (phoneC.text.isNotEmpty && passwordC.text.isNotEmpty){
 
                         setState(() {
                           isLoading = true;
                         });
 
                         await context.read<UserCubit>().login(
-                            emailC.text,
-                            passwordC.text, login_type: "email").then((result) {
+                            phoneC.text,
+                            passwordC.text, login_type: "phone").then((result) {
                         });
 
                         UserState state = context.read<UserCubit>().state;
@@ -207,59 +207,7 @@ class _SignInPageState extends State<SignInPage> {
                         }
                       }
                     }),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: defaultWidth/2 - 15 - 20,
-                          child: Divider(color: greyColor, thickness: 1,)
-                        ),
-                        SizedBox(width: 15),
-                        Text(
-                          "or".trans(context),
-                          textAlign: TextAlign.center,
-                          style: blackFontStyle.copyWith(fontSize: 12, color: greyColor, fontWeight: FontWeight.w400),
-                        ),
-                        SizedBox(width: 15),
-                        Container(
-                            width: defaultWidth/2 - 15 - 20,
-                            child: Divider(color: greyColor, thickness: 1,)
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    // ButtonCard("signin_google".trans(context), defaultWidth, mainColor, isActive: true, iconPath: "${prefixIcons}ic_google.svg", onPressed: () async {}),
-                    // SizedBox(height: 15),
-                    ButtonCard("signin_employee".trans(context), defaultWidth, mainColor, isActive: true, iconPath: "${prefixIcons}ic_employee.svg", isHover: false, onPressed: () async {
-                      Get.to(SignInEmployeePage());
-                    }),
-                    SizedBox(height: 15),
-                    ButtonCard("signin_phone".trans(context), defaultWidth, mainColor, isActive: true, iconPath: "${prefixIcons}ic_phone.svg", isHover: false, onPressed: () async {
-                      Get.to(SignInPhonePage());
-                    }),
-                    // SizedBox(height: 20),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: [
-                    //     Text(
-                    //       "dont_have_account".trans(context),
-                    //       style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
-                    //       textAlign: TextAlign.start,
-                    //     ),
-                    //     InkWell(
-                    //       onTap: (){
-                    //         Get.to(SignUpPage());
-                    //       },
-                    //       child: Text(
-                    //         "signup_here".trans(context),
-                    //         style: blackFontStyle.copyWith(fontSize: 12, color: mainColor, fontWeight: FontWeight.w600),
-                    //         textAlign: TextAlign.end,
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                    SizedBox(height: 40),
+                    SizedBox(height: 160),
                   ],
                 )
               )

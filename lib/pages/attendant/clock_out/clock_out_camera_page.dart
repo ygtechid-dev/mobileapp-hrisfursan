@@ -22,6 +22,8 @@ class _ClockOutCameraPageState extends State<ClockOutCameraPage> {
       autoCapture: true,
       defaultCameraLens: CameraLens.front,
       onCapture: (File? image) {
+        controller.dispose();
+
         Get.to(ClockOutDetailPage(widget.token, widget.latitude, widget.longitude, widget.location, image!));
       },
     );

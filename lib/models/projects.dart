@@ -16,33 +16,29 @@ class ProjectsSummary extends Equatable {
       );
 
   @override
-  List<Object?> get props =>
-      [
-        projects,
-        project_counts,
-      ];
+  List<Object?> get props => [projects, project_counts,];
 }
 
 class ProjectsCounts extends Equatable {
-  final int? active;
-  final int? on_hold;
-  final int? completed;
+  final int? todo;
+  final int? in_progress;
+  final int? done;
 
-  ProjectsCounts({this.active, this.on_hold, this.completed});
+  ProjectsCounts({this.todo, this.in_progress, this.done});
 
   factory ProjectsCounts.fromJson(Map<String, dynamic> data) =>
       ProjectsCounts(
-        active: data['active'] ?? 0,
-        on_hold: data['on_hold'] ?? 0,
-        completed: data['completed'] ?? 0,
+        todo: data['todo'] ?? 0,
+        in_progress: data['in_progress'] ?? 0,
+        done: data['done'] ?? 0,
       );
 
   @override
   List<Object?> get props =>
       [
-        active,
-        on_hold,
-        completed,
+        todo,
+        in_progress,
+        done,
       ];
 }
 

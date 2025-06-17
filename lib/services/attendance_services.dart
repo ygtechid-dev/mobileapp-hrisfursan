@@ -15,13 +15,15 @@ class AttendanceServices {
           "Authorization": "Bearer $token"
         });
 
+    print("Log Attendance " + response.body.toString());
+
     if (response.statusCode != 200) {
       return ApiReturnValue(message: 'Please Try Again');
     }
 
     var data = jsonDecode(response.body);
 
-    print(response.body.toString());
+
 
     Attendant value = Attendant.fromJson(data["data"]);
 
@@ -200,13 +202,15 @@ class AttendanceServices {
           "Authorization": "Bearer $token"
         });
 
+    print("Working Period " + response.body.toString());
+
     if (response.statusCode != 200) {
       return ApiReturnValue(message: 'Please Try Again');
     }
 
     var data = jsonDecode(response.body);
 
-    print(response.body.toString());
+
 
     WorkingPeriodAll value = WorkingPeriodAll.fromJson(data["data"]);
 
@@ -231,8 +235,6 @@ class AttendanceServices {
     }
 
     var data = jsonDecode(response.body);
-
-    print(response.body.toString());
 
     Salary value = Salary.fromJson(data["data"]);
 

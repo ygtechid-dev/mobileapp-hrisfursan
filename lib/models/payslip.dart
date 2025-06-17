@@ -19,10 +19,12 @@ class Payslip extends Equatable {
   final String? note;
   final String? file_url;
   final String? created_at;
+  final double? total_work_hours;
   final int? total_working_hours;
   final int? total_working_minutes;
   final int? total_overtime_hours;
   final int? total_overtime_minutes;
+
 
   Payslip(
       {this.id,
@@ -43,6 +45,7 @@ class Payslip extends Equatable {
       this.note,
       this.file_url,
       this.created_at,
+        this.total_work_hours,
       this.total_working_hours,
       this.total_working_minutes,
       this.total_overtime_hours,
@@ -57,6 +60,7 @@ class Payslip extends Equatable {
         year: data['year'] ?? null,
         period: data['period'],
         salary_type: data['salary_type'] ?? null,
+        total_work_hours: double.parse("${data['total_work_hours'] ?? "0"}"),
         created_at: data['created_at'] ?? null,
         basic_salary: data['basic_salary'] ?? null,
         total_allowance: data['total_allowance'] ?? null,
@@ -87,6 +91,7 @@ class Payslip extends Equatable {
         total_overtime_minutes,
         month_name,
         year,
+        total_work_hours,
         period,
         salary_type,
         basic_salary,

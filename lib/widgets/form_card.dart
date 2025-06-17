@@ -746,7 +746,7 @@ class _FormDropdownCardState extends State<FormDropdownCard> {
                           //   borderRadius: BorderRadius.circular(widget.borderRadius ?? 10.r),
                           // ),
                           // errorStyle: AppTextStyle.fieldErrorTextStyle,
-                          hintText: widget.hintText,
+                          // hintText: widget.hintText,
                           // prefixIcon: widget.prefixSvg != null
                           //     ? Padding(
                           //   padding: widget.prefixPadding ??

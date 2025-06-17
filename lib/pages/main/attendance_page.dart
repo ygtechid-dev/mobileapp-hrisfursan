@@ -2,8 +2,9 @@ part of '../pages.dart';
 
 class AttendancePage extends StatefulWidget {
   final String token;
+  final String employee_id;
 
-  AttendancePage(this.token);
+  AttendancePage(this.token, this.employee_id);
 
   @override
   State<AttendancePage> createState() => _AttendancePageState();
@@ -12,8 +13,6 @@ class AttendancePage extends StatefulWidget {
 class _AttendancePageState extends State<AttendancePage> {
 
   Future<void> getDataAttendance() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? employee_id = await prefs.getString('employee_id');
     // 2025-02-24
     DateTime now = DateTime.now();
     String formattedDate = intl.DateFormat('yyyy-MM').format(now);
@@ -21,8 +20,8 @@ class _AttendancePageState extends State<AttendancePage> {
     String startDate = "${formattedDate}-01";
     String endDate = "${formattedDate}-31";
 
-    if(employee_id != null){
-      await context.read<AttendanceHistoryCubit>().getAttendanceHistory(widget.token, employee_id, startDate, endDate);
+    if(widget.employee_id != null){
+      await context.read<AttendanceHistoryCubit>().getAttendanceHistory(widget.token, widget.employee_id, startDate, endDate);
     } else {
 
     }
@@ -30,6 +29,8 @@ class _AttendancePageState extends State<AttendancePage> {
 
   @override
   void initState() {
+    context.read<UserCubit>().getProfile(widget.token);
+
     getDataAttendance();
 
 
@@ -120,7 +121,7 @@ class _AttendancePageState extends State<AttendancePage> {
                             ),
                             InkWell(
                               onTap: (){
-                                Get.to(AttendantHistoryPage(widget.token));
+                                Get.to(AttendantHistoryPage(widget.token, "${widget.employee_id}"));
                               },
                               child: Text(
                                 "see_more".trans(context),
@@ -152,7 +153,7 @@ class _AttendancePageState extends State<AttendancePage> {
                             double fixMinutes = minutes_ - minutes;
                             double fixSeconds = seconds_ - seconds;
 
-                            _hoursString = "${fixHours}:${(fixMinutes < 0) ? 0 : fixMinutes}:${(fixSeconds < 0) ? 0 : fixSeconds}";
+                            _hoursString = "${(fixHours > 9) ? fixHours.toStringAsFixed(0) : "0${fixHours.toStringAsFixed(0)}"}:${(fixMinutes < 0) ? "00" : ((fixMinutes > 9) ? fixMinutes.toStringAsFixed(0) : "0${fixMinutes.toStringAsFixed(0)}")}:${(fixSeconds < 0) ? "00" : ((fixSeconds > 9) ? fixSeconds.toStringAsFixed(0) : "0${fixSeconds.toStringAsFixed(0)}")}";
                           }
 
                           DateTime appliedDate = new DateFormat("yyyy-MM-dd").parse(e.date ?? "");

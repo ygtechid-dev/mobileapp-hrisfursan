@@ -27,6 +27,35 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
 
   List<List<String>> listData = [];
 
+  File? selectedFile;
+
+  Future<bool> _checkPermission() async {
+    if (Platform.isIOS) {
+      return true;
+    }
+
+    if (Platform.isAndroid) {
+
+      DeviceInfoPlugin plugin = DeviceInfoPlugin();
+      AndroidDeviceInfo android = await plugin.androidInfo;
+
+      if (android.version.sdkInt < 33) {
+        final status = await Permission.storage.status;
+        if (status == PermissionStatus.granted) {
+          return true;
+        }
+
+        final result = await Permission.storage.request();
+        return result == PermissionStatus.granted;
+      } else {
+        return true;
+      }
+
+    }
+
+    throw StateError('unknown platform');
+  }
+
   @override
   void initState() {
     super.initState();
@@ -38,6 +67,10 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     phoneC.text = widget.user.phone ?? "";
     positionC.text = widget.user.first_name ?? "";
     addressC.text = widget.user.address ?? "";
+
+    if(widget.user!.employee!.designation != null && widget.user!.employee!.designation!.id != null){
+      selectedDesignationInit = ["${widget.user!.employee!.designation!.id}", "${widget.user!.employee!.designation!.name}"];
+    }
 
   }
 
@@ -64,6 +97,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   bool isLoading = false;
 
   String? selectedDesignation;
+  List<String>? selectedDesignationInit;
 
 
   @override
@@ -127,7 +161,43 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                               Positioned(
                                 bottom: 0,
                                 left: 0,
-                                child: Container(
+                                child: (widget.user!.avatar != null && widget.user!.avatar != "") ? (selectedFile != null) ? Container(
+                                  width: 100,
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                      color: CupertinoColors.systemGrey2,
+                                      borderRadius: BorderRadius.circular(16),
+                                      border: Border.all(color: mainColor),
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: FileImage(selectedFile!)
+                                      )
+                                  ),
+                                ) : Container(
+                                  width: 100,
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                      color: CupertinoColors.systemGrey2,
+                                      borderRadius: BorderRadius.circular(16),
+                                      border: Border.all(color: mainColor),
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: CachedNetworkImageProvider("${widget.user!.avatar}")
+                                      )
+                                  ),
+                                ) : (selectedFile != null) ? Container(
+                                  width: 100,
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                      color: CupertinoColors.systemGrey2,
+                                      borderRadius: BorderRadius.circular(16),
+                                      border: Border.all(color: mainColor),
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: FileImage(selectedFile!)
+                                      )
+                                  ),
+                                ) : Container(
                                   width: 100,
                                   height: 100,
                                   decoration: BoxDecoration(
@@ -144,7 +214,34 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                               Positioned(
                                 top: 0,
                                 right: 0,
-                                child: SvgPicture.asset("${prefixIcons}ic_suffle.svg", width: 32, height: 32,),
+                                child: InkWell(
+                                  onTap: () async {
+
+                                    _checkPermission().then((value) async {
+                                      if(value == true){
+                                        FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image);
+                                        if (result != null) {
+                                          setState(() {
+                                            selectedFile = File(result.files.single.path!);
+                                          });
+                                        } else {
+                                          // User canceled the picker
+                                        }
+                                      } else {
+                                        Fluttertoast.showToast(
+                                            msg: "Please grant permission for storage access",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.red,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0
+                                        );
+                                      }
+                                    });
+                                  },
+                                  child: SvgPicture.asset("${prefixIcons}ic_suffle.svg", width: 32, height: 32,),
+                                )
                               )
 
                             ],
@@ -239,10 +336,10 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                     hintText: "enter_position".trans(context),
                                     prefixSvg: "${prefixIcons}ic_position.svg",
                                     listItem: listData,
-                                    initialValue: listData.isEmpty ? null : listData.firstWhere((e) => e[0] == listData[0]),
                                     validator: (e) {
                                       return simpleValidator(e, null);
                                     },
+                                    initialValue: (selectedDesignationInit != null) ? listData.firstWhere((e) => e[0] == selectedDesignationInit![0]) : null,
                                     filled: true,
                                     onSaved: (String? newValue) async {
                                       setState((){
@@ -359,8 +456,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
             color: Colors.white,
             boxShadow: boxShadow
         ),
-        child: ButtonCard("Save", defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
-          if(firstNameC.text.isNotEmpty && phoneC.text.isNotEmpty && lastNameC.text.isNotEmpty && dateC.text.isNotEmpty){
+        child: ButtonCard("Save", defaultWidth - 2*24, mainColor, colorGradient: (firstNameC.text.isNotEmpty && phoneC.text.isNotEmpty && lastNameC.text.isNotEmpty) ? buttonGradient : buttonGradientGrey, onPressed: () async {
+          if(firstNameC.text.isNotEmpty && phoneC.text.isNotEmpty && lastNameC.text.isNotEmpty){
             setState(() {
               isLoading = true;
             });
@@ -374,25 +471,71 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
               address: "${addressC.text}, ${cityC.text}, ${stateC.text}, ${countryC.text}",
             );
 
-            await UserServices.update(widget.token, user).then((result) {
+            await UserServices.update(widget.token, user).then((result) async {
 
               if(result != null && result.value != null){
 
-                setState(() {
-                  isLoading = false;
-                });
+                if(selectedFile != null){
+                  await UserServices.updatePhoto(widget.token, selectedFile!).then((result) async {
 
-                Fluttertoast.showToast(
-                    msg: "success_update".trans(context),
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.green,
-                    textColor: Colors.white,
-                    fontSize: 16.0
-                );
+                    if(result != null && result.value != null){
+                      await context.read<UserCubit>().getProfile(widget.token);
 
-                Get.to(MainPage(token: widget.token));
+                      setState(() {
+                        isLoading = false;
+                      });
+
+                      Fluttertoast.showToast(
+                          msg: "success_update".trans(context),
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
+
+                      Get.to(MainPage(token: widget.token, index_: 4,));
+
+                    } else {
+                      setState(() {
+                        isLoading = false;
+                      });
+
+                      Fluttertoast.showToast(
+                          msg: "${result.message}",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
+                    }
+
+
+                  });
+                } else {
+                  await context.read<UserCubit>().getProfile(widget.token);
+
+                  setState(() {
+                    isLoading = false;
+                  });
+
+                  Fluttertoast.showToast(
+                      msg: "success_update".trans(context),
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.green,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+
+                  Get.to(MainPage(token: widget.token, index_: 4,));
+                }
+
+
 
               } else {
                 setState(() {
@@ -412,6 +555,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
 
 
             });
+
 
 
           }

@@ -27,7 +27,7 @@ class _ReimbursePageState extends State<ReimbursePage> {
   }
 
   Future<bool> _onWillPop() async {
-    Get.to(MainPage(token: widget.token));
+    Get.back();
     return (kIsWeb) ? true : false;
   }
 
@@ -51,7 +51,9 @@ class _ReimbursePageState extends State<ReimbursePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                    onTap: (){},
+                    onTap: (){
+                      Get.back();
+                    },
                     child: Container(
                       height: 32,
                       width: 32,
@@ -197,7 +199,20 @@ class _ReimbursePageState extends State<ReimbursePage> {
                                       DateTime appliedDate = new DateFormat("yyyy-MM-dd").parse(e.requested_at ?? "");
                                       String applied_date = DateFormat("dd MMMM yyyy").format(appliedDate);
 
-                                      return ReimburseItemCard(widget.token, defaultWidth, date: applied_date, typeData: e.category!.name ?? "", value: e.amount, status: e.status);
+                                      String? approved_date;
+                                      String? rejected_date;
+
+                                      if(e.approved_at != null){
+                                        DateTime approvedDate = new DateFormat("yyyy-MM-dd").parse(e.approved_at ?? "");
+                                        approved_date = DateFormat("dd MMMM yyyy").format(approvedDate);
+                                      }
+
+                                      if(e.rejected_at != null){
+                                        DateTime rejectedDate = new DateFormat("yyyy-MM-dd").parse(e.rejected_at ?? "");
+                                        rejected_date = DateFormat("dd MMMM yyyy").format(rejectedDate);
+                                      }
+
+                                      return ReimburseItemCard(widget.token, defaultWidth, date: applied_date, typeData: e.category!.name ?? "", value: e.amount, status: e.status, approved_at: approved_date, rejected_at: rejected_date);
                                     }).toList()
                                 )) : SizedBox(),
                                 (selectedMenu == "Paid") ? ((state.data!.reimbursement!.where((e) => e.status == "paid").isEmpty) ? emptyBox(defaultWidth) : Column(
@@ -205,7 +220,10 @@ class _ReimbursePageState extends State<ReimbursePage> {
                                       DateTime appliedDate = new DateFormat("yyyy-MM-dd").parse(e.requested_at ?? "");
                                       String applied_date = DateFormat("dd MMMM yyyy").format(appliedDate);
 
-                                      return ReimburseItemCard(widget.token, defaultWidth, date: applied_date, typeData: e.category!.name ?? "", value: e.amount, status: e.status);
+                                      DateTime approvedDate = new DateFormat("yyyy-MM-dd").parse(e.approved_at ?? "");
+                                      String approved_date = DateFormat("dd MMMM yyyy").format(approvedDate);
+
+                                      return ReimburseItemCard(widget.token, defaultWidth, date: applied_date, typeData: e.category!.name ?? "", value: e.amount, status: e.status, approved_at: approved_date,);
                                     }).toList()
                                 )) : SizedBox(),
                                 (selectedMenu == "Reject") ? ((state.data!.reimbursement!.where((e) => e.status == "rejected").isEmpty) ? emptyBox(defaultWidth) : Column(
@@ -213,7 +231,10 @@ class _ReimbursePageState extends State<ReimbursePage> {
                                       DateTime appliedDate = new DateFormat("yyyy-MM-dd").parse(e.requested_at ?? "");
                                       String applied_date = DateFormat("dd MMMM yyyy").format(appliedDate);
 
-                                      return ReimburseItemCard(widget.token, defaultWidth, date: applied_date, typeData: e.category!.name ?? "", value: e.amount, status: e.status);
+                                      DateTime rejectedDate = new DateFormat("yyyy-MM-dd").parse(e.rejected_at ?? "");
+                                      String rejected_date = DateFormat("dd MMMM yyyy").format(rejectedDate);
+
+                                      return ReimburseItemCard(widget.token, defaultWidth, date: applied_date, typeData: e.category!.name ?? "", value: e.amount, status: e.status, rejected_at: rejected_date);
                                     }).toList()
                                 )) : SizedBox(),
                               ]

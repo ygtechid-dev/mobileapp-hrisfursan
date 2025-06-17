@@ -159,7 +159,7 @@ class PayslipResumeCard extends StatelessWidget {
                     locale: 'id_ID',
                     decimalDigits: 0,
                     symbol: 'Rp',
-                  ).format(payslip.net_salary)}",
+                  ).format(double.parse(payslip.net_salary ?? "0"))}",
                   textAlign: TextAlign.start,
                   style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
                 ),

@@ -69,7 +69,7 @@ class _SplashPageState extends State<SplashPage> {
         // I am connected to a mobile network.
         new Future.delayed(const Duration(milliseconds: 100), () =>
             Navigator.push(
-              context, MaterialPageRoute(builder: (context) => OnboardingPage()),
+              context, MaterialPageRoute(builder: (context) => MainPage(token: token)),
             ));
       } else {
         Get.snackbar('', '',

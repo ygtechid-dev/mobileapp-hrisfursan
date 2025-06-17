@@ -149,33 +149,45 @@ class _ClockInPageState extends State<ClockInPage> {
                         ),
                       ),
                       SizedBox(height: 10),
-                      Container(
-                          width: fullWidth - 2*15,
-                          padding: EdgeInsets.symmetric(vertical: 11, horizontal: 12),
-                          alignment: Alignment.centerLeft,
-                          decoration: BoxDecoration(
-                            color: "F9FAFB".toColor(),
-                            border: Border.all(color: "EAECF0".toColor()),
-                            borderRadius: BorderRadius.vertical(top: Radius.circular(5)),
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                    color: CupertinoColors.systemGrey2,
-                                    borderRadius: BorderRadius.circular(16),
-                                    border: Border.all(color: mainColor),
-                                    image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: AssetImage("${prefixImages}img_avatar_dummy.png")
-                                    )
-                                ),
+                      BlocBuilder<UserCubit, UserState>(
+                          builder: (context, state) => (state is UserLoaded) ? (state.user != null) ? Container(
+                              width: fullWidth - 2*15,
+                              padding: EdgeInsets.symmetric(vertical: 11, horizontal: 12),
+                              alignment: Alignment.centerLeft,
+                              decoration: BoxDecoration(
+                                color: "F9FAFB".toColor(),
+                                border: Border.all(color: "EAECF0".toColor()),
+                                borderRadius: BorderRadius.vertical(top: Radius.circular(5)),
                               ),
-                              SizedBox(width: 10),
-                              BlocBuilder<UserCubit, UserState>(
-                                  builder: (context, state) => (state is UserLoaded) ? (state.user != null) ? Column(
+                              child: Row(
+                                children: [
+                                  (state.user!.avatar != null && state.user!.avatar != "") ? Container(
+                                    width: 100,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                        color: CupertinoColors.systemGrey2,
+                                        borderRadius: BorderRadius.circular(16),
+                                        border: Border.all(color: mainColor),
+                                        image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: CachedNetworkImageProvider("${state.user!.avatar}")
+                                        )
+                                    ),
+                                  ) : Container(
+                                    width: 100,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                        color: CupertinoColors.systemGrey2,
+                                        borderRadius: BorderRadius.circular(16),
+                                        border: Border.all(color: mainColor),
+                                        image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: AssetImage("${prefixImages}img_avatar_dummy.png")
+                                        )
+                                    ),
+                                  ),
+                                  SizedBox(width: 10),
+                                  Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
@@ -191,7 +203,7 @@ class _ClockInPageState extends State<ClockInPage> {
                                       ),
                                       SizedBox(height: 7),
                                       Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             Icon(Icons.location_on_rounded, color: mainColor, size: 12),
                                             SizedBox(width: 5),
@@ -206,12 +218,13 @@ class _ClockInPageState extends State<ClockInPage> {
                                           ]
                                       )
                                     ],
-                                  ) : SizedBox() : loadingIndicator
-                              ),
+                                  )
 
-                            ],
-                          )
+                                ],
+                              )
+                          ) : SizedBox() : loadingIndicator
                       ),
+
                       SizedBox(height: 15),
                       Container(
                         width: fullWidth - 2*15,

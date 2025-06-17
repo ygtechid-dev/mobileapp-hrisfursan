@@ -54,7 +54,7 @@ class _MainPageState extends State<MainPage> {
     }
 
     if(widget.token != null) {
-
+      context.read<UserCubit>().getProfile(widget.token!);
     }
 
   }
@@ -90,7 +90,9 @@ class _MainPageState extends State<MainPage> {
                     children: [
                       HomePage(widget.token!),
                       ActivityPage(widget.token!),
-                      AttendancePage(widget.token!),
+                      BlocBuilder<UserCubit, UserState>(
+                          builder: (context, state) => (state is UserLoaded) ? (state.user != null) ? AttendancePage(widget.token!, "${state.user!.employee!.employee_id}") : SizedBox() : loadingIndicator
+                      ),
                       (isTask) ? TaskPage(widget.token!) : AnalyticsPage(widget.token!),
                       ProfilePage(widget.token ?? ""),
                     ],

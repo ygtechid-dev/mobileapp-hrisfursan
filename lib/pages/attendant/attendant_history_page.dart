@@ -2,8 +2,9 @@ part of '../pages.dart';
 
 class AttendantHistoryPage extends StatefulWidget {
   final String token;
+  final String employee_id;
 
-  AttendantHistoryPage(this.token);
+  AttendantHistoryPage(this.token, this.employee_id);
 
   @override
   State<AttendantHistoryPage> createState() => _AttendantHistoryPageState();
@@ -13,8 +14,6 @@ class _AttendantHistoryPageState extends State<AttendantHistoryPage> {
   TextEditingController searchController = TextEditingController();
 
   Future<void> getDataAttendance() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? employee_id = await prefs.getString('employee_id');
     // 2025-02-24
     DateTime now = DateTime.now();
     String formattedDate = intl.DateFormat('yyyy').format(now);
@@ -24,8 +23,8 @@ class _AttendantHistoryPageState extends State<AttendantHistoryPage> {
     String startDate = "${formattedDate}-01-01";
     String endDate = "${yearsAdded}-12-31";
 
-    if(employee_id != null){
-      await context.read<AttendanceHistoryCubit>().getAttendanceHistory(widget.token, employee_id, startDate, endDate);
+    if(widget.employee_id != null){
+      await context.read<AttendanceHistoryCubit>().getAttendanceHistory(widget.token, widget.employee_id, startDate, endDate);
     }
   }
 
@@ -86,7 +85,7 @@ class _AttendantHistoryPageState extends State<AttendantHistoryPage> {
                       double fixMinutes = minutes_ - minutes;
                       double fixSeconds = seconds_ - seconds;
 
-                      _hoursString = "${fixHours}:${(fixMinutes < 0) ? 0 : fixMinutes}:${(fixSeconds < 0) ? 0 : fixSeconds}";
+                      _hoursString = "${(fixHours > 9) ? fixHours.toStringAsFixed(0) : "0${fixHours.toStringAsFixed(0)}"}:${(fixMinutes < 0) ? "00" : ((fixMinutes > 9) ? fixMinutes.toStringAsFixed(0) : "0${fixMinutes.toStringAsFixed(0)}")}:${(fixSeconds < 0) ? "00" : ((fixSeconds > 9) ? fixSeconds.toStringAsFixed(0) : "0${fixSeconds.toStringAsFixed(0)}")}";
                     }
 
                     DateTime appliedDate = new DateFormat("yyyy-MM-dd").parse(e.date ?? "");

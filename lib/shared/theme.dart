@@ -38,6 +38,16 @@ Gradient buttonGradient = LinearGradient(
   tileMode: TileMode.clamp,
 );
 
+Gradient buttonGradientGrey = LinearGradient(
+  colors: [
+    Color(0xFF9D9D9D),
+    Color(0xFFA9A9A9),
+  ],
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+  tileMode: TileMode.clamp,
+);
+
 // Color mainColor = "E3B626".toColor();
 // Color lightYellowColor = "F9EFD1".toColor();
 Color bcgGreyColor = "F8F8F8".toColor();

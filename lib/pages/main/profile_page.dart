@@ -33,16 +33,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
               await UserServices.logout(widget.token).then((result) async {
 
-                Fluttertoast.showToast(
-                    msg: "${result.value}",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.green,
-                    textColor: Colors.white,
-                    fontSize: 16.0
-                );
-
                 SharedPreferences prefs = await SharedPreferences.getInstance().whenComplete(() async {
 
                 });
@@ -65,6 +55,13 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       ),
     )) ?? false;
+  }
+
+  @override
+  void initState() {
+    context.read<UserCubit>().getProfile(widget.token);
+
+    super.initState();
   }
 
   @override
@@ -121,7 +118,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       builder: (context, state) => (state is UserLoaded) ? (state.user != null) ? Column(
                                         children: [
                                           ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "${state.user!.email}", "ic_mail_fill.svg", mainColor),
-                                          ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "Indonesia, Jakarta Selatan", "ic_location_fill.svg", mainColor),
+                                          ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "${state.user!.employee!.address}", "ic_location_fill.svg", mainColor),
                                         ],
                                       ) : SizedBox() : loadingIndicator
                                   ),
@@ -155,7 +152,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             Get.to(OfficeAssetPage(widget.token));
                                           }),
                                           ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "payroll_tax".trans(context), "ic_payroll_fill.svg", mainColor, onTap: (){
-                                            // Get.to(ProfileEditPage());
+                                            Get.to(PayslipHistoryPage(widget.token));
                                           }),
                                           ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "resign".trans(context), "ic_resign.svg", mainColor, onTap: (){
                                             Get.to(FormResignPage(widget.token));
@@ -193,7 +190,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   child: Column(
                                     children: [
                                       ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "versioning".trans(context), "ic_version_fill.svg", mainColor),
-                                      ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "faq_help".trans(context), "ic_faq.svg", mainColor),
+                                      // ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "faq_help".trans(context), "ic_faq.svg", mainColor),
                                       ButtonHorizontalProfileCard(defaultWidth-2*defaultMargin2, "logout".trans(context), "ic_logout.svg", Colors.red, onTap: () async {
                                         await logout();
                                       },),
@@ -220,7 +217,19 @@ class _ProfilePageState extends State<ProfilePage> {
                             style: blackFontStyle.copyWith(fontSize: 22, color: Colors.white, fontWeight: FontWeight.w600),
                           ),
                           SizedBox(height: 15),
-                          Container(
+                          (state.user!.avatar != null && state.user!.avatar != "") ? Container(
+                            width: 120,
+                            height: 120,
+                            decoration: BoxDecoration(
+                                color: CupertinoColors.systemGrey2,
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(color: mainColor),
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: CachedNetworkImageProvider("${state.user!.avatar}")
+                                )
+                            ),
+                          ) : Container(
                             width: 120,
                             height: 120,
                             decoration: BoxDecoration(
@@ -240,7 +249,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             style: blackFontStyle.copyWith(fontSize: 18, fontWeight: FontWeight.w600),
                           ),
                           Text(
-                            "Graphic Design",
+                            "${state.user!.employee!.designation!.name}",
                             textAlign: TextAlign.center,
                             style: blackFontStyle.copyWith(fontSize: 13, color: mainColor, fontWeight: FontWeight.w400),
                           ),

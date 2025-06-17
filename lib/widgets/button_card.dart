@@ -226,6 +226,33 @@ class _CommonDottedButtonWithImageState extends State<CommonDottedButtonWithImag
 
   File? selectedFile;
 
+  Future<bool> _checkPermission() async {
+    if (Platform.isIOS) {
+      return true;
+    }
+
+    if (Platform.isAndroid) {
+
+      DeviceInfoPlugin plugin = DeviceInfoPlugin();
+      AndroidDeviceInfo android = await plugin.androidInfo;
+
+      if (android.version.sdkInt < 33) {
+        final status = await Permission.storage.status;
+        if (status == PermissionStatus.granted) {
+          return true;
+        }
+
+        final result = await Permission.storage.request();
+        return result == PermissionStatus.granted;
+      } else {
+        return true;
+      }
+
+    }
+
+    throw StateError('unknown platform');
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -237,29 +264,44 @@ class _CommonDottedButtonWithImageState extends State<CommonDottedButtonWithImag
 
     return InkWell(
       onTap: () async {
-        if(widget.isCamera == true){
-          PickedFile? pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
-          if (pickedFile != null) {
-            setState(() {
-              selectedFile = File(pickedFile.path);
-            });
+        _checkPermission().then((value) async {
 
-            widget.onPicked(selectedFile!);
-          }
-        } else {
-          FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image, );
+          if(value == true){
+            if(widget.isCamera == true){
+              XFile? pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+              if (pickedFile != null) {
+                setState(() {
+                  selectedFile = File(pickedFile.path);
+                });
 
-          if (result != null) {
+                widget.onPicked(selectedFile!);
+              }
+            } else {
+              FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image, );
 
-            setState(() {
-              selectedFile = File(result.files.single.path!);
-            });
+              if (result != null) {
 
-            widget.onPicked(selectedFile!);
+                setState(() {
+                  selectedFile = File(result.files.single.path!);
+                });
+
+                widget.onPicked(selectedFile!);
+              } else {
+                // User canceled the picker
+              }
+            }
           } else {
-            // User canceled the picker
+            Fluttertoast.showToast(
+                msg: "Please grant permission for storage access",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0
+            );
           }
-        }
+        });
 
       },
       child: DottedBorder(
@@ -331,13 +373,21 @@ class _CommonDottedButtonWithImage2State extends State<CommonDottedButtonWithIma
 
     if (Platform.isAndroid) {
 
-      final status = await Permission.storage.status;
-      if (status == PermissionStatus.granted) {
+      DeviceInfoPlugin plugin = DeviceInfoPlugin();
+      AndroidDeviceInfo android = await plugin.androidInfo;
+
+      if (android.version.sdkInt < 33) {
+        final status = await Permission.storage.status;
+        if (status == PermissionStatus.granted) {
+          return true;
+        }
+
+        final result = await Permission.storage.request();
+        return result == PermissionStatus.granted;
+      } else {
         return true;
       }
 
-      final result = await Permission.storage.request();
-      return result == PermissionStatus.granted;
     }
 
     throw StateError('unknown platform');
@@ -406,8 +456,12 @@ class _CommonDottedButtonWithImage2State extends State<CommonDottedButtonWithIma
                 borderRadius: BorderRadius.circular(8)
             ),
             child: (selectedFile != null) ? Container(
+              width: defaultWidth,
+              height: 220,
               decoration: BoxDecoration(
-                image: DecorationImage(image: FileImage(selectedFile!))
+                image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: FileImage(selectedFile!))
               ),
             ) : Container(
                 padding: EdgeInsets.all(30),

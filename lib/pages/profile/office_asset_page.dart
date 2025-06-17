@@ -55,7 +55,7 @@ class _OfficeAssetPageState extends State<OfficeAssetPage> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8)
                   ),
-                  alignment: Alignment.center,
+                  alignment: Alignment.centerLeft,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -154,7 +154,13 @@ class _OfficeAssetPageState extends State<OfficeAssetPage> {
                                 return SizedBox();
                               }
                             } else {
-                              return loadingIndicator;
+                              return SizedBox(
+                                child: Text(
+                                  "data_not_found".trans(context),
+                                  textAlign: TextAlign.start,
+                                  style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                                ),
+                              );
                             }
                           }
                       ),
@@ -165,18 +171,6 @@ class _OfficeAssetPageState extends State<OfficeAssetPage> {
               SizedBox(height: 20),
             ],
           )
-      ),
-      navBar: Container(
-        width: fullWidth,
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: boxShadow
-        ),
-        child: ButtonCard("save".trans(context), defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
-
-        }),
       ),
     );
   }

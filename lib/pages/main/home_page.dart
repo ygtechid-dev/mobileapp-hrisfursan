@@ -15,6 +15,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     context.read<WorkingPeriodCubit>().getWorkingPeriod(widget.token);
+    context.read<UserCubit>().getProfile(widget.token);
 
     super.initState();
   }
@@ -50,20 +51,25 @@ class _HomePageState extends State<HomePage> {
                 BlocBuilder<UserCubit, UserState>(
                     builder: (context, state) => (state is UserLoaded) ? (state.user != null) ? Row(
               children: [
-                InkWell(
-                  onTap: (){
-                    modalBottomSheetTermination(context, "");
-                  },
-                  child: Container(
-                    width: 56,
-                    height: 56,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage("${prefixImages}img_avatar_dummy.png")
-                        )
-                    ),
+                (state.user!.avatar != null && state.user!.avatar != "") ? Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: CachedNetworkImageProvider("${state.user!.avatar}")
+                      )
+                  ),
+                ) : Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage("${prefixImages}img_avatar_dummy.png")
+                      )
                   ),
                 ),
                 SizedBox(width: 8),
@@ -75,10 +81,12 @@ class _HomePageState extends State<HomePage> {
                       textAlign: TextAlign.start,
                       style: blackFontStyle.copyWith(fontSize: 15, color: Colors.white, fontWeight: FontWeight.w600),
                     ),
-                    Text(
-                      "Graphic Design",
-                      textAlign: TextAlign.start,
-                      style: blackFontStyle.copyWith(fontSize: 13, color: Colors.white, fontWeight: FontWeight.w400),
+                    BlocBuilder<UserCubit, UserState>(
+                        builder: (context, state) => (state is UserLoaded) ? (state.user != null) ? Text(
+                          "${(state.user!.employee != null) ? state.user!.employee!.designation!.name : ""}",
+                          textAlign: TextAlign.start,
+                          style: blackFontStyle.copyWith(fontSize: 13, color: Colors.white, fontWeight: FontWeight.w400),
+                        ) : SizedBox() : loadingIndicator
                     ),
                   ],
                 )
@@ -119,9 +127,11 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MenuCard((defaultWidth - 2*12)/3, "attendance_log".trans(context), "ic_attendance.svg", onTap: (){
-                      Get.to(AttendantHistoryPage(widget.token));
-                    }),
+                    BlocBuilder<UserCubit, UserState>(
+                        builder: (context, state) => (state is UserLoaded) ? (state.user != null) ? MenuCard((defaultWidth - 2*12)/3, "attendance_log".trans(context), "ic_attendance.svg", onTap: (){
+                          Get.to(AttendantHistoryPage(widget.token, "${(state.user!.employee != null) ? state.user!.employee!.employee_id : ""}"));
+                        }) : SizedBox() : loadingIndicator
+                    ),
                     MenuCard((defaultWidth - 2*12)/3, "leave_request_alt".trans(context), "ic_leave.svg", onTap: (){
                       Get.to(LeavePage(widget.token));
                     }),

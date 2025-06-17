@@ -24,8 +24,8 @@ class _OvertimeCreatePageState extends State<OvertimeCreatePage> {
   bool isLoading = false;
 
   DateTime selectedDate = DateTime.now();
-  TimeOfDay? selectedTime1 = TimeOfDay.now();
-  TimeOfDay? selectedTime2 = TimeOfDay.now();
+  TimeOfDay selectedTime1 = TimeOfDay.now();
+  TimeOfDay selectedTime2 = TimeOfDay.now();
 
 
   Future<void> _selectDate(BuildContext context) async {
@@ -34,7 +34,7 @@ class _OvertimeCreatePageState extends State<OvertimeCreatePage> {
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime(1980, 8),
-        lastDate: DateTime(2040),
+        lastDate: DateTime(2100),
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
@@ -89,7 +89,7 @@ class _OvertimeCreatePageState extends State<OvertimeCreatePage> {
     if (selectedTime != null && selectedTime != selectedTime1) {
       setState(() {
         selectedTime1 = selectedTime;
-        timeStartC.text = "${selectedTime.hour}:${selectedTime.minute}";
+        timeStartC.text = "${selectedTime1.hour}:${(selectedTime1.minute > 9) ? selectedTime1.minute : "0${selectedTime1.minute}"}";
       });
     }
   }
@@ -120,7 +120,7 @@ class _OvertimeCreatePageState extends State<OvertimeCreatePage> {
     if (selectedTime != null && selectedTime != selectedTime2) {
       setState(() {
         selectedTime2 = selectedTime;
-        timeEndC.text = "${selectedTime.hour}:${selectedTime.minute}";
+        timeEndC.text = "${selectedTime2.hour}:${(selectedTime2.minute > 9) ? selectedTime2.minute : "0${selectedTime2.minute}"}";
       });
     }
   }

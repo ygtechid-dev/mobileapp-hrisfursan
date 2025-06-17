@@ -40,25 +40,32 @@ class NotificationCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: width - 64 - 10 - 35 - 2*16,
-                      child: Text(
-                        "${title}",
-                        textAlign: TextAlign.start,
-                        style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                Container(
+                  width: width - 64 - 10 - 2*16,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: width - 64 - 10 - 35 - 2*16 - 70,
+                        child: Text(
+                          "${title}",
+                          textAlign: TextAlign.start,
+                          style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                        ),
                       ),
-                    ),
-                    Text(
-                      "${time}",
-                      textAlign: TextAlign.end,
-                      style: blackFontStyle.copyWith(fontSize: 11, fontWeight: FontWeight.w400),
-                    ),
-                  ],
+                      Container(
+                        width: 90,
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          "${time.split(",")[0]}",
+                          textAlign: TextAlign.end,
+                          style: blackFontStyle.copyWith(fontSize: 11, fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                SizedBox(height: 3),
+                SizedBox(height: 5),
                 Container(
                   width: width - 64 - 10 - 2*16,
                   child: Text(

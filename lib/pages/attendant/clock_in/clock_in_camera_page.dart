@@ -23,6 +23,8 @@ class _ClockInCameraPageState extends State<ClockInCameraPage> {
       autoCapture: true,
       defaultCameraLens: CameraLens.front,
       onCapture: (File? image) {
+        controller.dispose();
+
         Get.to(ClockInDetailPage(widget.token, widget.latitude, widget.longitude, widget.location, image!));
       },
     );

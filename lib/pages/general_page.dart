@@ -244,7 +244,7 @@ class _GeneralPageState extends State<GeneralPage>  {
         child: Scaffold(
           key: (widget.key != null) ? widget.key : null,
           drawerScrimColor: Colors.black54,
-          resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomInset: true,
           drawerEnableOpenDragGesture: false, endDrawerEnableOpenDragGesture: false,
           // drawerEdgeDragWidth: MediaQuery.of(context).size.width - 40,
           drawer: (widget.drawer != null) ? Container(
@@ -285,7 +285,7 @@ class _GeneralPageState extends State<GeneralPage>  {
               ),
               SafeArea(
                   top: (widget.statusBarColor != null) ? false : false,
-                  bottom: false,
+                  bottom: true,
                   child: Stack(
                     children: [
                       (widget.isFrontAppBar == false) ? Positioned(

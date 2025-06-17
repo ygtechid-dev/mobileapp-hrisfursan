@@ -101,7 +101,7 @@ class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
                       FormWithLabelCard(
                           outerLabelText: "title".trans(context),
                           hintText: "Enter ${"title".trans(context)}",
-                          controller: amountC,
+                          controller: titleC,
                           onSaved: (e) {
                             titleC.text = e ?? "";
                           },
@@ -184,6 +184,7 @@ class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
                           },
                           filled: true),
                       SizedBox(height: 40),
+                      SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
                     ],
                   )
               ),

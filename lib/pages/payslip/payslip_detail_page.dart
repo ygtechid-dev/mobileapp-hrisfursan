@@ -135,16 +135,6 @@ class _PayslipDetailPageState extends State<PayslipDetailPage> {
 
               await _requestDownload(task);
 
-              Fluttertoast.showToast(
-                  msg: "${result.message}",
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: Colors.green,
-                  textColor: Colors.white,
-                  fontSize: 16.0
-              );
-
               modalBottomSheet(context, widget.token);
 
             } else {
@@ -247,10 +237,38 @@ class _PayslipDetailPageState extends State<PayslipDetailPage> {
   }
 
   Future<void> _requestDownload(TaskInfo task) async {
+
+    var status = await Permission.storage.status;
+
+    if (status.isDenied) {
+      Fluttertoast.showToast(
+          msg: "Error when saving file",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+    }
+    if (await Permission.storage.isRestricted) {
+      Fluttertoast.showToast(
+          msg: "Error when saving file",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+    }
+
+    var directory = Directory('/storage/emulated/0/Download');
+
     task.taskId = await FlutterDownloader.enqueue(
       url: task.link!,
       headers: {'Authorization': 'Bearer ${widget.token}'},
-      savedDir: _localPath,
+      savedDir: directory.path,
       saveInPublicStorage: _saveInPublicStorage,
     );
   }

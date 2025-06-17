@@ -27,8 +27,6 @@ class TaskServices {
         .map((e) => Projects.fromJson(e))
         .toList();
 
-    ProjectsCounts project_counts = ProjectsCounts.fromJson(data["data"]["project_counts"]);
-
     List<Tasks> taskTemp = [];
 
     await getListTask(token).then((dataTask) async {
@@ -48,6 +46,12 @@ class TaskServices {
         listData.add(item.copyWith(tasks: tempTasks));
       }
 
+    });
+
+    ProjectsCounts? project_counts;
+
+    await getTaskCount(token).then((dataTaskCount) async {
+      project_counts = dataTaskCount.value;
     });
 
     ProjectsSummary value = ProjectsSummary(projects: listData, project_counts: project_counts,);
@@ -79,6 +83,32 @@ class TaskServices {
     List<Tasks> value = (data['data']["tasks"] as Iterable)
         .map((e) => Tasks.fromJson(e))
         .toList();
+
+    return ApiReturnValue(value: value);
+  }
+
+  static Future<ApiReturnValue<ProjectsCounts>> getTaskCount(String token, {http.Client? client}) async {
+    if (client == null) {
+      client = http.Client();
+    }
+
+    String url = baseUrl + 'mobile/projects/all-task';
+
+    var response = await client.get(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        });
+
+    print("List Task " + response.body.toString());
+
+    var data = jsonDecode(response.body);
+
+    if (response.statusCode != 200) {
+      return ApiReturnValue(message: 'Please Try Again');
+    }
+
+    ProjectsCounts value = ProjectsCounts.fromJson(data['data']["task_counts"]);
 
     return ApiReturnValue(value: value);
   }

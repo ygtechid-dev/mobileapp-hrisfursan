@@ -55,13 +55,17 @@ class _PayslipHistoryPageState extends State<PayslipHistoryPage> {
                     return Column(
                         children: state.data!.map((e) {
 
-                          DateTime appliedDate = new DateFormat("yyyy-MM-dd").parse(e.payment_date ?? "");
-                          String applied_date = DateFormat("dd MMMM yyyy").format(appliedDate);
+                          String? applied_date;
+
+                          if(e.payment_date != null){
+                            DateTime appliedDate = new DateFormat("yyyy-MM-dd").parse(e.payment_date ?? "");
+                            applied_date = DateFormat("dd MMMM yyyy").format(appliedDate);
+                          }
 
                           DateTime createdDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse(e.created_at ?? "");
                           String created_date = DateFormat("dd MMMM yyyy").format(createdDate);
 
-                          return PayslipCard(widget.token, defaultWidth, e, date: created_date, total_hours: "${e.total_working_hours}:${e.total_working_minutes}", received: (e.net_salary ?? "0")!.toDouble(), paid_on: applied_date);
+                          return PayslipCard(widget.token, defaultWidth, e, date: created_date, total_hours: "${e.total_work_hours}", received: (e.net_salary ?? "0")!.toDouble(), paid_on: applied_date ?? "-");
                         }).toList()
                     );
                   } else {

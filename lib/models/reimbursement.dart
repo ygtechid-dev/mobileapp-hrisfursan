@@ -18,8 +18,8 @@ class ReimbursementSummary extends Equatable {
             .map((e) => Reimbursement.fromJson(e))
             .toList() : [],
         period: (data['period'] != null) ? ReimbursementPeriod.fromJson(data['period']) : null,
-        total_requested_month: data['total_requested_month'],
-        total_approved_month: data['total_approved_month'],
+        total_requested_month: "${data['total_requested_month']}",
+        total_approved_month: "${data['total_approved_month']}",
       );
 
   @override
@@ -69,7 +69,7 @@ class Reimbursement extends Equatable {
   final String? paid_at;
   final String? payment_method;
   final String? notes;
-  final int? category_id;
+  final String? category_id;
   final ReimbursementCategory? category;
   final Employee? employee;
   final User? approver;
@@ -104,7 +104,7 @@ class Reimbursement extends Equatable {
         paid_at: data['paid_at'],
         payment_method: data['payment_method'],
         notes: data['notes'],
-        category_id: data['category_id'],
+        category_id: "${data['category_id']}",
         approver: (data['approver'] != null) ? User.fromJson(data['approver']) : null,
         rejecter: (data['rejecter'] != null) ? User.fromJson(data['rejecter']) : null,
         payer: (data['payer'] != null) ? User.fromJson(data['payer']) : null,

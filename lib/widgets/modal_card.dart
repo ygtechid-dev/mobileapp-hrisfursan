@@ -19,7 +19,7 @@ class _ModalForgotPasswordCardState extends State<ModalForgotPasswordCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: MediaQuery.of(context).size.height * 47/100 + MediaQuery.of(context).viewInsets.bottom,
+        height: MediaQuery.of(context).size.height * 49/100 + MediaQuery.of(context).viewInsets.bottom,
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       color: Colors.transparent,
       child: Stack(
@@ -33,7 +33,7 @@ class _ModalForgotPasswordCardState extends State<ModalForgotPasswordCard> {
                 children: [
                   Container(
                     width: widget.width,
-                    height: MediaQuery.of(context).size.height * 41/100,
+                    height: MediaQuery.of(context).size.height * 43/100,
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.vertical(top: Radius.circular(20))
@@ -217,7 +217,7 @@ class _ModalForgotPasswordPinCardState extends State<ModalForgotPasswordPinCard>
     );
 
     return Container(
-      height: MediaQuery.of(context).size.height * 47/100 + MediaQuery.of(context).viewInsets.bottom,
+      height: MediaQuery.of(context).size.height * 49/100 + MediaQuery.of(context).viewInsets.bottom,
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       color: Colors.transparent,
       child: Stack(
@@ -232,14 +232,14 @@ class _ModalForgotPasswordPinCardState extends State<ModalForgotPasswordPinCard>
 
                   Container(
                     width: widget.width,
-                    height: MediaQuery.of(context).size.height * 41/100,
+                    height: MediaQuery.of(context).size.height * 43/100,
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.vertical(top: Radius.circular(20))
                     ),
                     child: Column(
                       children: [
-                        SizedBox(height: 50),
+                        SizedBox(height: 35),
                         Container(
                           padding: EdgeInsets.all(widget.padding),
                           child: Column(
@@ -257,7 +257,7 @@ class _ModalForgotPasswordPinCardState extends State<ModalForgotPasswordPinCard>
                               Container(
                                 width: widget.width - 2 * widget.padding,
                                 alignment: Alignment.centerLeft,
-                                child: Text("a_reset_code".trans(context),
+                                child: Text("${"a_reset_code".trans(context)}${widget.email}, ${"check_email".trans(context)}",
                                     textAlign: TextAlign.start,
                                     style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400)),
                               ),
@@ -272,6 +272,7 @@ class _ModalForgotPasswordPinCardState extends State<ModalForgotPasswordPinCard>
                                   androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
                                   listenForMultipleSmsOnAndroid: true,
                                   defaultPinTheme: defaultPinTheme,
+                                    keyboardType: TextInputType.text,
                                   validator: (value) {
 
                                   },
@@ -324,9 +325,48 @@ class _ModalForgotPasswordPinCardState extends State<ModalForgotPasswordPinCard>
                                     Text("havent_received".trans(context),
                                         textAlign: TextAlign.start,
                                         style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400)),
-                                    Text("resend_it".trans(context),
-                                        textAlign: TextAlign.start,
-                                        style: blackFontStyle.copyWith(fontSize: 12, color: mainColor, fontWeight: FontWeight.w400)),
+                                    InkWell(
+                                      onTap: () async {
+                                        await UserServices.forgot_password(widget.email).then((result) async {
+
+                                          if(result != null && result.value != null && result.value == true){
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+
+                                            Fluttertoast.showToast(
+                                                msg: "${result.message}",
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.BOTTOM,
+                                                timeInSecForIosWeb: 1,
+                                                backgroundColor: Colors.green,
+                                                textColor: Colors.white,
+                                                fontSize: 16.0
+                                            );
+
+                                          } else {
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+
+                                            Fluttertoast.showToast(
+                                                msg: "${result.message}",
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.BOTTOM,
+                                                timeInSecForIosWeb: 1,
+                                                backgroundColor: Colors.red,
+                                                textColor: Colors.white,
+                                                fontSize: 16.0
+                                            );
+                                          }
+
+
+                                        });
+                                      },
+                                      child: Text("resend_it".trans(context),
+                                          textAlign: TextAlign.start,
+                                          style: blackFontStyle.copyWith(fontSize: 12, color: mainColor, fontWeight: FontWeight.w400)),
+                                    ),
                                   ]
                                 )
                               ),
@@ -446,7 +486,7 @@ class _ModalForgotPasswordNewCardState extends State<ModalForgotPasswordNewCard>
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 57/100 + MediaQuery.of(context).viewInsets.bottom,
+      height: MediaQuery.of(context).size.height * 59/100 + MediaQuery.of(context).viewInsets.bottom,
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       color: Colors.transparent,
       child: Stack(
@@ -461,7 +501,7 @@ class _ModalForgotPasswordNewCardState extends State<ModalForgotPasswordNewCard>
 
                   Container(
                     width: widget.width,
-                    height: MediaQuery.of(context).size.height * 50/100,
+                    height: MediaQuery.of(context).size.height * 52/100,
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.vertical(top: Radius.circular(20))
@@ -524,7 +564,7 @@ class _ModalForgotPasswordNewCardState extends State<ModalForgotPasswordNewCard>
                               ButtonCard("submit".trans(context), widget.width - 2 * widget.padding, mainColor, colorGradient: buttonGradient, onPressed: () async {
                                 if(passwordC.text.isNotEmpty && passwordConfirmC.text.isNotEmpty){
                                   if(passwordC.text == passwordConfirmC.text){
-                                    await UserServices.reset_password( widget.email, passwordC.text, passwordConfirmC.text, widget.pin).then((result) async {
+                                    await UserServices.reset_password( widget.pin, widget.email, passwordC.text, passwordConfirmC.text, ).then((result) async {
 
                                       if(result != null && result.value != null && result.value == true){
                                         setState(() {
@@ -643,7 +683,7 @@ class _ModalForgotPasswordSuccessCardState extends State<ModalForgotPasswordSucc
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 37/100 + MediaQuery.of(context).viewInsets.bottom,
+      height: MediaQuery.of(context).size.height * 38/100 + MediaQuery.of(context).viewInsets.bottom,
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       color: Colors.transparent,
       child: Stack(
@@ -658,7 +698,7 @@ class _ModalForgotPasswordSuccessCardState extends State<ModalForgotPasswordSucc
 
                   Container(
                     width: widget.width,
-                    height: MediaQuery.of(context).size.height * 31/100,
+                    height: MediaQuery.of(context).size.height * 32/100,
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.vertical(top: Radius.circular(20))
@@ -1080,17 +1120,17 @@ class _ModalClockOutCardState extends State<ModalClockOutCard> {
   }
 
   String _formatDateTime(DateTime dateTime) {
-    return intl.DateFormat('h:mm:ss a').format(dateTime);
+    return intl.DateFormat('HH:mm:ss').format(dateTime);
   }
 
   String _formatDateTime2(DateTime dateTime) {
-    return intl.DateFormat('hh:mm:ss').format(dateTime);
+    return intl.DateFormat('HH:mm:ss').format(dateTime);
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 58/100 + MediaQuery.of(context).viewInsets.bottom,
+      height: MediaQuery.of(context).size.height * 59/100 + MediaQuery.of(context).viewInsets.bottom,
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       color: Colors.transparent,
       child: Stack(
@@ -1104,7 +1144,7 @@ class _ModalClockOutCardState extends State<ModalClockOutCard> {
                 children: [
                   Container(
                     width: widget.width,
-                    height: MediaQuery.of(context).size.height * 52/100,
+                    height: MediaQuery.of(context).size.height * 53/100,
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.vertical(top: Radius.circular(20))
@@ -1803,7 +1843,7 @@ class _ModalReimburseCategoryCardState extends State<ModalReimburseCategoryCard>
   Widget build(BuildContext context) {
     return Container(
       width: widget.width,
-      height: MediaQuery.of(context).size.height * 85/100,
+      height: MediaQuery.of(context).size.height * 60/100,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))

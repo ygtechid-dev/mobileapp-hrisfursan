@@ -25,6 +25,7 @@ class User extends Equatable {
   final String? messenger_color;
   final int? is_disable;
   final String? created_by;
+  final Employee? employee;
   static String? token;
 
 
@@ -52,6 +53,7 @@ class User extends Equatable {
       this.dark_mode,
       this.messenger_color,
       this.is_disable,
+        this.employee,
       this.created_by});
 
   factory User.fromJson(Map<String, dynamic> data) =>
@@ -60,7 +62,7 @@ class User extends Equatable {
         id: data['id'],
         last_name: data['last_name'] ?? null,
         email: data['email'] ?? null,
-        phone: data['phone'] ?? null,
+        phone: (data['employee'] != null) ? data['employee']['phone'] : null,
         company_id: data['company_id'] ?? null,
         email_verified_at: data['email_verified_at'] ?? null,
         avatar: data['avatar'] ?? null,
@@ -77,9 +79,9 @@ class User extends Equatable {
         messenger_color: data['messenger_color'] ?? null,
         is_disable: data['is_disable'] ?? null,
         // created_by: data['created_by'] ?? null,
-        dob: data['dob'] ?? null,
-        address: data['address'] ?? null,
-
+        dob: (data['employee'] != null) ? data['employee']['dob'] : null,
+        address: (data['employee'] != null) ? data['employee']['address'] : null,
+        employee: (data['employee'] != null) ? Employee.fromJson(data['employee']) : null,
       );
 
 
@@ -110,6 +112,7 @@ class User extends Equatable {
         created_by,
         dob,
         address,
+        employee
       ];
 }
 

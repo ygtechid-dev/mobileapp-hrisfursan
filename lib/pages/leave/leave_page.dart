@@ -36,7 +36,7 @@ class _LeavePageState extends State<LeavePage> {
   }
 
   Future<bool> _onWillPop() async {
-    Get.to(MainPage(token: widget.token));
+    Get.back();
     return (kIsWeb) ? true : false;
   }
 
@@ -54,6 +54,7 @@ class _LeavePageState extends State<LeavePage> {
         heightAppBar: 210,
         backColor: "F1F3F8".toColor(),
         title: "",
+
         child: Column(
           children: [
             Container(
@@ -62,7 +63,9 @@ class _LeavePageState extends State<LeavePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
-                      onTap: (){},
+                      onTap: (){
+                        Get.back();
+                      },
                       child: Container(
                         height: 32,
                         width: 32,
@@ -206,7 +209,20 @@ class _LeavePageState extends State<LeavePage> {
                                   String start_date = DateFormat("dd MMM").format(startDate);
                                   String end_date = DateFormat("dd MMM").format(endDate);
 
-                                  return LeaveItemCard(defaultWidth, date: applied_date, leave_date: "${start_date} - ${end_date}", value: "${e.total_leave_days} Days", status: e.status,);
+                                  String? approved_date;
+                                  String? rejected_date;
+
+                                  if(e.approved_at != null){
+                                    DateTime approvedDate = new DateFormat("yyyy-MM-dd").parse(e.approved_at ?? "");
+                                    approved_date = DateFormat("dd MMMM yyyy").format(approvedDate);
+                                  }
+
+                                  if(e.rejected_at != null){
+                                    DateTime rejectedDate = new DateFormat("yyyy-MM-dd").parse(e.rejected_at ?? "");
+                                    rejected_date = DateFormat("dd MMMM yyyy").format(rejectedDate);
+                                  }
+
+                                  return LeaveItemCard(defaultWidth, date: applied_date, leave_date: "${start_date} - ${end_date}", value: "${e.total_leave_days} Days", status: e.status, approved_at: approved_date, rejected_at: rejected_date);
                                 }).toList()
                             )) : SizedBox(),
                             (selectedMenu == "Approve") ? ((state.data!.where((e) => e.status == "approved").isEmpty) ? emptyBox(defaultWidth) : Column(

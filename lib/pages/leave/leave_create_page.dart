@@ -151,7 +151,7 @@ class _LeaveCreatePageState extends State<LeaveCreatePage> {
                       ],
                     )
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 60),
               ],
             )
         ),

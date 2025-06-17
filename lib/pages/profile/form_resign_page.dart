@@ -157,17 +157,29 @@ class _FormResignPageState extends State<FormResignPage> {
                   isLoading = false;
                 });
 
-                Fluttertoast.showToast(
-                    msg: "success_update".trans(context),
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.green,
-                    textColor: Colors.white,
-                    fontSize: 16.0
-                );
+                if(result.status != null && result.status == true){
+                  Fluttertoast.showToast(
+                      msg: "${result.message}",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.green,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+                } else {
+                  Fluttertoast.showToast(
+                      msg: "${result.message}",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+                }
 
-                Get.to(MainPage(token: widget.token));
+
 
               } else {
                 setState(() {

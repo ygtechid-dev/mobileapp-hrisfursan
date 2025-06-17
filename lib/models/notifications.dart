@@ -10,9 +10,9 @@ class Notifications extends Equatable {
 
   factory Notifications.fromJson(Map<String, dynamic> data) => Notifications(
     title: data['title'] ?? "",
-    description: data['description'] ?? "",
+    description: data['message'] ?? "",
     status: data['status'] ?? "",
-    time: data['time'] ?? "",
+    time: data['formatted_date'] ?? "",
   );
 
   @override

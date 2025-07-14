@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_face_api/flutter_face_api.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:face_camera/face_camera.dart';
@@ -60,6 +61,8 @@ import '../cubits/user/user_cubit.dart';
 import '../models/models.dart';
 import '../services/services.dart';
 import '../shared/shared.dart';
+import '../utils/face_cropper.dart';
+import '../utils/face_recognition.dart';
 import '../utils/helper.dart';
 import '../widgets/widgets.dart';
 

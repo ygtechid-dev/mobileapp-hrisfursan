@@ -63,6 +63,7 @@ class ReimbursementServices {
       String category_id,
       String amount,
       String transaction_date,
+      File file,
       {http.MultipartRequest? request}) async {
 
     String url = baseUrl + 'mobile/reimbursements';
@@ -82,6 +83,10 @@ class ReimbursementServices {
       'transaction_date': transaction_date,
     };
 
+    var multiPartFile =
+    await http.MultipartFile.fromPath('attachment', file.path);
+
+    request.files.add(multiPartFile);
     request.fields.addAll(fieldData);
 
     var response = await request.send();

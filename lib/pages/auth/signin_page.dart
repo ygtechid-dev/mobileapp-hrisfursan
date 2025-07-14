@@ -238,27 +238,27 @@ class _SignInPageState extends State<SignInPage> {
                     ButtonCard("signin_phone".trans(context), defaultWidth, mainColor, isActive: true, iconPath: "${prefixIcons}ic_phone.svg", isHover: false, onPressed: () async {
                       Get.to(SignInPhonePage());
                     }),
-                    // SizedBox(height: 20),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: [
-                    //     Text(
-                    //       "dont_have_account".trans(context),
-                    //       style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
-                    //       textAlign: TextAlign.start,
-                    //     ),
-                    //     InkWell(
-                    //       onTap: (){
-                    //         Get.to(SignUpPage());
-                    //       },
-                    //       child: Text(
-                    //         "signup_here".trans(context),
-                    //         style: blackFontStyle.copyWith(fontSize: 12, color: mainColor, fontWeight: FontWeight.w600),
-                    //         textAlign: TextAlign.end,
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "dont_have_account".trans(context),
+                          style: blackFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                          textAlign: TextAlign.start,
+                        ),
+                        InkWell(
+                          onTap: (){
+                            Get.to(SignUpPage());
+                          },
+                          child: Text(
+                            "signup_here".trans(context),
+                            style: blackFontStyle.copyWith(fontSize: 12, color: mainColor, fontWeight: FontWeight.w600),
+                            textAlign: TextAlign.end,
+                          ),
+                        ),
+                      ],
+                    ),
                     SizedBox(height: 40),
                   ],
                 )

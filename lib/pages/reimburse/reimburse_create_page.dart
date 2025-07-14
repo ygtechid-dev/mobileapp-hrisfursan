@@ -17,6 +17,7 @@ class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
   TextEditingController amountC = TextEditingController();
 
   bool isAgree = false;
+  File? selectedFile;
 
   @override
   void initState() {
@@ -95,7 +96,9 @@ class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
                       ),
                       SizedBox(height: 20),
                       CommonDottedButtonWithImage2(title: "upload_claim".trans(context), subtitle: "format_should".trans(context), onPicked: (value){
-
+                        setState(() {
+                          selectedFile = value;
+                        });
                       }),
                       SizedBox(height: 20),
                       FormWithLabelCard(
@@ -220,12 +223,12 @@ class _ReimburseCreatePageState extends State<ReimburseCreatePage> {
         backgroundColor: Colors.transparent,
         builder: (bc){
           return ModalDefaultSubmitCard(token, fullWidth, 16, "ready_submit".trans(context), "double_check_form".trans(context), "img_leave.png", onSubmit: () async {
-            if(titleC.text.isNotEmpty && dateC.text.isNotEmpty && amountC.text.isNotEmpty && category_id != null){
+            if(titleC.text.isNotEmpty && dateC.text.isNotEmpty && amountC.text.isNotEmpty && category_id != null && selectedFile != null){
               setState(() {
                 isLoading = true;
               });
 
-              await ReimbursementServices.createReimbursement(widget.token, "${titleC.text}", "${descriptionC.text}", "${category_id}", "${amountC.text}", "${dateC.text}").then((result) async {
+              await ReimbursementServices.createReimbursement(widget.token, "${titleC.text}", "${descriptionC.text}", "${category_id}", "${amountC.text}", "${dateC.text}", selectedFile!).then((result) async {
 
                 if(result != null && result.value != null){
 

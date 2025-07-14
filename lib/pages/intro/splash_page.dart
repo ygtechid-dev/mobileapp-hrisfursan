@@ -55,6 +55,7 @@ class _SplashPageState extends State<SplashPage> {
 
     if(dateBefore != formattedDate){
       await prefs.remove("clockin");
+      await prefs.remove("clockout");
     }
 
     if (prefs.getString('token') != null && prefs.getString('token') != '') {

@@ -296,5 +296,8 @@
     "title": "Title",
     "comment": "Comment",
     "employeeid": "Employee ID",
-    "data_not_found" : "Data Not Found"
+    "data_not_found" : "Data Not Found",
+    "face_not_found": "❌ Face Not Detected",
+    "face_not_match": "Face Not Matched",
+    "face_match": "Face Matched"
 }

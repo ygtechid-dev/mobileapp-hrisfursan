@@ -100,268 +100,270 @@ class _MainPageState extends State<MainPage> {
                 ),
                 Align(
                     alignment: Alignment.bottomCenter,
-                    child: Container(
-                      height: (kIsWeb) ? (MediaQuery.of(context).size.height * 0.069) + 60 : ((Platform.isIOS) ? (MediaQuery.of(context).size.height * 0.110) + 90 : (MediaQuery.of(context).size.height * 0.074) + 70),
-                      child: Stack(
-                          children: [
-                            Positioned(
-                              bottom: MediaQuery.of(context).viewInsets.top,
-                              left: 0,
-                              right: 0,
-                              child: Container(
-                                height: (kIsWeb) ? (MediaQuery.of(context).size.height * 0.069) : ((Platform.isIOS) ? MediaQuery.of(context).size.height * 0.11 : MediaQuery.of(context).size.height * 0.074),
-                                padding: EdgeInsets.only(top: 0),
-                                decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 0,
-                                    blurRadius: 0,
-                                    offset: Offset(0, 0),
-                                  )
-                                ]),
-                                child: BottomNavigationBar(
-                                  elevation: 0,
-                                  backgroundColor: Colors.transparent,
-                                  selectedItemColor: mainColor,
-                                  unselectedItemColor: greyColor,
-                                  showUnselectedLabels: true,
-                                  type: BottomNavigationBarType.fixed,
-                                  currentIndex: navbarIndex,
-                                  onTap: (index) async {
-
-                                    setState(() {
-                                      navbarIndex = index;
-                                      pageController!.jumpToPage(index);
-                                    });
-
-                                  },
-                                  items: [
-                                    BottomNavigationBarItem(
-                                      label: "home".trans(context),
-                                      icon: (kIsWeb) ? Container(
-                                          width: 24,
-                                          height: 24,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: AssetImage("assets/icons/ic_home_unactive.png"),
-                                                fit: BoxFit.fill,
-                                              )
-                                          )
-                                      ) : Container(
-                                        width: 24,
-                                        height: 24,
-                                        child: SvgPicture.asset("assets/icons/ic_home_unactive.svg"),
-                                      ),
-                                      activeIcon: (kIsWeb) ? Container(
-                                          width: 24,
-                                          height: 24,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: AssetImage("assets/icons/ic_home_active.png"),
-                                                fit: BoxFit.fill,
-                                              )
-                                          )
-                                      ) : Container(
-                                        width: 24,
-                                        height: 24,
-                                        child: SvgPicture.asset("assets/icons/ic_home_active.svg"),
-                                      ),
-                                    ),
-                                    BottomNavigationBarItem(
-                                      label: "activity".trans(context),
-                                      icon: (kIsWeb) ? Container(
-                                          width: 24,
-                                          height: 24,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: AssetImage("assets/icons/ic_activity_unactive.png"),
-                                                fit: BoxFit.fill,
-                                              )
-                                          )
-                                      ) : Container(
-                                        width: 24,
-                                        height: 24,
-                                        child: SvgPicture.asset("assets/icons/ic_activity_unactive.svg"),
-                                      ),
-                                      activeIcon: (kIsWeb) ? Container(
-                                          width: 24,
-                                          height: 24,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: AssetImage("assets/icons/ic_activity_active.png"),
-                                                fit: BoxFit.fill,
-                                              )
-                                          )
-                                      ) : Container(
-                                        width: 24,
-                                        height: 24,
-                                        child: SvgPicture.asset("assets/icons/ic_activity_active.svg"),
-                                      ),
-                                    ),
-                                    BottomNavigationBarItem(
-                                      label: "attendance".trans(context),
-                                      icon: (kIsWeb) ? Container(
-                                          width: 24,
-                                          height: 24,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: AssetImage("assets/icons/ic_eye_unactive.png"),
-                                                fit: BoxFit.fill,
-                                              )
-                                          )
-                                      ) : Container(
-                                        width: 24,
-                                        height: 24,
-                                        child: SvgPicture.asset("assets/icons/ic_eye_unactive.svg", color: Colors.white),
-                                      ),
-                                      activeIcon: (kIsWeb) ? Container(
-                                          width: 24,
-                                          height: 24,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: AssetImage("assets/icons/ic_eye_active.png"),
-                                                fit: BoxFit.fill,
-                                              )
-                                          )
-                                      ) : Container(
-                                        width: 24,
-                                        height: 24,
-                                        child: SvgPicture.asset("assets/icons/ic_eye_active.svg", color: Colors.white),
-                                      ),
-                                    ),
-                                    (isTask) ? BottomNavigationBarItem(
-                                      label: "task".trans(context),
-                                      icon: (kIsWeb) ? Container(
-                                          width: 24,
-                                          height: 24,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: AssetImage("assets/icons/ic_task_unactive.png"),
-                                                fit: BoxFit.fill,
-                                              )
-                                          )
-                                      ) : Container(
-                                        width: 24,
-                                        height: 24,
-                                        child:
-                                        SvgPicture.asset("assets/icons/ic_task_unactive.svg"),
-                                      ),
-                                      activeIcon: (kIsWeb) ? Container(
-                                          width: 24,
-                                          height: 24,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: AssetImage("assets/icons/ic_task_active.png"),
-                                                fit: BoxFit.fill,
-                                              )
-                                          )
-                                      ) : Container(
-                                        width: 24,
-                                        height: 24,
-                                        child: SvgPicture.asset("assets/icons/ic_task_active.svg"),
-                                      ),
-                                    ) : BottomNavigationBarItem(
-                                      label: "analytics".trans(context),
-                                      icon: (kIsWeb) ? Container(
-                                          width: 24,
-                                          height: 24,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: AssetImage("assets/icons/ic_graph_unactive.png"),
-                                                fit: BoxFit.fill,
-                                              )
-                                          )
-                                      ) : Container(
-                                        width: 24,
-                                        height: 24,
-                                        child:
-                                        SvgPicture.asset("assets/icons/ic_graph_unactive.svg"),
-                                      ),
-                                      activeIcon: (kIsWeb) ? Container(
-                                          width: 24,
-                                          height: 24,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: AssetImage("assets/icons/ic_graph_active.png"),
-                                                fit: BoxFit.fill,
-                                              )
-                                          )
-                                      ) : Container(
-                                        width: 24,
-                                        height: 24,
-                                        child: SvgPicture.asset("assets/icons/ic_graph_active.svg"),
-                                      ),
-                                    ),
-                                    BottomNavigationBarItem(
-                                      label: "account".trans(context),
-                                      icon: (kIsWeb) ? Container(
-                                          width: 24,
-                                          height: 24,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: AssetImage("assets/icons/ic_user_unactive.png"),
-                                                fit: BoxFit.fill,
-                                              )
-                                          )
-                                      ) : Container(
-                                        width: 24,
-                                        height: 24,
-                                        child: SvgPicture.asset("assets/icons/ic_user_unactive.svg"),
-                                      ),
-                                      activeIcon: (kIsWeb) ? Container(
-                                          width: 24,
-                                          height: 24,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: AssetImage("assets/icons/ic_user_active.png"),
-                                                fit: BoxFit.fill,
-                                              )
-                                          )
-                                      ) : Container(
-                                        width: 24,
-                                        height: 24,
-                                        child: SvgPicture.asset("assets/icons/ic_user_active.svg"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                                top: (kIsWeb) ? 45 : ((Platform.isIOS) ? 65 : 45),
-                                bottom: (kIsWeb) ? 24 : ((Platform.isIOS) ? 60 : 28),
+                    child: SafeArea(
+                      child: Container(
+                        height: (kIsWeb) ? (MediaQuery.of(context).size.height * 0.069) + 60 : ((Platform.isIOS) ? (MediaQuery.of(context).size.height * 0.110) + 90 : (MediaQuery.of(context).size.height * 0.074) + 70),
+                        child: Stack(
+                            children: [
+                              Positioned(
+                                bottom: MediaQuery.of(context).viewInsets.top,
                                 left: 0,
                                 right: 0,
                                 child: Container(
-                                    width: 70,
-                                    height: 70,
-                                    alignment: Alignment.center,
-                                    padding: EdgeInsets.only(top: (kIsWeb) ? 10 : ((Platform.isIOS) ? 13 : 14), left: 1),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: (navbarIndex == 2) ? mainColor : Colors.white, width: 1.5),
-                                        color: (navbarIndex == 2) ? Colors.white : mainColor,
-                                        shape: BoxShape.circle,
-                                        // boxShadow: boxShadow
-                                    ),
-                                    child: InkWell(
-                                      onTap: () async {
-                                        setState(() {
-                                          navbarIndex = 2;
-                                          pageController!.jumpToPage(2);
-                                        });
-                                      },
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            child: SvgPicture.asset("${prefixIcons}ic_scan.svg", color: (navbarIndex == 2) ? mainColor : Colors.white,),
-                                          ),
-                                          SizedBox(height: 3),
-                                        ],
-                                      ),
+                                  height: (kIsWeb) ? (MediaQuery.of(context).size.height * 0.069) : ((Platform.isIOS) ? MediaQuery.of(context).size.height * 0.11 : MediaQuery.of(context).size.height * 0.074),
+                                  padding: EdgeInsets.only(top: 0),
+                                  decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 0,
+                                      blurRadius: 0,
+                                      offset: Offset(0, 0),
                                     )
-                                )
-                            ),
-                          ]
+                                  ]),
+                                  child: BottomNavigationBar(
+                                    elevation: 0,
+                                    backgroundColor: Colors.transparent,
+                                    selectedItemColor: mainColor,
+                                    unselectedItemColor: greyColor,
+                                    showUnselectedLabels: true,
+                                    type: BottomNavigationBarType.fixed,
+                                    currentIndex: navbarIndex,
+                                    onTap: (index) async {
+
+                                      setState(() {
+                                        navbarIndex = index;
+                                        pageController!.jumpToPage(index);
+                                      });
+
+                                    },
+                                    items: [
+                                      BottomNavigationBarItem(
+                                        label: "home".trans(context),
+                                        icon: (kIsWeb) ? Container(
+                                            width: 24,
+                                            height: 24,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: AssetImage("assets/icons/ic_home_unactive.png"),
+                                                  fit: BoxFit.fill,
+                                                )
+                                            )
+                                        ) : Container(
+                                          width: 24,
+                                          height: 24,
+                                          child: SvgPicture.asset("assets/icons/ic_home_unactive.svg"),
+                                        ),
+                                        activeIcon: (kIsWeb) ? Container(
+                                            width: 24,
+                                            height: 24,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: AssetImage("assets/icons/ic_home_active.png"),
+                                                  fit: BoxFit.fill,
+                                                )
+                                            )
+                                        ) : Container(
+                                          width: 24,
+                                          height: 24,
+                                          child: SvgPicture.asset("assets/icons/ic_home_active.svg"),
+                                        ),
+                                      ),
+                                      BottomNavigationBarItem(
+                                        label: "activity".trans(context),
+                                        icon: (kIsWeb) ? Container(
+                                            width: 24,
+                                            height: 24,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: AssetImage("assets/icons/ic_activity_unactive.png"),
+                                                  fit: BoxFit.fill,
+                                                )
+                                            )
+                                        ) : Container(
+                                          width: 24,
+                                          height: 24,
+                                          child: SvgPicture.asset("assets/icons/ic_activity_unactive.svg"),
+                                        ),
+                                        activeIcon: (kIsWeb) ? Container(
+                                            width: 24,
+                                            height: 24,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: AssetImage("assets/icons/ic_activity_active.png"),
+                                                  fit: BoxFit.fill,
+                                                )
+                                            )
+                                        ) : Container(
+                                          width: 24,
+                                          height: 24,
+                                          child: SvgPicture.asset("assets/icons/ic_activity_active.svg"),
+                                        ),
+                                      ),
+                                      BottomNavigationBarItem(
+                                        label: "attendance".trans(context),
+                                        icon: (kIsWeb) ? Container(
+                                            width: 24,
+                                            height: 24,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: AssetImage("assets/icons/ic_eye_unactive.png"),
+                                                  fit: BoxFit.fill,
+                                                )
+                                            )
+                                        ) : Container(
+                                          width: 24,
+                                          height: 24,
+                                          child: SvgPicture.asset("assets/icons/ic_eye_unactive.svg", color: Colors.white),
+                                        ),
+                                        activeIcon: (kIsWeb) ? Container(
+                                            width: 24,
+                                            height: 24,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: AssetImage("assets/icons/ic_eye_active.png"),
+                                                  fit: BoxFit.fill,
+                                                )
+                                            )
+                                        ) : Container(
+                                          width: 24,
+                                          height: 24,
+                                          child: SvgPicture.asset("assets/icons/ic_eye_active.svg", color: Colors.white),
+                                        ),
+                                      ),
+                                      (isTask) ? BottomNavigationBarItem(
+                                        label: "task".trans(context),
+                                        icon: (kIsWeb) ? Container(
+                                            width: 24,
+                                            height: 24,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: AssetImage("assets/icons/ic_task_unactive.png"),
+                                                  fit: BoxFit.fill,
+                                                )
+                                            )
+                                        ) : Container(
+                                          width: 24,
+                                          height: 24,
+                                          child:
+                                          SvgPicture.asset("assets/icons/ic_task_unactive.svg"),
+                                        ),
+                                        activeIcon: (kIsWeb) ? Container(
+                                            width: 24,
+                                            height: 24,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: AssetImage("assets/icons/ic_task_active.png"),
+                                                  fit: BoxFit.fill,
+                                                )
+                                            )
+                                        ) : Container(
+                                          width: 24,
+                                          height: 24,
+                                          child: SvgPicture.asset("assets/icons/ic_task_active.svg"),
+                                        ),
+                                      ) : BottomNavigationBarItem(
+                                        label: "analytics".trans(context),
+                                        icon: (kIsWeb) ? Container(
+                                            width: 24,
+                                            height: 24,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: AssetImage("assets/icons/ic_graph_unactive.png"),
+                                                  fit: BoxFit.fill,
+                                                )
+                                            )
+                                        ) : Container(
+                                          width: 24,
+                                          height: 24,
+                                          child:
+                                          SvgPicture.asset("assets/icons/ic_graph_unactive.svg"),
+                                        ),
+                                        activeIcon: (kIsWeb) ? Container(
+                                            width: 24,
+                                            height: 24,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: AssetImage("assets/icons/ic_graph_active.png"),
+                                                  fit: BoxFit.fill,
+                                                )
+                                            )
+                                        ) : Container(
+                                          width: 24,
+                                          height: 24,
+                                          child: SvgPicture.asset("assets/icons/ic_graph_active.svg"),
+                                        ),
+                                      ),
+                                      BottomNavigationBarItem(
+                                        label: "account".trans(context),
+                                        icon: (kIsWeb) ? Container(
+                                            width: 24,
+                                            height: 24,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: AssetImage("assets/icons/ic_user_unactive.png"),
+                                                  fit: BoxFit.fill,
+                                                )
+                                            )
+                                        ) : Container(
+                                          width: 24,
+                                          height: 24,
+                                          child: SvgPicture.asset("assets/icons/ic_user_unactive.svg"),
+                                        ),
+                                        activeIcon: (kIsWeb) ? Container(
+                                            width: 24,
+                                            height: 24,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: AssetImage("assets/icons/ic_user_active.png"),
+                                                  fit: BoxFit.fill,
+                                                )
+                                            )
+                                        ) : Container(
+                                          width: 24,
+                                          height: 24,
+                                          child: SvgPicture.asset("assets/icons/ic_user_active.svg"),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                  top: (kIsWeb) ? 45 : ((Platform.isIOS) ? 65 : 45),
+                                  bottom: (kIsWeb) ? 24 : ((Platform.isIOS) ? 60 : 28),
+                                  left: 0,
+                                  right: 0,
+                                  child: Container(
+                                      width: 70,
+                                      height: 70,
+                                      alignment: Alignment.center,
+                                      padding: EdgeInsets.only(top: (kIsWeb) ? 10 : ((Platform.isIOS) ? 13 : 14), left: 1),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(color: (navbarIndex == 2) ? mainColor : Colors.white, width: 1.5),
+                                          color: (navbarIndex == 2) ? Colors.white : mainColor,
+                                          shape: BoxShape.circle,
+                                          // boxShadow: boxShadow
+                                      ),
+                                      child: InkWell(
+                                        onTap: () async {
+                                          setState(() {
+                                            navbarIndex = 2;
+                                            pageController!.jumpToPage(2);
+                                          });
+                                        },
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              child: SvgPicture.asset("${prefixIcons}ic_scan.svg", color: (navbarIndex == 2) ? mainColor : Colors.white,),
+                                            ),
+                                            SizedBox(height: 3),
+                                          ],
+                                        ),
+                                      )
+                                  )
+                              ),
+                            ]
+                        ),
                       ),
                     )),
               ],

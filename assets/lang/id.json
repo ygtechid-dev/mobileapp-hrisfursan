@@ -296,6 +296,9 @@
     "title": "Judul",
     "comment": "Komentar",
     "employeeid": "ID Karyawan",
-    "data_not_found" : "Data Tidak Ditemukan"
+    "data_not_found" : "Data Tidak Ditemukan",
+    "face_not_found": "❌ Tidak ada wajah terdeteksi",
+    "face_not_match": "Wajah Tidak Cocok",
+    "face_match": "Wajah Cocok"
 }
 

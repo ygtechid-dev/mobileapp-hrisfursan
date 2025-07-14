@@ -82,10 +82,24 @@ class _WorkingCardState extends State<WorkingCard> {
               if(widget.clockout != null){
 
               } else {
-                modalBottomSheet(context, widget.token);
+                final status = await Permission.location.status;
+                if (status == PermissionStatus.granted) {
+                  modalBottomSheet(context, widget.token);
+                } else {
+                  final result = await Permission.location.request();
+
+                  modalBottomSheet(context, widget.token);
+                }
               }
             } else {
-              Get.to(ClockInPage(widget.token));
+              final status = await Permission.location.status;
+              if (status == PermissionStatus.granted) {
+                Get.to(ClockInPage(widget.token));
+              } else {
+                final result = await Permission.location.request();
+
+                Get.to(ClockInPage(widget.token));
+              }
             }
 
           }),
@@ -105,7 +119,7 @@ class _WorkingCardState extends State<WorkingCard> {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (bc){
-          return ModalClockOutCard(token, fullWidth, 16);
+          return ModalClockOutCard(token, widget.clockin ?? "", fullWidth, 16);
         });
   }
 }

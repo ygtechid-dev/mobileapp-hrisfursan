@@ -1062,10 +1062,11 @@ class _ModalExportPDFSuccessCardState extends State<ModalExportPDFSuccessCard> {
 
 class ModalClockOutCard extends StatefulWidget {
   final String token;
+  final String clockin;
   final double width;
   final double padding;
 
-  ModalClockOutCard(this.token, this.width, this.padding);
+  ModalClockOutCard(this.token, this.clockin, this.width, this.padding);
 
   @override
   State<ModalClockOutCard> createState() => _ModalClockOutCardState();
@@ -1091,11 +1092,9 @@ class _ModalClockOutCardState extends State<ModalClockOutCard> {
     final String formattedDateTime = _formatDateTime(now);
     final String formattedDateTime2 = _formatDateTime2(now);
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? clockin = await prefs.getString('clockin');
 
-    if(clockin != null){
-      var clockin_temp = clockin.split(":");
+    if(widget.clockin != null){
+      var clockin_temp = widget.clockin.split(":");
       double hours = double.parse(clockin_temp[0]);
       double minutes = double.parse(clockin_temp[1]);
       double seconds = double.parse(clockin_temp[2]);
@@ -1110,7 +1109,7 @@ class _ModalClockOutCardState extends State<ModalClockOutCard> {
       double fixSeconds = seconds_ - seconds;
 
       setState(() {
-        _hoursString = "${fixHours}:${(fixMinutes < 0) ? 0 : fixMinutes}:${(fixSeconds < 0) ? 0 : fixSeconds}";
+        _hoursString = "${(fixHours > 9) ? fixHours.toStringAsFixed(0) : "0${fixHours.toStringAsFixed(0)}"}:${(fixMinutes < 0) ? "00" : ((fixMinutes > 9) ? fixMinutes.toStringAsFixed(0) : "0${fixMinutes.toStringAsFixed(0)}")}:${(fixSeconds < 0) ? "00" : ((fixSeconds > 9) ? fixSeconds.toStringAsFixed(0) : "0${fixSeconds.toStringAsFixed(0)}")}";
       });
     }
 
@@ -1183,7 +1182,7 @@ class _ModalClockOutCardState extends State<ModalClockOutCard> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     TimeCard((widget.width - 2*16)/2 - 5, "clock_out".trans(context), "${_timeString}"),
-                                    TimeCard((widget.width - 2*16)/2 - 5, "total_hours".trans(context), "${_hoursString}"),
+                                    TimeCard((widget.width - 2*16)/2 - 5, "total_hours".trans(context), "${_hoursString ?? '-'}"),
                                   ],
                                 ),
                               ),

@@ -38,10 +38,32 @@ class _AttendancePageState extends State<AttendancePage> {
     super.initState();
   }
 
-  Future<List<String?>> getDataShared() async {
+  Future<List<String?>> getDataShared(String employee_id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? clockin = await prefs.getString('clockin');
-    String? clockout = await prefs.getString('clockout');
+
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('dd MMMM yyyy').format(now);
+
+    var dateBefore = await prefs.getString('date');
+    String? clockin;
+    String? clockout;
+
+    ApiReturnValue<Attendant> result = await AttendanceServices.getEmployeeHistory(widget.token, employee_id, formattedDate, formattedDate);
+
+    if(result != null && result.value != null) {
+      if (result.value!.attendance_records != null &&
+          result.value!.attendance_records!.isNotEmpty) {
+        if (result.value!.attendance_records![0].clock_in != null) {
+          clockin =
+              result.value!.attendance_records![0].clock_in!;
+        }
+
+        if (result.value!.attendance_records![0].clock_out != null) {
+          clockin =
+              result.value!.attendance_records![0].clock_out!;
+        }
+      }
+    }
 
     return [clockin, clockout];
   }
@@ -94,15 +116,17 @@ class _AttendancePageState extends State<AttendancePage> {
             ),
           ),
           SizedBox(height: 10),
-          FutureBuilder(
-            future: getDataShared(),
-            builder: (context, snapshot) {
-              if(snapshot.connectionState == ConnectionState.done){
-                return WorkingCard(widget.token, defaultWidth, clockin: snapshot.data![0], clockout: snapshot.data![1],);
-              } else {
-                return loadingIndicator;
-              }
-            }
+          BlocBuilder<UserCubit, UserState>(
+              builder: (context, state) => (state is UserLoaded) ? (state.user != null) ? FutureBuilder(
+                  future: getDataShared("${state.user!.employee!.employee_id}"),
+                  builder: (context, snapshot) {
+                    if(snapshot.connectionState == ConnectionState.done){
+                      return WorkingCard(widget.token, defaultWidth, clockin: snapshot.data![0], clockout: snapshot.data![1],);
+                    } else {
+                      return loadingIndicator;
+                    }
+                  }
+              ) : SizedBox() : loadingIndicator
           ),
           SizedBox(height: 20),
           BlocBuilder<AttendanceHistoryCubit, AttendanceHistoryState>(

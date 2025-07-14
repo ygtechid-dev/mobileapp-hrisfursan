@@ -21,8 +21,10 @@ class _ClockInPageState extends State<ClockInPage> {
 
   GeoPoint? selectedPoint;
 
-  Future<void> getPoint() async {
+  Future<bool> getPoint() async {
     selectedPoint = await mapController.myLocation();
+
+    return true;
   }
 
   String? _timeString;
@@ -271,44 +273,53 @@ class _ClockInPageState extends State<ClockInPage> {
                   color: Colors.white,
                   boxShadow: boxShadow
               ),
-              child: ButtonCard("selfie_to".trans(context), defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
+              child: FutureBuilder(
+                future: getPoint(),
+                builder: (context, snapshot) {
+                  if(snapshot.connectionState == ConnectionState.done){
+                    return ButtonCard("selfie_to".trans(context), defaultWidth - 2*24, mainColor, colorGradient: buttonGradient, onPressed: () async {
 
-                if(selectedPoint != null){
-                  try {
-                    List<Placemark> placemarks = await placemarkFromCoordinates(
-                        selectedPoint!.latitude,
-                        selectedPoint!.longitude,
-                        localeIdentifier: "id"
-                    );
+                      if(selectedPoint != null){
+                        try {
+                          List<Placemark> placemarks = await placemarkFromCoordinates(
+                              selectedPoint!.latitude,
+                              selectedPoint!.longitude,
+                              localeIdentifier: "id"
+                          );
 
-                    print("LOKASI " + placemarks[0].toString());
+                          print("LOKASI " + placemarks[0].toString());
 
-                    List<String> jj = placemarks[0].subAdministrativeArea!.split(' ');
+                          List<String> jj = placemarks[0].subAdministrativeArea!.split(' ');
 
-                    String kota = placemarks[0].subAdministrativeArea!.replaceAll('Kota ', '').replaceAll(' City', '');
+                          String kota = placemarks[0].subAdministrativeArea!.replaceAll('Kota ', '').replaceAll(' City', '');
 
-                    String cc = placemarks[0]!.administrativeArea!;
+                          String cc = placemarks[0]!.administrativeArea!;
 
-                    String provinsi = cc;
+                          String provinsi = cc;
 
-                    String jalan = placemarks[0].street ?? "";
-                    String country = placemarks[0].country ?? "";
+                          String jalan = placemarks[0].street ?? "";
+                          String country = placemarks[0].country ?? "";
 
-                    String location = "${jalan} ${kota}, ${provinsi}, ${country}";
+                          String location = "${jalan} ${kota}, ${provinsi}, ${country}";
 
-                    Get.to(ClockInCameraPage(widget.token, "${selectedPoint!.latitude}", "${selectedPoint!.longitude}", location));
+                          Get.to(ClockInCameraPage(widget.token, "${selectedPoint!.latitude}", "${selectedPoint!.longitude}", location));
 
-                  } catch(err){
+                        } catch(err){
 
-                    // await context.read<PrayerCubit>().getPrayer("", "");
+                          // await context.read<PrayerCubit>().getPrayer("", "");
 
+                        }
+
+
+                      }
+
+
+                    });
+                  } else {
+                    return loadingIndicator;
                   }
-
-
                 }
-
-
-              }),
+              ),
             )
           ],
         ),

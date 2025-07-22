@@ -1,0 +1,177 @@
+part of "../pages.dart";
+
+class OfficeAssetPage extends StatefulWidget {
+  final String token;
+
+  OfficeAssetPage(this.token);
+
+  @override
+  State<OfficeAssetPage> createState() => _OfficeAssetPageState();
+}
+
+class _OfficeAssetPageState extends State<OfficeAssetPage> {
+  TextEditingController assetsC = TextEditingController();
+  TextEditingController brandC = TextEditingController();
+  TextEditingController warrantyC = TextEditingController();
+  TextEditingController dateC = TextEditingController();
+  TextEditingController phoneC = TextEditingController();
+
+  bool isAgree = false;
+
+  @override
+  void initState() {
+    context.read<OfficeAssetsCubit>().getOfficeAssets(widget.token);
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double defaultWidth = MediaQuery.of(context).size.width - 2*defaultMargin2;
+    double itemWidth = MediaQuery.of(context).size.width - 2*defaultMargin3;
+    double fullWidth = MediaQuery.of(context).size.width;
+
+    return GeneralPage(
+      statusBarColor: mainColor,
+      isBackInvert: false,
+      isFrontAppBar: true,
+      marginAppBar: 65,
+      title: "office_assets".trans(context),
+      onBackButtonPressed: (){
+        Get.back();
+      },
+      backColor: "F1F3F8".toColor(),
+      appBarColor: Colors.white,
+      child: Container(
+          width: fullWidth,
+          padding: EdgeInsets.symmetric(vertical: 12, horizontal: defaultMargin2),
+          alignment: Alignment.center,
+          child: Column(
+            children: [
+              Container(
+                  width: defaultWidth,
+                  padding: EdgeInsets.symmetric(vertical: 24, horizontal: defaultMargin3),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8)
+                  ),
+                  alignment: Alignment.centerLeft,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "assets_information".trans(context),
+                        textAlign: TextAlign.start,
+                        style: blackFontStyle.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(height: 3),
+                      Text(
+                        "your_office".trans(context),
+                        textAlign: TextAlign.start,
+                        style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                      ),
+                      SizedBox(height: 15),
+                      BlocBuilder<OfficeAssetsCubit, OfficeAssetsState>(
+                          builder: (context, state) {
+                            if (state is OfficeAssetsLoaded) {
+                              if (state.data != null) {
+
+                                assetsC.text = state.data!.name ?? "";
+                                brandC.text = state.data!.brand ?? "";
+                                warrantyC.text = state.data!.warranty_status ?? "";
+                                dateC.text = state.data!.buying_date ?? "";
+
+                                return Column(
+                                  children: [
+                                    Container(
+                                      width: defaultWidth - 2*defaultMargin3,
+                                      height: defaultWidth - 2*defaultMargin3 - 75,
+                                      decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: CachedNetworkImageProvider("${state.data!.image}"))
+                                      ),
+                                    ),
+                                    SizedBox(height: 15),
+                                    FormWithLabelCard(
+                                        outerLabelText: "asset_name".trans(context),
+                                        hintText: "Enter ${"asset_name".trans(context)}",
+                                        controller: assetsC,
+                                        prefixSvg: "${prefixIcons}ic_form_assets.svg",
+                                        readOnly: true,
+                                        onSaved: (e) {
+                                          assetsC.text = e ?? "";
+                                        },
+                                        validator: (e) {
+                                          return simpleValidator(e, null);
+                                        },
+                                        filled: true),
+                                    SizedBox(height: 20),
+                                    FormWithLabelCard(
+                                        outerLabelText: "brand".trans(context),
+                                        hintText: "Enter ${"brand".trans(context)}",
+                                        controller: brandC,
+                                        prefixSvg: "${prefixIcons}ic_form_brand.svg",
+                                        readOnly: true,
+                                        onSaved: (e) {
+                                          brandC.text = e ?? "";
+                                        },
+                                        validator: (e) {
+                                          return simpleValidator(e, null);
+                                        },
+                                        filled: true),
+                                    SizedBox(height: 20),
+                                    FormWithLabelCard(
+                                        outerLabelText: "warranty".trans(context),
+                                        hintText: "Enter ${"warranty".trans(context)}",
+                                        controller: warrantyC,
+                                        prefixSvg: "${prefixIcons}ic_form_status.svg",
+                                        readOnly: true,
+                                        onSaved: (e) {
+                                          warrantyC.text = e ?? "";
+                                        },
+                                        validator: (e) {
+                                          return simpleValidator(e, null);
+                                        },
+                                        filled: true),
+                                    SizedBox(height: 20),
+                                    FormWithLabelCard(
+                                        outerLabelText: "buying".trans(context),
+                                        hintText: "Enter ${"buying".trans(context)}",
+                                        controller: dateC,
+                                        prefixSvg: "${prefixIcons}ic_form_buying.svg",
+                                        readOnly: true,
+                                        onSaved: (e) {
+                                          dateC.text = e ?? "";
+                                        },
+                                        validator: (e) {
+                                          return simpleValidator(e, null);
+                                        },
+                                        filled: true),
+                                  ]
+                                );
+                              } else {
+                                return SizedBox();
+                              }
+                            } else {
+                              return SizedBox(
+                                child: Text(
+                                  "data_not_found".trans(context),
+                                  textAlign: TextAlign.start,
+                                  style: greyFontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                                ),
+                              );
+                            }
+                          }
+                      ),
+                      SizedBox(height: 40),
+                    ],
+                  )
+              ),
+              SizedBox(height: 20),
+            ],
+          )
+      ),
+    );
+  }
+}
